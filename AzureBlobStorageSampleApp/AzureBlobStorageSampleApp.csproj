@@ -1,10 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="2.4.0.269-pre2" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard1.6</TargetFramework>
+		<PackageTargetFallback>portable-win+net45+wp80+win81+wpa81</PackageTargetFallback>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Xamarin.Forms" Version="2.4.0.269-pre2" />
+		<PackageReference Include="WindowsAzure.Storage" Version="8.4.0" />
+		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
+		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="3.1.2-pre1" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Pages\" />
+		<Folder Include="ViewModels\" />
+		<Folder Include="Models\" />
+		<Folder Include="Constants\" />
+		<Folder Include="Pages\Base\" />
+		<Folder Include="Services\" />
+		<Folder Include="Database\" />
+		<Folder Include="Views\" />
+		<Folder Include="Views\PhotoList\" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Services\DatabaseSyncService.cs" />
+	</ItemGroup>
+	<Import Project="..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems')" />
 </Project>
