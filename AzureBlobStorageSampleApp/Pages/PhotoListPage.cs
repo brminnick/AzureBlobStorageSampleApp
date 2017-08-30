@@ -3,6 +3,8 @@
 using Xamarin.Forms;
 
 using AzureBlobStorageSampleApp.Shared;
+using AzureBlobStorageSampleApp.Mobile.Shared;
+
 namespace AzureBlobStorageSampleApp
 {
     public class PhotoListPage : BaseContentPage<PhotoListViewModel>
@@ -58,7 +60,6 @@ namespace AzureBlobStorageSampleApp
 			_photosListView.ItemSelected += HandleItemSelected;
 			_addPhotosButton.Clicked += HandleAddContactButtonClicked;
 			ViewModel.PullToRefreshCompleted += HandlePullToRefreshCompleted;
-			ViewModel.RestoreDeletedContactsCompleted += HandleRestoreDeletedContactsCompleted;
         }
 
         protected override void UnsubscribeEventHandlers()
@@ -66,28 +67,26 @@ namespace AzureBlobStorageSampleApp
 			_photosListView.ItemSelected -= HandleItemSelected;
 			_addPhotosButton.Clicked -= HandleAddContactButtonClicked;
 			ViewModel.PullToRefreshCompleted -= HandlePullToRefreshCompleted;
-			ViewModel.RestoreDeletedContactsCompleted -= HandleRestoreDeletedContactsCompleted;
         }
 
 		void HandleItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			var listView = sender as ListView;
-			var selectedContactModel = e?.SelectedItem as PhotoModel;
+            var selectedPhoto = e?.SelectedItem as PhotoModel;
 
 			Device.BeginInvokeOnMainThread(async () =>
 			{
-				await Navigation.PushAsync(new PhotoDetailsPage(selectedContactModel, false));
+				await Navigation.PushAsync(new PhotoDetailsPage(selectedPhoto));
 				listView.SelectedItem = null;
 			});
 		}
 
-		void HandleAddContactButtonClicked(object sender, EventArgs e)
-		{
-			MobileCenterHelpers.TrackEvent(MobileCenterConstants.AddContactButtonTapped);
+        void HandlePullToRefreshCompleted(object sender, EventArgs e) =>
+            Device.BeginInvokeOnMainThread(_photosListView.EndRefresh);
 
-			Device.BeginInvokeOnMainThread(async () =>
-			   await Navigation.PushModalAsync(new BaseNavigationPage(new ContactDetailPage(new ContactModel(), true))));
-		}
+        void HandleAddContactButtonClicked(object sender, EventArgs e) =>
+            Device.BeginInvokeOnMainThread(async () =>
+                await Navigation.PushModalAsync(new BaseNavigationPage(new AddPhotoPage())));
         #endregion
     }
 }

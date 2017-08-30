@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
-
 using SQLite;
 
 using Xamarin.Forms;
+
+using AzureBlobStorageSampleApp.Shared;
 
 namespace AzureBlobStorageSampleApp
 {

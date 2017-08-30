@@ -1,6 +1,7 @@
 ﻿using Xamarin.Forms;
 
 using AzureBlobStorageSampleApp.Shared;
+using AzureBlobStorageSampleApp.Mobile.Shared;
 
 namespace AzureBlobStorageSampleApp
 {

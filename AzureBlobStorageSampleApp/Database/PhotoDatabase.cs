@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 
+using AzureBlobStorageSampleApp.Shared;
+
 namespace AzureBlobStorageSampleApp
 {
     public abstract class PhotoDatabase : BaseDatabase

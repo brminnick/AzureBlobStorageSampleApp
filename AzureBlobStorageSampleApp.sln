@@ -6,19 +6,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.i
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Droid", "Droid\AzureBlobStorageSampleApp.Droid.csproj", "{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureBlobStorageSampleApp", "AzureBlobStorageSampleApp\AzureBlobStorageSampleApp.csproj", "{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp", "AzureBlobStorageSampleApp\AzureBlobStorageSampleApp.csproj", "{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{44790D75-6C29-4F49-A383-2C8D30492FDD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{3940893D-F8F4-4816-AFE3-ADB166B67408}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{3940893D-F8F4-4816-AFE3-ADB166B67408}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8E0F8671-E071-4F54-BCA3-DE5CD7F1AA28}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Mobile.Shared", "AzureBlobStorageSampleAppMobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.shproj", "{0706B08E-BA37-4A28-A2F7-95BBCC0ACA1D}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Shared", "AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.shproj", "{8B097BA2-26D8-4238-A2FD-22EC347EB882}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Mobile.Shared.shproj", "AzureBlobStorageSampleAppMobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.shproj.shproj", "{0706B08E-BA37-4A28-A2F7-95BBCC0ACA1D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -91,8 +91,8 @@ Global
 		{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{3940893D-F8F4-4816-AFE3-ADB166B67408} = {44790D75-6C29-4F49-A383-2C8D30492FDD}
-		{0706B08E-BA37-4A28-A2F7-95BBCC0ACA1D} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{8B097BA2-26D8-4238-A2FD-22EC347EB882} = {8E0F8671-E071-4F54-BCA3-DE5CD7F1AA28}
+		{0706B08E-BA37-4A28-A2F7-95BBCC0ACA1D} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B507A9D9-2503-4C31-909E-C5C99623C4C6}

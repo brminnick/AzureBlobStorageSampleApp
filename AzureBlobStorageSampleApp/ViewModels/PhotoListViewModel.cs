@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 
 using Xamarin.Forms;
 
+using AzureBlobStorageSampleApp.Shared;
+
 namespace AzureBlobStorageSampleApp
 {
     public class PhotoListViewModel : BaseViewModel
@@ -17,15 +19,11 @@ namespace AzureBlobStorageSampleApp
 
 		#region Events
 		public event EventHandler PullToRefreshCompleted;
-		public event EventHandler RestoreDeletedContactsCompleted;
 		#endregion
 
 		#region Properties
 		public ICommand RefreshCommand => _refreshCommand ??
 			(_refreshCommand = new Command(async () =>await ExecuteRefreshCommand()));
-
-		public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
-			(_restoreDeletedContactsCommand = new Command(async () => await ExecuteRestoreDeletedContactsCommand()));
 
 		public ObservableCollection<PhotoModel> AllPhotosList
 		{
@@ -51,7 +49,7 @@ namespace AzureBlobStorageSampleApp
 			}
 			catch (Exception e)
 			{
-				MobileCenterHelpers.Log(e);
+				DebugServices.Log(e);
 			}
 			finally
 			{
@@ -60,17 +58,8 @@ namespace AzureBlobStorageSampleApp
 			}
 		}
 
-		async Task ExecuteRestoreDeletedContactsCommand()
-		{
-			await APIService.RestoreDeletedContacts().ConfigureAwait(false);
-			OnRestoreDeletedContactsCompleted();
-		}
-
 		void OnPullToRefreshCompleted() =>
 			PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);
-
-		void OnRestoreDeletedContactsCompleted() =>
-			RestoreDeletedContactsCompleted?.Invoke(this, EventArgs.Empty);
 		#endregion
 	}
 }
