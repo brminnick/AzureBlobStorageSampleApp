@@ -1,4 +1,4 @@
-﻿namespace AzureBlobStorageSampleApp.Shared
+﻿namespace AzureBlobStorageSampleApp.Mobile.Shared
 {
     public static class PageTitles
     {

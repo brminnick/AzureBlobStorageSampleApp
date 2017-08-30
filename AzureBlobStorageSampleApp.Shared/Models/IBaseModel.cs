@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AzureBlobStorageSampleApp
+namespace AzureBlobStorageSampleApp.Shared
 {
     public interface IBaseModel
     {

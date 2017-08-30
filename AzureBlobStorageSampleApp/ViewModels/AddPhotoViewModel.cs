@@ -4,6 +4,8 @@ using System.Windows.Input;
 
 using Xamarin.Forms;
 
+using AzureBlobStorageSampleApp.Shared;
+
 namespace AzureBlobStorageSampleApp
 {
     public class AddPhotoViewModel : BaseViewModel
@@ -40,9 +42,8 @@ namespace AzureBlobStorageSampleApp
             {
                 CreatedAt = currentDateTimeOffset,
                 UpdatedAt = currentDateTimeOffset,
-                Title = PhotoTitle,
-                Url = PhotoUrl
-            }
+                Title = PhotoTitle
+            };
         }
         #endregion
     }

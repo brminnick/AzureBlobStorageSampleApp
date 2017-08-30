@@ -4,6 +4,13 @@
 		<TargetFramework>netstandard1.6</TargetFramework>
 		<PackageTargetFallback>portable-win+net45+wp80+win81+wpa81</PackageTargetFallback>
 	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	  <DefineConstants>TRACE;DEBUG;NETSTANDARD1_6;MOBILE</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	  <DebugType></DebugType>
+	  <DefineConstants>TRACE;RELEASE;NETSTANDARD1_6;MOBILE</DefineConstants>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Xamarin.Forms" Version="2.4.0.269-pre2" />
 		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
@@ -22,6 +29,11 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="Services\DatabaseSyncService.cs" />
+		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />
+		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\PhotoModel.cs" />
+		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />
+		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\PhotoModel.cs" />
+		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />
+		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\PhotoModel.cs" />
 	</ItemGroup>
-	<Import Project="..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems')" />
 </Project>

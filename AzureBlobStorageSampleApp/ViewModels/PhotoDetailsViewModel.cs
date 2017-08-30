@@ -1,5 +1,7 @@
 ﻿using Xamarin.Forms;
 
+using AzureBlobStorageSampleApp.Shared;
+
 namespace AzureBlobStorageSampleApp
 {
     public class PhotoDetailsViewModel : BaseViewModel

@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-using AzureBlobStorageSampleApp.Shared;
+using AzureBlobStorageSampleApp.Mobile.Shared;
 using EntryCustomReturn.Forms.Plugin.Abstractions;
 
 namespace AzureBlobStorageSampleApp
