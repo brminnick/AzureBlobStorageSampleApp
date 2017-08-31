@@ -14,8 +14,6 @@ namespace AzureBlobStorageSampleApp.Functions
 {
     public static class PostBlobFunction
     {
-
-
         #region Methods
         [FunctionName("PostBlob")]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostBlob/{title}")]HttpRequestMessage req, string title, TraceWriter log)

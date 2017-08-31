@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk;Microsoft.NET.Sdk.Publish">
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
@@ -6,7 +6,8 @@
     <DefineConstants>TRACE;BACKEND;DEBUG;NET461</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
+    <DebugType>
+    </DebugType>
     <DefineConstants>TRACE;BACKEND;RELEASE;NET461</DefineConstants>
   </PropertyGroup>
   <ItemGroup>

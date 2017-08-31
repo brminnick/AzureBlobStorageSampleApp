@@ -12,7 +12,7 @@ namespace AzureBlobStorageSampleApp.Functions
 {
     public static class GetBlobsFunction
     {
-        [FunctionName("GetBlobFunction")]
+        [FunctionName("GetBlobs")]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]HttpRequestMessage req, TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");
