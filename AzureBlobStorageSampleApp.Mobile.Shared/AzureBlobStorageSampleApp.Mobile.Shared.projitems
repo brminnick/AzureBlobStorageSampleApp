@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Constants\AutomationIdConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\PageTitles.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\BackendConstants.cs" />
   </ItemGroup>
 </Project>

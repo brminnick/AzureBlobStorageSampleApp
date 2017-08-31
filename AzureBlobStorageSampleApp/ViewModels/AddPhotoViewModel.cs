@@ -44,6 +44,8 @@ namespace AzureBlobStorageSampleApp
                 UpdatedAt = currentDateTimeOffset,
                 Title = PhotoTitle
             };
+
+            await PhotoDatabase.SaveContact(photo);
         }
         #endregion
     }
