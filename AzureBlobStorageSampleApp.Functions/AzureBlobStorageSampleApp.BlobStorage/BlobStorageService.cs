@@ -4,6 +4,8 @@ using System.Configuration;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 
+using AzureBlobStorageSampleApp.Shared;
+
 namespace AzureBlobStorageSampleApp.BlobStorage
 {
     public static class BlobStorageService
@@ -19,7 +21,7 @@ namespace AzureBlobStorageSampleApp.BlobStorage
         #endregion
 
         #region Methods
-        public static void SavePhotoToBlobStorage()
+        public static void SavePhotoToBlobStorage(PhotoModel photoÍ)
         {
             
         }

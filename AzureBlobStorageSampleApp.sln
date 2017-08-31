@@ -14,13 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{4479
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{3940893D-F8F4-4816-AFE3-ADB166B67408}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8E0F8671-E071-4F54-BCA3-DE5CD7F1AA28}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Shared", "AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.shproj", "{8B097BA2-26D8-4238-A2FD-22EC347EB882}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Mobile.Shared.shproj", "AzureBlobStorageSampleAppMobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.shproj.shproj", "{0706B08E-BA37-4A28-A2F7-95BBCC0ACA1D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.BlobStorage", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.BlobStorage\AzureBlobStorageSampleApp.BlobStorage.csproj", "{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{00247D84-414E-4F13-AF0D-5B0E1ED69600}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Shared", "AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.shproj", "{5C56AF55-408C-4FEE-8311-641762F75FE0}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Mobile.Shared", "AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.shproj", "{FDA2EE68-4202-4C8A-BC75-6B41E95EA3CC}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -105,9 +105,9 @@ Global
 		{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{3940893D-F8F4-4816-AFE3-ADB166B67408} = {44790D75-6C29-4F49-A383-2C8D30492FDD}
-		{8B097BA2-26D8-4238-A2FD-22EC347EB882} = {8E0F8671-E071-4F54-BCA3-DE5CD7F1AA28}
-		{0706B08E-BA37-4A28-A2F7-95BBCC0ACA1D} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{B222DA7C-6760-4BC1-B5E6-90E3725E5D10} = {44790D75-6C29-4F49-A383-2C8D30492FDD}
+		{5C56AF55-408C-4FEE-8311-641762F75FE0} = {00247D84-414E-4F13-AF0D-5B0E1ED69600}
+		{FDA2EE68-4202-4C8A-BC75-6B41E95EA3CC} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B507A9D9-2503-4C31-909E-C5C99623C4C6}
