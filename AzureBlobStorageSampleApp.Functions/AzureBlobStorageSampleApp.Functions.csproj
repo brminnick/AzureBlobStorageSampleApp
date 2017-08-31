@@ -29,4 +29,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="AzureBlobStorageSampleApp.BlobStorage\AzureBlobStorageSampleApp.Backend.Common.csproj" />
+  </ItemGroup>
+  <Import Project="..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems')" />
 </Project>

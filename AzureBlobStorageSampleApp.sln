@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{4479
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{3940893D-F8F4-4816-AFE3-ADB166B67408}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.BlobStorage", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.BlobStorage\AzureBlobStorageSampleApp.BlobStorage.csproj", "{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Backend.Common", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.BlobStorage\AzureBlobStorageSampleApp.Backend.Common.csproj", "{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{00247D84-414E-4F13-AF0D-5B0E1ED69600}"
 EndProject

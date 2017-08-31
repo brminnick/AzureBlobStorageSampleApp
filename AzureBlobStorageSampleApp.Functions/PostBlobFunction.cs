@@ -1,34 +1,39 @@
-using System.Linq;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+
+using AzureBlobStorageSampleApp.Shared;
+using AzureBlobStorageSampleApp.Backend.Common;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
     public static class PostBlobFunction
     {
-        [FunctionName("PostBlobFunction")]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]HttpRequestMessage req, TraceWriter log)
+
+
+        #region Methods
+        [FunctionName("PostBlob")]
+        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostBlob/{title}")]HttpRequestMessage req, string title, TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");
 
-            // parse query parameter
-            string name = req.GetQueryNameValuePairs()
-                .FirstOrDefault(q => string.Compare(q.Key, "name", true) == 0)
-                .Value;
+            try
+            {
+                var imageBlob = await JsonService.DeserializeHttpRequestMessage<PhotoBlob>(req);
+                var photo = await BlobStorageService.SavePhoto(imageBlob.Image, title);
 
-            // Get request body
-            dynamic data = await req.Content.ReadAsAsync<object>();
-
-            // Set name to query string or body data
-            name = name ?? data?.name;
-
-            return name == null
-                ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
-                : req.CreateResponse(HttpStatusCode.OK, "Hello " + name);
+                return req.CreateResponse(HttpStatusCode.OK, photo);
+            }
+            catch(Exception e)
+            {
+                return req.CreateResponse(HttpStatusCode.InternalServerError, $"Post Blob Failed: {e.Message}");
+            }
         }
+        #endregion
     }
 }
