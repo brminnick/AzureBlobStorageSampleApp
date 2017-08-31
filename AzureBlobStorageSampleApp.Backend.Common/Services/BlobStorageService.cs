@@ -17,7 +17,7 @@ namespace AzureBlobStorageSampleApp.Backend.Common
         #region Constant Fields
         readonly static Lazy<string> _containerNameHolder = new Lazy<string>(() => ConfigurationManager.AppSettings.GetValues("PhotoContainerName").FirstOrDefault());
         readonly static Lazy<string> _connectionStringHolder = new Lazy<string>(() => ConfigurationManager.ConnectionStrings["BlobStorageConnectionString"].ConnectionString);
-        readonly static Lazy<CloudStorageAccount> _storageAccountHolder = new Lazy<CloudStorageAccount>(() => CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting(_connectionStringHolder.Value)));
+        readonly static Lazy<CloudStorageAccount> _storageAccountHolder = new Lazy<CloudStorageAccount>(() => CloudStorageAccount.Parse(_connectionStringHolder.Value));
         readonly static Lazy<CloudBlobClient> _blobClientHolder = new Lazy<CloudBlobClient>(_storageAccountHolder.Value.CreateCloudBlobClient);
         readonly static Lazy<CloudBlobContainer> _blobContainerHolder = new Lazy<CloudBlobContainer>(() => _blobClientHolder.Value.GetContainerReference(ContainerName));
         #endregion
