@@ -30,22 +30,10 @@ namespace AzureBlobStorageSampleApp
 
         #region Methods
         public static async Task<List<PhotoModel>> GetAllPhotoModels() =>
-        await GetDataObjectFromAPI<List<PhotoModel>>($"{BackendConstants.AzureAPIUrl}GetAllContacts");
+            await GetDataObjectFromAPI<List<PhotoModel>>($"{BackendConstants.AzureFunctionUrl}GetBlobs");
 
-        public static async Task<PhotoModel> GetPhotoModel(PhotoModel contact) =>
-            await GetDataObjectFromAPI<PhotoModel, string>($"{BackendConstants.AzureAPIUrl}GetContact", contact.Id);
-
-        public static async Task<HttpResponseMessage> PostPhotoModel(PhotoModel contact) =>
-            await PostObjectToAPI($"{BackendConstants.AzureAPIUrl}PostContact", contact);
-
-        public static async Task<HttpResponseMessage> PatchPhotoModel(PhotoModel contact) =>
-            await PatchObjectToAPI($"{BackendConstants.AzureAPIUrl}PatchContact/{contact.Id}", contact);
-
-        public static async Task<HttpResponseMessage> DeletePhotoModel(PhotoModel contact) =>
-            await DeleteObjectFromAPI($"{BackendConstants.AzureAPIUrl}DeleteContact/{contact.Id}");
-
-        public static async Task<HttpResponseMessage> RestoreDeletedContacts() =>
-            await PostObjectToAPI($"{BackendConstants.AzureFunctionUrl}RestoreDeletedContacts/?code={BackendConstants.AzureFunctionKey_RestoreDeletedContacts}", new object());
+        public static async Task<HttpResponseMessage> PostPhotoBlob(PhotoBlob photoBlob, string photoTitle) =>
+            await PostObjectToAPI($"{BackendConstants.AzureFunctionUrl}PostBlob/{photoTitle}", photoBlob);
 
         static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
             await GetDataObjectFromAPI<T, object>(apiUrl);
@@ -75,7 +63,7 @@ namespace AzureBlobStorageSampleApp
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                DebugServices.Log(e);
                 return default(T);
             }
             finally
@@ -97,7 +85,7 @@ namespace AzureBlobStorageSampleApp
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                DebugServices.Log(e);
                 return null;
             }
             finally
@@ -127,7 +115,7 @@ namespace AzureBlobStorageSampleApp
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                DebugServices.Log(e);
                 return null;
             }
             finally
@@ -148,7 +136,7 @@ namespace AzureBlobStorageSampleApp
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                DebugServices.Log(e);
                 return null;
             }
             finally

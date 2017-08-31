@@ -2,6 +2,6 @@
 {
     public static class BackendConstants
     {
-        public const string AzureFunctionUrl = 
+        public const string AzureFunctionUrl = "";
     }
 }
