@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 using AzureBlobStorageSampleApp.Shared;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace AzureBlobStorageSampleApp.Backend.Common
 {

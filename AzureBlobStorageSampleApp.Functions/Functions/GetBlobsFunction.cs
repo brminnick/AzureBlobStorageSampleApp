@@ -1,5 +1,4 @@
 using System.Net;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,6 +20,11 @@ namespace AzureBlobStorageSampleApp.Functions
             try
             {
                 var photoList = await PhotoDatabaseService.GetAllPhotos();
+                return req.CreateResponse(HttpStatusCode.OK, photoList);
+            }
+            catch (System.Exception e)
+            {
+                return req.CreateResponse(HttpStatusCode.InternalServerError, $"Get Photos Failed: {e.Message}");
             }
         }
     }
