@@ -30,10 +30,10 @@ namespace AzureBlobStorageSampleApp
 
         #region Methods
         public static async Task<List<PhotoModel>> GetAllPhotoModels() =>
-            await GetDataObjectFromAPI<List<PhotoModel>>($"{BackendConstants.GetBlobsUrl}GetBlobs");
+            await GetDataObjectFromAPI<List<PhotoModel>>($"{BackendConstants.GetAllPhotosUrl}GetBlobs");
 
-        public static async Task<HttpResponseMessage> PostPhotoBlob(PhotoBlob photoBlob, string photoTitle) =>
-            await PostObjectToAPI($"{BackendConstants.GetBlobsUrl}PostBlob/{photoTitle}", photoBlob);
+        public static async Task<HttpResponseMessage> PostPhotoBlob(PhotoBlobModel photoBlob, string photoTitle) =>
+            await PostObjectToAPI($"{BackendConstants.PostPhotoBlobUrl}{photoTitle}{BackendConstants.PostPhotoBlobFunctionKey}", photoBlob);
 
         static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
             await GetDataObjectFromAPI<T, object>(apiUrl);

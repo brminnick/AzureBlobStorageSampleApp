@@ -17,10 +17,10 @@ namespace AzureBlobStorageSampleApp.iOS
 		{
 			var sqliteFilename = "AzureBlobStorageSampleApp.db3";
 			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			
-            var path = Path.Combine("Library", sqliteFilename);
+			var libraryPath = Path.Combine(documentsPath, "..", "Library");
 
-			var conn = new SQLiteAsyncConnection(path, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
+            var path = Path.Combine(libraryPath, sqliteFilename);
+            var conn = new SQLiteAsyncConnection(path, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
 
 			return conn;
 		}

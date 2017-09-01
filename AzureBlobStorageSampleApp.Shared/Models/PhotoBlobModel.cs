@@ -1,6 +1,6 @@
 ﻿namespace AzureBlobStorageSampleApp.Shared
 {
-    public class PhotoBlob
+    public class PhotoBlobModel
     {
         public byte[] Image { get; set; }
     }

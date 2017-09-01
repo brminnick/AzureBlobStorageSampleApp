@@ -15,14 +15,14 @@ namespace AzureBlobStorageSampleApp
             await databaseConnection.InsertOrReplaceAsync(photo);
         }
 
-        public static async Task<int> GetContactCount()
+        public static async Task<int> GetPhotoCount()
         {
             var databaseConnection = await GetDatabaseConnectionAsync();
 
             return await databaseConnection.Table<PhotoModel>().CountAsync();
         }
 
-        public static async Task<List<PhotoModel>> GetAllContacts()
+        public static async Task<List<PhotoModel>> GetAllPhotos()
         {
             var databaseConnection = await GetDatabaseConnectionAsync();
 

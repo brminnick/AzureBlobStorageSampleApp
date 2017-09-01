@@ -22,7 +22,7 @@ namespace AzureBlobStorageSampleApp.Functions
 
             try
             {
-                var imageBlob = await JsonService.DeserializeHttpRequestMessage<PhotoBlob>(req);
+                var imageBlob = await JsonService.DeserializeMessage<PhotoBlobModel>(req);
                 var photo = await BlobStorageService.SavePhoto(imageBlob.Image, title);
 
                 return req.CreateResponse(HttpStatusCode.Created, photo);

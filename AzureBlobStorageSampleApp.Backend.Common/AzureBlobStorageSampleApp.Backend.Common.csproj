@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BlobStorageService.cs" />
-    <Compile Include="Services\JsonService.cs" />
     <Compile Include="Services\PhotoDatabaseService.cs" />
   </ItemGroup>
   <ItemGroup>

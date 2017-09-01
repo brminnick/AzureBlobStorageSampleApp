@@ -4,6 +4,8 @@ using Android.Content.PM;
 
 using Xamarin.Forms;
 
+using Plugin.Permissions;
+
 namespace AzureBlobStorageSampleApp.Droid
 {
     [Activity(Label = "AzureBlobStorageSampleApp.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -21,6 +23,11 @@ namespace AzureBlobStorageSampleApp.Droid
             EntryCustomReturn.Forms.Plugin.Android.CustomReturnEntryRenderer.Init();
 
             LoadApplication(new App());
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

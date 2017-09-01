@@ -10,10 +10,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Services\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Models\IBaseModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PhotoModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\PhotoBlob.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PhotoBlobModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\JsonService.cs" />
   </ItemGroup>
 </Project>

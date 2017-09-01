@@ -11,55 +11,55 @@ namespace AzureBlobStorageSampleApp
 {
     public class PhotoListViewModel : BaseViewModel
     {
-		#region Fields
-		bool _isRefreshCommandExecuting;
-		ICommand _refreshCommand, _restoreDeletedContactsCommand;
-		ObservableCollection<PhotoModel> _allContactsList;
-		#endregion
+        #region Fields
+        bool _isRefreshCommandExecuting;
+        ICommand _refreshCommand, _restoreDeletedContactsCommand;
+		ObservableCollection<PhotoModel> _allPhotosList;
+        #endregion
 
-		#region Events
-		public event EventHandler PullToRefreshCompleted;
-		#endregion
+        #region Events
+        public event EventHandler PullToRefreshCompleted;
+        #endregion
 
-		#region Properties
-		public ICommand RefreshCommand => _refreshCommand ??
-			(_refreshCommand = new Command(async () =>await ExecuteRefreshCommand()));
+        #region Properties
+        public ICommand RefreshCommand => _refreshCommand ??
+            (_refreshCommand = new Command(async () => await ExecuteRefreshCommand()));
 
-		public ObservableCollection<PhotoModel> AllPhotosList
-		{
-			get => _allContactsList;
-			set => SetProperty(ref _allContactsList, value);
-		}
-		#endregion
+        public ObservableCollection<PhotoModel> AllPhotosList 
+        {
+            get => _allPhotosList;
+            set => SetProperty(ref _allPhotosList, value);
+        }
+        #endregion
 
-		#region Methods
-		async Task ExecuteRefreshCommand()
-		{
-			if (_isRefreshCommandExecuting)
-				return;
+        #region Methods
+        async Task ExecuteRefreshCommand()
+        {
+            if (_isRefreshCommandExecuting)
+                return;
 
-			_isRefreshCommandExecuting = true;
-			try
-			{
-				var oneSecondTaskToShowSpinner = Task.Delay(1000);
+            _isRefreshCommandExecuting = true;
+            try
+            {
+                var oneSecondTaskToShowSpinner = Task.Delay(1000);
 
-                AllPhotosList = null;
+                AllPhotosList = new ObservableCollection<PhotoModel>(await PhotoDatabase.GetAllPhotos());
 
-				await oneSecondTaskToShowSpinner;
-			}
-			catch (Exception e)
-			{
-				DebugServices.Log(e);
-			}
-			finally
-			{
-				OnPullToRefreshCompleted();
-				_isRefreshCommandExecuting = false;
-			}
-		}
+                await oneSecondTaskToShowSpinner;
+            }
+            catch (Exception e)
+            {
+                DebugServices.Log(e);
+            }
+            finally
+            {
+                OnPullToRefreshCompleted();
+                _isRefreshCommandExecuting = false;
+            }
+        }
 
-		void OnPullToRefreshCompleted() =>
-			PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);
-		#endregion
-	}
+        void OnPullToRefreshCompleted() =>
+            PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);
+        #endregion
+    }
 }
