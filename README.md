@@ -1,6 +1,4 @@
 # AzureBlobStorageSampleApp
-iOS and Android app made using Xamarin.Forms that explores Azure Blob Storage
-
 This app shows how to leverage Azure Functions to upload an image to Azure Blob Storage. 
 
 When a user takes a photo using the app, it is sent as a `byte[]` to an Azure Function which saves the image to Azure Blob Storage. Once the file has been save to Azure Blob Storage, it is automatically assigned a direct-access URL that is saved along with the Photo Title to an Azure SQL Database.
