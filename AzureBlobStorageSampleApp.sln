@@ -1,18 +1,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.26823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.iOS", "iOS\AzureBlobStorageSampleApp.iOS.csproj", "{23DC86F6-BDBD-45F0-AFDA-1914DAB289F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Droid", "Droid\AzureBlobStorageSampleApp.Droid.csproj", "{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp", "AzureBlobStorageSampleApp\AzureBlobStorageSampleApp.csproj", "{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureBlobStorageSampleApp", "AzureBlobStorageSampleApp\AzureBlobStorageSampleApp.csproj", "{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{44790D75-6C29-4F49-A383-2C8D30492FDD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{3940893D-F8F4-4816-AFE3-ADB166B67408}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{00247D84-414E-4F13-AF0D-5B0E1ED69600}"
 EndProject
@@ -22,10 +20,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Backend.Common", "AzureBlobStorageSampleApp.Backend.Common\AzureBlobStorageSampleApp.Backend.Common.csproj", "{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{9222A54C-E421-49B6-998B-678CC4E76203}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		AzureBlobStorageSampleAppMobile.Shared\AzureBlobStorageSampleApp.Shared.projitems*{0706b08e-ba37-4a28-a2f7-95bbcc0aca1d}*SharedItemsImports = 13
-		AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems*{8b097ba2-26d8-4238-a2fd-22ec347eb882}*SharedItemsImports = 13
+		AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems*{5c56af55-408c-4fee-8311-641762f75fe0}*SharedItemsImports = 13
+		AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems*{b222da7c-6760-4bc1-b5e6-90e3725e5d10}*SharedItemsImports = 4
+		AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems*{fda2ee68-4202-4c8a-bc75-6b41e95ea3cc}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,18 +73,6 @@ Global
 		{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}.Release|iPhone.Build.0 = Release|Any CPU
 		{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Release|iPhone.Build.0 = Release|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{3940893D-F8F4-4816-AFE3-ADB166B67408}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -96,6 +85,18 @@ Global
 		{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}.Release|iPhone.Build.0 = Release|Any CPU
 		{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{B222DA7C-6760-4BC1-B5E6-90E3725E5D10}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Release|iPhone.Build.0 = Release|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9222A54C-E421-49B6-998B-678CC4E76203}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,10 +105,10 @@ Global
 		{23DC86F6-BDBD-45F0-AFDA-1914DAB289F6} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
-		{3940893D-F8F4-4816-AFE3-ADB166B67408} = {44790D75-6C29-4F49-A383-2C8D30492FDD}
 		{5C56AF55-408C-4FEE-8311-641762F75FE0} = {00247D84-414E-4F13-AF0D-5B0E1ED69600}
 		{FDA2EE68-4202-4C8A-BC75-6B41E95EA3CC} = {9AEDCF1A-B053-4A8E-8FCE-C507F9DEA75D}
 		{B222DA7C-6760-4BC1-B5E6-90E3725E5D10} = {44790D75-6C29-4F49-A383-2C8D30492FDD}
+		{9222A54C-E421-49B6-998B-678CC4E76203} = {44790D75-6C29-4F49-A383-2C8D30492FDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B507A9D9-2503-4C31-909E-C5C99623C4C6}

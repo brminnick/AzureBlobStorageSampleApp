@@ -2,27 +2,11 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DefineConstants>TRACE;BACKEND;DEBUG;NET461</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>
-    </DebugType>
-    <DefineConstants>TRACE;BACKEND;RELEASE;NET461</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs" Version="2.1.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="2.1.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="1.0.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.ServiceBus" Version="2.1.0-beta1" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.0-alpha2" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="AzureBlobStorageSampleApp.BlobStorage\packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -33,14 +17,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="AzureBlobStorageSampleApp.BlobStorage\BlobStorageService.cs" />
-    <Compile Remove="AzureBlobStorageSampleApp.BlobStorage\PhotoDatabaseService.cs" />
-    <Compile Remove="AzureBlobStorageSampleApp.BlobStorage\Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AzureBlobStorageSampleApp.Backend.Common\AzureBlobStorageSampleApp.Backend.Common.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Functions\" />
   </ItemGroup>
 </Project>

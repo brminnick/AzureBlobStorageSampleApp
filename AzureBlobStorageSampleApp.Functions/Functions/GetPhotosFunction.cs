@@ -10,9 +10,9 @@ using AzureBlobStorageSampleApp.Backend.Common;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public static class GetBlobsFunction
+    public static class GetPhotosFunction
     {
-        [FunctionName("GetBlobs")]
+        [FunctionName("GetPhotos")]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]HttpRequestMessage req, TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");

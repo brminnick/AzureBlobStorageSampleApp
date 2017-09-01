@@ -27,7 +27,7 @@ namespace AzureBlobStorageSampleApp.Functions
 
                 return req.CreateResponse(HttpStatusCode.Created, photo);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return req.CreateResponse(HttpStatusCode.InternalServerError, $"Post Blob Failed: {e.Message}");
             }
