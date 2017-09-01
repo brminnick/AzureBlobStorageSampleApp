@@ -28,6 +28,8 @@ namespace AzureBlobStorageSampleApp
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
 
+                Spacing = 20,
+
                 Children = {
 					photoImage,
                     photoTitleLabel
@@ -55,6 +57,8 @@ namespace AzureBlobStorageSampleApp
             {
                 AutomationId = automationId;
                 TextColor = Color.FromHex("1B2A38");
+                HorizontalTextAlignment = TextAlignment.Center;
+                FontAttributes = FontAttributes.Bold;
             }
 		}
 		#endregion

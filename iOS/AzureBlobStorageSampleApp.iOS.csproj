@@ -156,6 +156,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Services\SQLite_iOS.cs" />
     <Compile Include="Custom Renderers\ContentPageCustomRenderer.cs" />
+    <Compile Include="Custom Renderers\PhotosListImageCellCustomRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AzureBlobStorageSampleApp\AzureBlobStorageSampleApp.csproj">
