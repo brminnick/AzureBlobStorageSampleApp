@@ -14,26 +14,8 @@ namespace AzureBlobStorageSampleApp
         #region Properties
         public Command<PhotoModel> SetPhotoCommand => _setPhotoCommand ??
             (_setPhotoCommand = new Command<PhotoModel>(photo => Photo = photo));
-
-        public string PhotoUrl
-        {
-            get => _photo.Url;
-            set
-            {
-                Photo.Url = value;
-                NotifyPhotoProperties();
-            }
-        }
-
-        public string PhotoTitle
-        {
-            get => _photo.Title;
-            set
-            {
-                Photo.Title = value;
-                NotifyPhotoProperties();
-            }
-        }
+        public ImageSource PhotoImageSource => ImageSource.FromUri(new System.Uri(Photo.Url));
+        public string PhotoTitle => Photo.Title;
 
         PhotoModel Photo
         {
@@ -49,7 +31,7 @@ namespace AzureBlobStorageSampleApp
         #region Methods
         void NotifyPhotoProperties()
         {
-            OnPropertyChanged(nameof(PhotoUrl));
+            OnPropertyChanged(nameof(PhotoImageSource));
             OnPropertyChanged(nameof(PhotoTitle));
         }
         #endregion

@@ -8,7 +8,7 @@ namespace AzureBlobStorageSampleApp
     public abstract class PhotoDatabase : BaseDatabase
     {
         #region Methods
-        public static async Task SaveContact(PhotoModel photo)
+        public static async Task SavePhoto(PhotoModel photo)
         {
             var databaseConnection = await GetDatabaseConnectionAsync();
 

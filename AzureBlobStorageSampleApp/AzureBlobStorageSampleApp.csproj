@@ -30,7 +30,6 @@
 		<Folder Include="Views\PhotoList\" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Remove="Services\DatabaseSyncService.cs" />
 		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />
 		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\PhotoModel.cs" />
 		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />

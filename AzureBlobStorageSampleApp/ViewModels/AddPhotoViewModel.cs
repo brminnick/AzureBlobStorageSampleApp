@@ -87,7 +87,7 @@ namespace AzureBlobStorageSampleApp
                 }
                 else
                 {
-                    await PhotoDatabase.SaveContact(photo);
+                    await PhotoDatabase.SavePhoto(photo);
                     OnSavePhotoCompleted();
                 }
             }

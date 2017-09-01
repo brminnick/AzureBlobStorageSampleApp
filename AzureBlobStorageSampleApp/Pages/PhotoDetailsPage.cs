@@ -16,19 +16,21 @@ namespace AzureBlobStorageSampleApp
             var photoTitleLabel = new PhotoDetailLabel(AutomationIdConstants.PhotoTitleLabel);
             photoTitleLabel.SetBinding(Label.TextProperty, nameof(ViewModel.PhotoTitle));
 
-            var photoImage = new PhotoDetailLabel(AutomationIdConstants.PhotoImage);
-            photoImage.SetBinding(Image.SourceProperty, nameof(ViewModel.PhotoUrl));
+            var photoImage = new Image();
+            photoImage.SetBinding(Image.SourceProperty, nameof(ViewModel.PhotoImageSource));
 
             Title = PageTitles.PhotoListPage;
 
-            Padding = new Thickness(20, 0, 20, 0);
+            Padding = new Thickness(20);
 
             Content = new StackLayout
             {
-                Margin = new Thickness(0, 10, 0, 0),
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+
                 Children = {
-                    photoTitleLabel,
-                    photoImage,
+					photoImage,
+                    photoTitleLabel
                 }
             };
         }

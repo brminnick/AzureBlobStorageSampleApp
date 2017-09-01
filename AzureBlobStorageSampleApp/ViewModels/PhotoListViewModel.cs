@@ -43,7 +43,9 @@ namespace AzureBlobStorageSampleApp
             {
                 var oneSecondTaskToShowSpinner = Task.Delay(1000);
 
-                AllPhotosList = new ObservableCollection<PhotoModel>(await PhotoDatabase.GetAllPhotos());
+                await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
+
+                AllPhotosList = new ObservableCollection<PhotoModel>(await PhotoDatabase.GetAllPhotos().ConfigureAwait(false));
 
                 await oneSecondTaskToShowSpinner;
             }
