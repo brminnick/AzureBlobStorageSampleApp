@@ -63,6 +63,12 @@ namespace AzureBlobStorageSampleApp
         #region Methods
         async Task ExecuteSavePhotoCommand()
         {
+            if(string.IsNullOrWhiteSpace(BackendConstants.PostPhotoBlobFunctionKey))
+            {
+                OnSavePhotoFailed("Invalid Azure Function Key");
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(PhotoTitle))
             {
                 OnSavePhotoFailed("Title Cannot Be Empty");

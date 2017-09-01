@@ -4,6 +4,6 @@
     {
         public const string GetAllPhotosUrl = "https://azureblobservicefunctions.azurewebsites.net/api/GetPhotos";
         public const string PostPhotoBlobUrl = "https://azureblobservicefunctions.azurewebsites.net/api/PostBlob/";
-        public const string PostPhotoBlobFunctionKey = nameof(PostPhotoBlobUrl);
+        public const string PostPhotoBlobFunctionKey = "";
     }
 }
