@@ -24,7 +24,7 @@ namespace AzureBlobStorageSampleApp.Functions
             }
             catch (System.Exception e)
             {
-                return req.CreateResponse(HttpStatusCode.InternalServerError, $"Get Photos Failed: {e.Message}");
+                return req.CreateResponse(HttpStatusCode.InternalServerError, $"Get Photos Failed: {e.GetType().ToString()}: {e.Message}");
             }
         }
     }

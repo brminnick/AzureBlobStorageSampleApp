@@ -29,7 +29,7 @@ namespace AzureBlobStorageSampleApp.Functions
             }
             catch (Exception e)
             {
-                return req.CreateResponse(HttpStatusCode.InternalServerError, $"Post Blob Failed: {e.Message}");
+                return req.CreateResponse(HttpStatusCode.InternalServerError, $"Post Blob Failed: {e.GetType().ToString()}: {e.Message}");
             }
         }
         #endregion
