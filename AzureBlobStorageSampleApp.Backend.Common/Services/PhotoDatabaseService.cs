@@ -19,13 +19,13 @@ namespace AzureBlobStorageSampleApp.Backend.Common
         #endregion
 
         #region Methods
-        public static async Task<IList<PhotoModel>> GetAllPhotos()
+        public static Task<IList<PhotoModel>> GetAllPhotos()
         {
             Func<DataContext, IList<PhotoModel>> getAllPhotosFunction = dataContext => dataContext.GetTable<PhotoModel>().ToList();
-            return await PerformDatabaseFunction(getAllPhotosFunction);
+            return  PerformDatabaseFunction(getAllPhotosFunction);
         }
 
-        public static async Task<PhotoModel> InsertPhoto(PhotoModel photo)
+        public static Task<PhotoModel> InsertPhoto(PhotoModel photo)
         {
             Func<DataContext, PhotoModel> insertPhotoFunction = dataContext =>
             {
@@ -42,10 +42,10 @@ namespace AzureBlobStorageSampleApp.Backend.Common
                 return photo;
             };
 
-            return await PerformDatabaseFunction(insertPhotoFunction);
+            return PerformDatabaseFunction(insertPhotoFunction);
         }
 
-        public static async Task<PhotoModel> PatchContactModel(PhotoModel photo)
+        public static Task<PhotoModel> PatchContactModel(PhotoModel photo)
         {
             var photoModelDelta = new Delta<PhotoModel>();
 
@@ -53,10 +53,10 @@ namespace AzureBlobStorageSampleApp.Backend.Common
             photoModelDelta.TrySetPropertyValue(nameof(PhotoModel.IsDeleted), photo.IsDeleted);
             photoModelDelta.TrySetPropertyValue(nameof(PhotoModel.Title), photo.Title);
 
-            return await PatchContactModel(photo.Id, photoModelDelta);
+            return PatchContactModel(photo.Id, photoModelDelta);
         }
 
-        public static async Task<PhotoModel> PatchContactModel(string id, Delta<PhotoModel> photo)
+        public static Task<PhotoModel> PatchContactModel(string id, Delta<PhotoModel> photo)
         {
             Func<DataContext, PhotoModel> patchPhotoFunction = dataContext =>
             {
@@ -68,10 +68,10 @@ namespace AzureBlobStorageSampleApp.Backend.Common
                 return photoFromDatabase;
             };
 
-            return await PerformDatabaseFunction(patchPhotoFunction);
+            return PerformDatabaseFunction(patchPhotoFunction);
         }
 
-        public static async Task<PhotoModel> DeletePhoto(string id)
+        public static Task<PhotoModel> DeletePhoto(string id)
         {
             Func<DataContext, PhotoModel> deletePhotoFunction = dataContext =>
             {
@@ -83,7 +83,7 @@ namespace AzureBlobStorageSampleApp.Backend.Common
                 return photoFromDatabase;
             };
 
-            return await PerformDatabaseFunction(deletePhotoFunction);
+            return PerformDatabaseFunction(deletePhotoFunction);
         }
 
         static async Task<TResult> PerformDatabaseFunction<TResult>(Func<DataContext, TResult> databaseFunction) where TResult : class

@@ -28,8 +28,8 @@ namespace AzureBlobStorageSampleApp
 
 			await Task.WhenAll(photoListFromLocalDatabaseTask, photoListFromRemoteDatabaseTask).ConfigureAwait(false);
 
-			return (photoListFromLocalDatabaseTask.Result ?? new List<PhotoModel>(),
-					photoListFromRemoteDatabaseTask.Result ?? new List<PhotoModel>());
+			return (await photoListFromLocalDatabaseTask ?? new List<PhotoModel>(),
+					await photoListFromRemoteDatabaseTask ?? new List<PhotoModel>());
 		}
 
         static (List<T> photosInLocalDatabaseButNotStoredRemotely,

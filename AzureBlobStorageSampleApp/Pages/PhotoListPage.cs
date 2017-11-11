@@ -29,7 +29,8 @@ namespace AzureBlobStorageSampleApp
                 ItemTemplate = new DataTemplate(typeof(PhotoImageCell)),
                 IsPullToRefreshEnabled = true,
                 BackgroundColor = Color.Transparent,
-                AutomationId = AutomationIdConstants.PhotoListView
+                AutomationId = AutomationIdConstants.PhotoListView,
+                SeparatorVisibility = SeparatorVisibility.None
             };
             _photosListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllPhotosList));
             _photosListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
