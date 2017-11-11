@@ -19,9 +19,8 @@ namespace AzureBlobStorageSampleApp
     public static class APIService
     {
         #region Constant Fields
-        static readonly TimeSpan _httpTimeout = TimeSpan.FromSeconds(60);
         static readonly JsonSerializer _serializer = new JsonSerializer();
-        static readonly HttpClient _client = CreateHttpClient();
+        static readonly HttpClient _client = CreateHttpClient(TimeSpan.FromSeconds(60));
         #endregion
 
         #region Fields
@@ -156,20 +155,29 @@ namespace AzureBlobStorageSampleApp
                 currentViewModel.IsInternetConnectionActive = true;
                 _networkIndicatorCount++;
             }
-            else
+            else if (--_networkIndicatorCount <= 0)
             {
-                if (--_networkIndicatorCount == 0)
-                    currentViewModel.IsInternetConnectionActive = false;
+                currentViewModel.IsInternetConnectionActive = false;
+                _networkIndicatorCount = 0;
             }
         }
 
-        static HttpClient CreateHttpClient()
+        static HttpClient CreateHttpClient(TimeSpan timeout)
         {
-            var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip })
-            {
-                Timeout = _httpTimeout
-            };
+            HttpClient client;
 
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                case Device.Android:
+                    client = new HttpClient();
+                    break;
+                default:
+                    client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
+                    break;
+
+            }
+            client.Timeout = timeout;
             client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
 
             return client;
