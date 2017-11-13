@@ -28,6 +28,7 @@
 		<Folder Include="Database\" />
 		<Folder Include="Views\" />
 		<Folder Include="Views\PhotoList\" />
+		<Folder Include="Services\Base\" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />
