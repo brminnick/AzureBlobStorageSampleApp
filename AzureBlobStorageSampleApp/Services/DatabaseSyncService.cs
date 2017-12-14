@@ -78,14 +78,14 @@ namespace AzureBlobStorageSampleApp
 					modelsToPatchToRemoteDatabase ?? new List<T>());
 		}
 
-        static async Task Savephotos(List<PhotoModel> photosToSaveToLocalDatabase)
+        static Task Savephotos(List<PhotoModel> photosToSaveToLocalDatabase)
         {
             var savephotoTaskList = new List<Task>();
 
             foreach (var photo in photosToSaveToLocalDatabase)
                 savephotoTaskList.Add(PhotoDatabase.SavePhoto(photo));
 
-            await Task.WhenAll(savephotoTaskList).ConfigureAwait(false);
+            return Task.WhenAll(savephotoTaskList);
         }
     }
 }

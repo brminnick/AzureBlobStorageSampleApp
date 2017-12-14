@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netstandard1.6</TargetFramework>
-		<PackageTargetFallback>portable-win+net45+wp80+win81+wpa81</PackageTargetFallback>
+		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	  <DefineConstants>TRACE;DEBUG;NETSTANDARD1_6;MOBILE</DefineConstants>
@@ -14,10 +13,11 @@
 	<ItemGroup>
 		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
-		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="3.1.2-pre1" />
 		<PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-		<PackageReference Include="Xam.Plugin.Media" Version="3.0.1" />
-		<PackageReference Include="Xamarin.Forms" Version="2.4.0.275-pre3" />
+		<PackageReference Include="Xamarin.Forms" Version="2.5.0.121934" />
+		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="3.2.0" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.9" />
+		<PackageReference Include="Xam.Plugin.Media" Version="3.1.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Pages\" />
