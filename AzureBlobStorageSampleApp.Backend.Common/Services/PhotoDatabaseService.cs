@@ -45,7 +45,7 @@ namespace AzureBlobStorageSampleApp.Backend.Common
             return PerformDatabaseFunction(insertPhotoFunction);
         }
 
-        public static Task<PhotoModel> PatchContactModel(PhotoModel photo)
+        public static Task<PhotoModel> PatchPhoto(PhotoModel photo)
         {
             var photoModelDelta = new Delta<PhotoModel>();
 
@@ -53,10 +53,10 @@ namespace AzureBlobStorageSampleApp.Backend.Common
             photoModelDelta.TrySetPropertyValue(nameof(PhotoModel.IsDeleted), photo.IsDeleted);
             photoModelDelta.TrySetPropertyValue(nameof(PhotoModel.Title), photo.Title);
 
-            return PatchContactModel(photo.Id, photoModelDelta);
+            return PatchPhoto(photo.Id, photoModelDelta);
         }
 
-        public static Task<PhotoModel> PatchContactModel(string id, Delta<PhotoModel> photo)
+        public static Task<PhotoModel> PatchPhoto(string id, Delta<PhotoModel> photo)
         {
             Func<DataContext, PhotoModel> patchPhotoFunction = dataContext =>
             {
