@@ -8,10 +8,8 @@ namespace AzureBlobStorageSampleApp
     {
         public PhotoImageCell()
         {
-            var model = BindingContext as PhotoModel;
-
-            this.SetBinding(ImageSourceProperty, nameof(model.Url));
-            this.SetBinding(TextProperty, nameof(model.Title));
+            this.SetBinding(ImageSourceProperty, nameof(PhotoModel.Url));
+            this.SetBinding(TextProperty, nameof(PhotoModel.Title));
         }
     }
 }

@@ -11,6 +11,7 @@ namespace AzureBlobStorageSampleApp.iOS
             global::Xamarin.Forms.Forms.Init();
 
             LoadApplication(new App());
+			FFImageLoading.Forms.Touch.CachedImageRenderer.Init();
             EntryCustomReturn.Forms.Plugin.iOS.CustomReturnEntryRenderer.Init();
 
             return base.FinishedLaunching(uiApplication, launchOptions);

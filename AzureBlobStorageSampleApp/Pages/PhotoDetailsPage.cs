@@ -1,13 +1,14 @@
-﻿using Xamarin.Forms;
-
-using AzureBlobStorageSampleApp.Shared;
+﻿using AzureBlobStorageSampleApp.Shared;
 using AzureBlobStorageSampleApp.Mobile.Shared;
+
+using FFImageLoading.Forms;
+
+using Xamarin.Forms;
 
 namespace AzureBlobStorageSampleApp
 {
     public class PhotoDetailsPage : BaseContentPage<PhotoDetailsViewModel>
     {
-
         #region Constructors
         public PhotoDetailsPage(PhotoModel selectedPhoto)
         {
@@ -16,8 +17,8 @@ namespace AzureBlobStorageSampleApp
             var photoTitleLabel = new PhotoDetailLabel(AutomationIdConstants.PhotoTitleLabel);
             photoTitleLabel.SetBinding(Label.TextProperty, nameof(ViewModel.PhotoTitle));
 
-            var photoImage = new Image();
-            photoImage.SetBinding(Image.SourceProperty, nameof(ViewModel.PhotoImageSource));
+            var photoImage = new CachedImage();
+            photoImage.SetBinding(CachedImage.SourceProperty, nameof(ViewModel.PhotoImageSource));
 
             Title = PageTitles.PhotoListPage;
 

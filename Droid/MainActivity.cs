@@ -21,6 +21,7 @@ namespace AzureBlobStorageSampleApp.Droid
 
             Forms.SetFlags("FastRenderers_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            FFImageLoading.Forms.Droid.CachedImageRenderer.Init(true);
             EntryCustomReturn.Forms.Plugin.Android.CustomReturnEntryRenderer.Init();
 
             LoadApplication(new App());
