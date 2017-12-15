@@ -1,9 +1,12 @@
 ﻿using System;
 
-using Xamarin.Forms;
-
 using AzureBlobStorageSampleApp.Mobile.Shared;
+
 using EntryCustomReturn.Forms.Plugin.Abstractions;
+
+using FFImageLoading.Forms;
+
+using Xamarin.Forms;
 
 namespace AzureBlobStorageSampleApp
 {
@@ -12,7 +15,7 @@ namespace AzureBlobStorageSampleApp
         #region Constant Fields
         readonly ToolbarItem _saveToobarItem, _cancelToolbarItem;
         readonly CustomReturnEntry _photoTitleEntry;
-        readonly Image _photoImage;
+        readonly CachedImage _photoImage;
         readonly Button _takePhotoButton;
         #endregion
 
@@ -30,11 +33,16 @@ namespace AzureBlobStorageSampleApp
             _photoTitleEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhotoTitle));
             _photoTitleEntry.SetBinding(CustomReturnEntry.ReturnCommandProperty, nameof(ViewModel.TakePhotoCommand));
 
-            _takePhotoButton = new Button { Text = "Take Photo" };
+            _takePhotoButton = new Button
+            {
+                Text = "Take Photo",
+                BackgroundColor = ColorConstants.NavigationBarBackgroundColor,
+                TextColor = ColorConstants.TextColor
+            };
             _takePhotoButton.SetBinding(Button.CommandProperty, nameof(ViewModel.TakePhotoCommand));
 
-            _photoImage = new Image();
-            _photoImage.SetBinding(Image.SourceProperty, nameof(ViewModel.PhotoImageSource));
+            _photoImage = new CachedImage();
+            _photoImage.SetBinding(CachedImage.SourceProperty, nameof(ViewModel.PhotoImageSource));
 
             _saveToobarItem = new ToolbarItem
             {

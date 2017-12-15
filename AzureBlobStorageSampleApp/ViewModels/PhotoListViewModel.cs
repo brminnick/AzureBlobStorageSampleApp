@@ -12,13 +12,9 @@ namespace AzureBlobStorageSampleApp
     public class PhotoListViewModel : BaseViewModel
     {
         #region Fields
-        bool _isRefreshCommandExecuting;
-        ICommand _refreshCommand, _restoreDeletedContactsCommand;
+        bool _isRefreshing;
+        ICommand _refreshCommand;
 		ObservableCollection<PhotoModel> _allPhotosList;
-        #endregion
-
-        #region Events
-        public event EventHandler PullToRefreshCompleted;
         #endregion
 
         #region Properties
@@ -30,15 +26,19 @@ namespace AzureBlobStorageSampleApp
             get => _allPhotosList;
             set => SetProperty(ref _allPhotosList, value);
         }
+
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            set => SetProperty(ref _isRefreshing, value);
+        }
         #endregion
 
         #region Methods
         async Task ExecuteRefreshCommand()
         {
-            if (_isRefreshCommandExecuting)
-                return;
+            IsRefreshing = true;
 
-            _isRefreshCommandExecuting = true;
             try
             {
                 var oneSecondTaskToShowSpinner = Task.Delay(1000);
@@ -55,13 +55,9 @@ namespace AzureBlobStorageSampleApp
             }
             finally
             {
-                OnPullToRefreshCompleted();
-                _isRefreshCommandExecuting = false;
+                IsRefreshing = false;
             }
         }
-
-        void OnPullToRefreshCompleted() =>
-            PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);
         #endregion
     }
 }
