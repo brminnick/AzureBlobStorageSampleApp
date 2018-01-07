@@ -3,8 +3,6 @@ using Android.App;
 using Android.Runtime;
 using Android.Content.PM;
 
-using Xamarin.Forms;
-
 using Plugin.Permissions;
 
 namespace AzureBlobStorageSampleApp.Droid
@@ -19,7 +17,7 @@ namespace AzureBlobStorageSampleApp.Droid
 
             base.OnCreate(savedInstanceState);
 
-            Forms.SetFlags("FastRenderers_Experimental");
+            global::Xamarin.Forms.Forms.SetFlags("FastRenderers_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FFImageLoading.Forms.Droid.CachedImageRenderer.Init(true);
             EntryCustomReturn.Forms.Plugin.Android.CustomReturnEntryRenderer.Init();
@@ -27,7 +25,7 @@ namespace AzureBlobStorageSampleApp.Droid
             LoadApplication(new App());
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
