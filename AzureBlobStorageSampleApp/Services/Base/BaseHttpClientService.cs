@@ -50,7 +50,7 @@ namespace AzureBlobStorageSampleApp
                     return await Task.Run(() => _serializer.Deserialize<TDataObject>(json)).ConfigureAwait(false);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return default(TDataObject);
             }
@@ -71,7 +71,7 @@ namespace AzureBlobStorageSampleApp
 
                 return await _client.PostAsync(apiUrl, httpContent).ConfigureAwait(false);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -100,7 +100,7 @@ namespace AzureBlobStorageSampleApp
 
                 return await _client.SendAsync(httpRequest).ConfigureAwait(false);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -120,7 +120,7 @@ namespace AzureBlobStorageSampleApp
 
                 return _client.SendAsync(httpRequest);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

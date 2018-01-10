@@ -63,7 +63,7 @@ namespace AzureBlobStorageSampleApp
         #region Methods
         async Task ExecuteSavePhotoCommand()
         {
-            if(string.IsNullOrWhiteSpace(BackendConstants.PostPhotoBlobFunctionKey))
+            if (string.IsNullOrWhiteSpace(BackendConstants.PostPhotoBlobFunctionKey))
             {
                 OnSavePhotoFailed("Invalid Azure Function Key");
                 return;
@@ -75,7 +75,7 @@ namespace AzureBlobStorageSampleApp
                 return;
             }
 
-            var postPhotoBlobResponse = await APIService.PostPhotoBlob(PhotoBlob, PhotoTitle);
+            var postPhotoBlobResponse = await APIService.PostPhotoBlob(PhotoBlob, PhotoTitle).ConfigureAwait(false);
 
             if (postPhotoBlobResponse == null)
             {
@@ -85,7 +85,7 @@ namespace AzureBlobStorageSampleApp
 
             try
             {
-                var photo = await JsonService.DeserializeMessage<PhotoModel>(postPhotoBlobResponse);
+                var photo = await JsonService.DeserializeMessage<PhotoModel>(postPhotoBlobResponse).ConfigureAwait(false);
 
                 if (photo == null)
                 {
@@ -93,7 +93,7 @@ namespace AzureBlobStorageSampleApp
                 }
                 else
                 {
-                    await PhotoDatabase.SavePhoto(photo);
+                    await PhotoDatabase.SavePhoto(photo).ConfigureAwait(false);
                     OnSavePhotoCompleted();
                 }
             }
@@ -105,7 +105,7 @@ namespace AzureBlobStorageSampleApp
 
         async Task ExecuteTakePhotoCommand()
         {
-            var mediaFile = await GetMediaFileFromCamera();
+            var mediaFile = await GetMediaFileFromCamera().ConfigureAwait(false);
 
             if (mediaFile == null)
                 return;
@@ -127,7 +127,7 @@ namespace AzureBlobStorageSampleApp
 
         async Task<MediaFile> GetMediaFileFromCamera()
         {
-            await CrossMedia.Current.Initialize();
+            await CrossMedia.Current.Initialize().ConfigureAwait(false);
 
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
@@ -135,13 +135,17 @@ namespace AzureBlobStorageSampleApp
                 return null;
             }
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+            var mediaFileTCS = new TaskCompletionSource<MediaFile>();
+            Device.BeginInvokeOnMainThread(async () =>
             {
-                PhotoSize = PhotoSize.Small,
-                DefaultCamera = CameraDevice.Rear,
+                mediaFileTCS.SetResult(await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                {
+                    PhotoSize = PhotoSize.Small,
+                    DefaultCamera = CameraDevice.Rear
+                }));
             });
 
-            return file;
+            return await mediaFileTCS.Task;
         }
 
         void UpdatePageTilte()

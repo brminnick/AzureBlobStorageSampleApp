@@ -14,7 +14,7 @@ namespace AzureBlobStorageSampleApp
             GetDataObjectFromAPI<List<PhotoModel>>($"{BackendConstants.GetAllPhotosUrl}");
 
         public static Task<HttpResponseMessage> PostPhotoBlob(PhotoBlobModel photoBlob, string photoTitle) =>
-            PostObjectToAPI($"{BackendConstants.PostPhotoBlobUrl}{photoTitle}{BackendConstants.PostPhotoBlobFunctionKey}", photoBlob);
+            PostObjectToAPI($"{BackendConstants.PostPhotoBlobUrl}/{photoTitle}?code={BackendConstants.PostPhotoBlobFunctionKey}", photoBlob);
         #endregion
     }
 }

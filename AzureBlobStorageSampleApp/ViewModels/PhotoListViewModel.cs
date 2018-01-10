@@ -47,7 +47,7 @@ namespace AzureBlobStorageSampleApp
 
                 AllPhotosList = new ObservableCollection<PhotoModel>(await PhotoDatabase.GetAllPhotos().ConfigureAwait(false));
 
-                await oneSecondTaskToShowSpinner;
+                await oneSecondTaskToShowSpinner.ConfigureAwait(false);
             }
             catch (Exception e)
             {

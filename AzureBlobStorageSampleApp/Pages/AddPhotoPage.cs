@@ -107,14 +107,11 @@ namespace AzureBlobStorageSampleApp
             });
         }
 
-        void HandleSavePhotoFailed(object sender, string errorMessage) =>
-            DisplayErrorMessage(errorMessage);
+        void HandleSavePhotoFailed(object sender, string errorMessage) => DisplayErrorMessage(errorMessage);
 
-        void HandleNoCameraFound(object sender, EventArgs e) =>
-            DisplayErrorMessage("No Camera Found");
+        void HandleNoCameraFound(object sender, EventArgs e) => DisplayErrorMessage("No Camera Found");
 
-        void HandleCancelToolbarItemClicked(object sender, EventArgs e) =>
-            ClosePage();
+        void HandleCancelToolbarItemClicked(object sender, EventArgs e) => ClosePage();
 
         void DisplayErrorMessage(string message) =>
             Device.BeginInvokeOnMainThread(async () => await DisplayAlert("Error", message, "Ok"));
