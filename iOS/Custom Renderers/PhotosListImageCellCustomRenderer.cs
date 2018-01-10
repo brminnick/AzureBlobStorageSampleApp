@@ -4,10 +4,10 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
 using AzureBlobStorageSampleApp;
-using AzureBlobStorageSameApp.iOS;
+using AzureBlobStorageSampleApp.iOS;
 
 [assembly: ExportRenderer(typeof(PhotoViewCell), typeof(PhotosListImageCellCustomRenderer))]
-namespace AzureBlobStorageSameApp.iOS
+namespace AzureBlobStorageSampleApp.iOS
 {
 	public class PhotosListImageCellCustomRenderer : ViewCellRenderer
 	{
