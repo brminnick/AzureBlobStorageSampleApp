@@ -9,7 +9,7 @@ using AzureBlobStorageSameApp.iOS;
 [assembly: ExportRenderer(typeof(PhotoViewCell), typeof(PhotosListImageCellCustomRenderer))]
 namespace AzureBlobStorageSameApp.iOS
 {
-	public class PhotosListImageCellCustomRenderer : ImageCellRenderer
+	public class PhotosListImageCellCustomRenderer : ViewCellRenderer
 	{
 		public override UITableViewCell GetCell(Cell item, UITableViewCell reusableCell, UITableView tv)
 		{
