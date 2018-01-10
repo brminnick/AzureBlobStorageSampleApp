@@ -26,7 +26,7 @@ namespace AzureBlobStorageSampleApp
 
             _photosListView = new ListView(ListViewCachingStrategy.RecycleElement)
             {
-                ItemTemplate = new DataTemplate(typeof(PhotoImageCell)),
+                ItemTemplate = new DataTemplate(typeof(PhotoViewCell)),
                 IsPullToRefreshEnabled = true,
                 BackgroundColor = Color.Transparent,
                 AutomationId = AutomationIdConstants.PhotoListView,
