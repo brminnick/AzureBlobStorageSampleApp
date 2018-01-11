@@ -57,7 +57,7 @@ namespace AzureBlobStorageSampleApp
         }
 
 		static (List<T> photosToPatchToLocalDatabase,
-		List<T> photosToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
+		    List<T> photosToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
 																			  List<T> modelListFromRemoteDatabase,
 																			  List<T> modelsFoundInBothDatabases) where T : IBaseModel
 		{
