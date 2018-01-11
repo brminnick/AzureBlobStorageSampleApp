@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
@@ -45,7 +46,8 @@ namespace AzureBlobStorageSampleApp
 
                 await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
 
-                AllPhotosList = new ObservableCollection<PhotoModel>(await PhotoDatabase.GetAllPhotos().ConfigureAwait(false));
+                var unsortedPhotosList = await PhotoDatabase.GetAllPhotos().ConfigureAwait(false);
+                AllPhotosList = new ObservableCollection<PhotoModel>(unsortedPhotosList.OrderBy(x => x.Title));
 
                 await oneSecondTaskToShowSpinner.ConfigureAwait(false);
             }

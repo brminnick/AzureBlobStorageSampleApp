@@ -18,6 +18,7 @@ namespace AzureBlobStorageSampleApp
         #region Fields
         ICommand _savePhotoCommand, _takePhotoCommand;
         string _photoTitle, _pageTitle = PageTitles.AddPhotoPage;
+        bool _isPhotoSaving;
         ImageSource _photoImageSource;
         PhotoBlobModel _photoBlob;
         #endregion
@@ -39,6 +40,12 @@ namespace AzureBlobStorageSampleApp
         {
             get => _pageTitle;
             set => SetProperty(ref _pageTitle, value);
+        }
+
+        public bool IsPhotoSaving
+        {
+            get => _isPhotoSaving;
+            set => SetProperty(ref _isPhotoSaving, value);
         }
 
         public string PhotoTitle
@@ -63,28 +70,33 @@ namespace AzureBlobStorageSampleApp
         #region Methods
         async Task ExecuteSavePhotoCommand(PhotoBlobModel photoBlob, string photoTitle)
         {
+            if (IsPhotoSaving)
+                return;
+
             if (string.IsNullOrWhiteSpace(BackendConstants.PostPhotoBlobFunctionKey))
             {
                 OnSavePhotoFailed("Invalid Azure Function Key");
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(PhotoTitle))
+            if (string.IsNullOrWhiteSpace(photoTitle))
             {
                 OnSavePhotoFailed("Title Cannot Be Empty");
                 return;
             }
 
-            var postPhotoBlobResponse = await APIService.PostPhotoBlob(photoBlob, photoTitle).ConfigureAwait(false);
-
-            if (postPhotoBlobResponse == null && !postPhotoBlobResponse.IsSuccessStatusCode)
-            {
-                OnSavePhotoFailed("Photo Upload Failed");
-                return;
-            }
+            IsPhotoSaving = true;
 
             try
             {
+                var postPhotoBlobResponse = await APIService.PostPhotoBlob(photoBlob, photoTitle).ConfigureAwait(false);
+
+                if (postPhotoBlobResponse == null && !postPhotoBlobResponse.IsSuccessStatusCode)
+                {
+                    OnSavePhotoFailed("Photo Upload Failed");
+                    return;
+                }
+
                 var photo = await JsonService.DeserializeMessage<PhotoModel>(postPhotoBlobResponse).ConfigureAwait(false);
 
                 if (photo == null)
@@ -100,6 +112,10 @@ namespace AzureBlobStorageSampleApp
             catch (Exception e)
             {
                 OnSavePhotoFailed(e.Message);
+            }
+            finally
+            {
+                IsPhotoSaving = false;
             }
         }
 
@@ -159,14 +175,11 @@ namespace AzureBlobStorageSampleApp
         void UpdatePhotoImageSource() =>
             PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(PhotoBlob.Image));
 
-        void OnSavePhotoFailed(string errorMessage) =>
-            SavePhotoFailed?.Invoke(this, errorMessage);
+        void OnSavePhotoFailed(string errorMessage) => SavePhotoFailed?.Invoke(this, errorMessage);
 
-        void OnNoCameraFound() =>
-            NoCameraFound?.Invoke(this, EventArgs.Empty);
+        void OnNoCameraFound() => NoCameraFound?.Invoke(this, EventArgs.Empty);
 
-        void OnSavePhotoCompleted() =>
-            SavePhotoCompleted?.Invoke(this, EventArgs.Empty);
+        void OnSavePhotoCompleted() => SavePhotoCompleted?.Invoke(this, EventArgs.Empty);
         #endregion
     }
 }

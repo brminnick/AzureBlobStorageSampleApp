@@ -40,6 +40,7 @@ namespace AzureBlobStorageSampleApp
                 TextColor = ColorConstants.TextColor
             };
             _takePhotoButton.SetBinding(Button.CommandProperty, nameof(ViewModel.TakePhotoCommand));
+            _takePhotoButton.SetBinding(IsEnabledProperty, new Binding(nameof(ViewModel.IsPhotoSaving), BindingMode.Default, new InverseBooleanConverter(), ViewModel.IsPhotoSaving));
 
             _photoImage = new CachedImage();
             _photoImage.SetBinding(CachedImage.SourceProperty, nameof(ViewModel.PhotoImageSource));
@@ -61,23 +62,30 @@ namespace AzureBlobStorageSampleApp
             };
             ToolbarItems.Add(_cancelToolbarItem);
 
+            var activityIndicator = new ActivityIndicator();
+            activityIndicator.SetBinding(IsVisibleProperty, nameof(ViewModel.IsPhotoSaving));
+            activityIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(ViewModel.IsPhotoSaving));
+
             this.SetBinding(TitleProperty, nameof(ViewModel.PhotoTitle));
 
             Padding = new Thickness(20);
 
-            Content = new StackLayout
+            var stackLayout = new StackLayout
             {
                 Spacing = 20,
 
-                VerticalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Start,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
 
                 Children = {
                     _photoImage,
                     _photoTitleEntry,
                     _takePhotoButton,
+                    activityIndicator
                 }
             };
+
+            Content = new ScrollView { Content = stackLayout };
         }
         #endregion
 
@@ -107,11 +115,15 @@ namespace AzureBlobStorageSampleApp
             });
         }
 
+        void HandleCancelToolbarItemClicked(object sender, EventArgs e)
+        {
+            if (!ViewModel.IsPhotoSaving)
+                ClosePage();
+        }
+
         void HandleSavePhotoFailed(object sender, string errorMessage) => DisplayErrorMessage(errorMessage);
 
         void HandleNoCameraFound(object sender, EventArgs e) => DisplayErrorMessage("No Camera Found");
-
-        void HandleCancelToolbarItemClicked(object sender, EventArgs e) => ClosePage();
 
         void DisplayErrorMessage(string message) =>
             Device.BeginInvokeOnMainThread(async () => await DisplayAlert("Error", message, "Ok"));
