@@ -11,7 +11,7 @@ namespace AzureBlobStorageSampleApp
     {
         public static async Task SyncRemoteAndLocalDatabases()
         {
-            var (photoListFromLocalDatabase, photoListFromRemoteDatabase) = await GetAllSavedPhotos();
+            var (photoListFromLocalDatabase, photoListFromRemoteDatabase) = await GetAllSavedPhotos().ConfigureAwait(false);
 
             var (photosInLocalDatabaseButNotStoredRemotely, photosInRemoteDatabaseButNotStoredLocally, photosInBothDatabases) = GetMatchingModels(photoListFromLocalDatabase, photoListFromRemoteDatabase);
 
