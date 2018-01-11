@@ -20,24 +20,24 @@ namespace AzureBlobStorageSampleApp.Shared
         public static async Task<T> DeserializeMessage<T>(HttpRequestMessage requestMessage)
         {
             using (var stream = await requestMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                return await DeserializeContentStream<T>(stream);
+                return await DeserializeContentStream<T>(stream).ConfigureAwait(false);
         }
 
         public static async Task<T> DeserializeMessage<T>(HttpResponseMessage responseMessage)
         {
             using (var stream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                return await DeserializeContentStream<T>(stream);
+                return await DeserializeContentStream<T>(stream).ConfigureAwait(false);
         }
 
-        static Task<T> DeserializeContentStream<T>(Stream contentStream)
+        static async Task<T> DeserializeContentStream<T>(Stream contentStream)
         {
             using (var reader = new StreamReader(contentStream))
             using (var json = new JsonTextReader(reader))
             {
                 if (json == null)
-                    return Task.FromResult(default(T));
+                    return default(T);
 
-                return Task.Run(() => Serializer.Deserialize<T>(json));
+                return await Task.Run(() => Serializer.Deserialize<T>(json));
             }
         }
     }

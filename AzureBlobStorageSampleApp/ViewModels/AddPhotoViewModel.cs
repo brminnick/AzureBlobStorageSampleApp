@@ -33,7 +33,7 @@ namespace AzureBlobStorageSampleApp
             (_takePhotoCommand = new Command(async () => await ExecuteTakePhotoCommand()));
 
         public ICommand SavePhotoCommand => _savePhotoCommand ??
-            (_savePhotoCommand = new Command(async () => await ExecuteSavePhotoCommand()));
+            (_savePhotoCommand = new Command(async () => await ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle)));
 
         public string PageTitle
         {
@@ -61,7 +61,7 @@ namespace AzureBlobStorageSampleApp
         #endregion
 
         #region Methods
-        async Task ExecuteSavePhotoCommand()
+        async Task ExecuteSavePhotoCommand(PhotoBlobModel photoBlob, string photoTitle)
         {
             if (string.IsNullOrWhiteSpace(BackendConstants.PostPhotoBlobFunctionKey))
             {
@@ -75,9 +75,9 @@ namespace AzureBlobStorageSampleApp
                 return;
             }
 
-            var postPhotoBlobResponse = await APIService.PostPhotoBlob(PhotoBlob, PhotoTitle).ConfigureAwait(false);
+            var postPhotoBlobResponse = await APIService.PostPhotoBlob(photoBlob, photoTitle).ConfigureAwait(false);
 
-            if (postPhotoBlobResponse == null)
+            if (postPhotoBlobResponse == null && !postPhotoBlobResponse.IsSuccessStatusCode)
             {
                 OnSavePhotoFailed("Photo Upload Failed");
                 return;
