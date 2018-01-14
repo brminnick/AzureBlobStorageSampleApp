@@ -110,7 +110,7 @@ namespace AzureBlobStorageSampleApp
             }
         }
 
-        protected static Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
+        protected static async Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri(apiUrl));
 
@@ -118,7 +118,7 @@ namespace AzureBlobStorageSampleApp
             {
                 UpdateActivityIndicatorStatus(true);
 
-                return _client.SendAsync(httpRequest);
+                return await _client.SendAsync(httpRequest);
             }
             catch (Exception)
             {
