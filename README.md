@@ -5,4 +5,4 @@ When a user takes a photo using the app, it is sent as a `byte[]` to an Azure Fu
 
 When the app launches, it hits a second Azure Function that returns all of the results from the Azure SQL Database that contains the photo titles and associated URLs.
 
-To get started, visit the [Microsoft Docs](https://aka.ms/B5frc5)!
+To get started, visit the [Microsoft Docs](https://aka.ms/B5frc5).
