@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+
 using SQLite;
 
 using Xamarin.Forms;
@@ -18,7 +19,7 @@ namespace AzureBlobStorageSampleApp
         #endregion
 
         #region Methods
-        protected static async Task<SQLiteAsyncConnection> GetDatabaseConnectionAsync()
+        protected static async ValueTask<SQLiteAsyncConnection> GetDatabaseConnectionAsync()
         {
             if (!_isInitialized)
 				await Initialize();

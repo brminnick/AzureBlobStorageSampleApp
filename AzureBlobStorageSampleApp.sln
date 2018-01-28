@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26823.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.iOS", "iOS\AzureBlobStorageSampleApp.iOS.csproj", "{23DC86F6-BDBD-45F0-AFDA-1914DAB289F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.iOS", "AzureBlobStorageSampleApp.iOS\AzureBlobStorageSampleApp.iOS.csproj", "{23DC86F6-BDBD-45F0-AFDA-1914DAB289F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Droid", "Droid\AzureBlobStorageSampleApp.Droid.csproj", "{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Droid", "AzureBlobStorageSampleApp.Droid\AzureBlobStorageSampleApp.Droid.csproj", "{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp", "AzureBlobStorageSampleApp\AzureBlobStorageSampleApp.csproj", "{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}"
 EndProject
