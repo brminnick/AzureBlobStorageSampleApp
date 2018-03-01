@@ -9,8 +9,8 @@
     <Import_RootNamespace>AzureBlobStorageSampleApp.Mobile.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Constants\AutomationIdConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\PageTitles.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\BackendConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\AutomationIdConstants.cs" />
   </ItemGroup>
 </Project>

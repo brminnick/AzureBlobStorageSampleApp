@@ -49,7 +49,7 @@ namespace AzureBlobStorageSampleApp
             {
                 Text = "Save",
                 Priority = 0,
-                AutomationId = AutomationIdConstants.SaveButton,
+                AutomationId = AutomationIdConstants.AddPhotoPage_SaveButton,
             };
             _saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ViewModel.SavePhotoCommand));
             ToolbarItems.Add(_saveToobarItem);
