@@ -49,6 +49,20 @@
     <Folder Include="Pages\" />
     <Folder Include="Tests\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AzureBlobStorageSampleApp.iOS\AzureBlobStorageSampleApp.iOS.csproj">
+      <Project>{23DC86F6-BDBD-45F0-AFDA-1914DAB289F6}</Project>
+      <Name>AzureBlobStorageSampleApp.iOS</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\AzureBlobStorageSampleApp.Droid\AzureBlobStorageSampleApp.Droid.csproj">
+      <Project>{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24}</Project>
+      <Name>AzureBlobStorageSampleApp.Droid</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

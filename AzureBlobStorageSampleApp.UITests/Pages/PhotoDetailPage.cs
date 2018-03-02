@@ -19,5 +19,11 @@ namespace AzureBlobStorageSampleApp.UITests
         }
 
         public string PhotoTitle => App.Query(_photoTitleLabel)?.FirstOrDefault()?.Text;
+
+        public void WaitForImageToAppear()
+        {
+            App.WaitForElement(_photoImage);
+            App.Screenshot("Image Appeared");
+        }
     }
 }

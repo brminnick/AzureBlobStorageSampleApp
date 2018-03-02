@@ -15,5 +15,20 @@ namespace AzureBlobStorageSampleApp.UITests
         {
 
         }
+
+        [TestCase("Punday")]
+        [TestCase("Dog Toy")]
+        [TestCase("Brandon")]
+        public void VerifyPhoto(string photoTitle)
+        {
+            //Arrange
+
+            //Act
+            PhotoListPage.SelectPhoto(photoTitle);
+            PhotoDetailPage.WaitForImageToAppear();
+
+            //Assert
+            Assert.AreEqual(photoTitle, PhotoDetailPage.PhotoTitle);
+        }
     }
 }

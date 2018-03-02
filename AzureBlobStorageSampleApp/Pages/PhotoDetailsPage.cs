@@ -17,7 +17,7 @@ namespace AzureBlobStorageSampleApp
             var photoTitleLabel = new PhotoDetailLabel(AutomationIdConstants.PhotoTitleLabel);
             photoTitleLabel.SetBinding(Label.TextProperty, nameof(ViewModel.PhotoTitle));
 
-            var photoImage = new CachedImage();
+            var photoImage = new CachedImage { AutomationId = AutomationIdConstants.PhotoImage };
             photoImage.SetBinding(CachedImage.SourceProperty, nameof(ViewModel.PhotoImageSource));
 
             Title = PageTitles.PhotoListPage;
@@ -32,7 +32,7 @@ namespace AzureBlobStorageSampleApp
                 Spacing = 20,
 
                 Children = {
-					photoImage,
+                    photoImage,
                     photoTitleLabel
                 }
             };
@@ -49,11 +49,11 @@ namespace AzureBlobStorageSampleApp
         {
 
         }
-		#endregion
+        #endregion
 
-		#region Classes
-		class PhotoDetailLabel : Label
-		{
+        #region Classes
+        class PhotoDetailLabel : Label
+        {
             public PhotoDetailLabel(string automationId)
             {
                 AutomationId = automationId;
@@ -61,7 +61,7 @@ namespace AzureBlobStorageSampleApp
                 HorizontalTextAlignment = TextAlignment.Center;
                 FontAttributes = FontAttributes.Bold;
             }
-		}
-		#endregion
-	}
+        }
+        #endregion
+    }
 }
