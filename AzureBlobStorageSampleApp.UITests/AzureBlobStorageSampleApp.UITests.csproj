@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FD2382A9-2F14-4719-AFE7-1A3EFAC905B6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>AzureBlobStorageSampleApp.UITests</RootNamespace>
+    <AssemblyName>AzureBlobStorageSampleApp.UITests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.UITest">
+      <HintPath>..\packages\Xamarin.UITest.2.2.3\lib\net45\Xamarin.UITest.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppInitializer.cs" />
+    <Compile Include="Pages\BasePage.cs" />
+    <Compile Include="Tests\BaseTest.cs" />
+    <Compile Include="Pages\AddPhotosPage.cs" />
+    <Compile Include="Tests\Tests.cs" />
+    <Compile Include="Pages\PhotoListPage.cs" />
+    <Compile Include="Pages\PhotoDetailPage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\" />
+    <Folder Include="Tests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AzureBlobStorageSampleApp.iOS\AzureBlobStorageSampleApp.iOS.csproj">
+      <Project>{23DC86F6-BDBD-45F0-AFDA-1914DAB289F6}</Project>
+      <Name>AzureBlobStorageSampleApp.iOS</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\AzureBlobStorageSampleApp.Droid\AzureBlobStorageSampleApp.Droid.csproj">
+      <Project>{4F0E3FEC-B6B5-4372-A2D0-639DC734DF24}</Project>
+      <Name>AzureBlobStorageSampleApp.Droid</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems')" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
