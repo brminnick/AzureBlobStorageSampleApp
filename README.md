@@ -1,8 +1,11 @@
 # AzureBlobStorageSampleApp
-This app shows how to leverage Azure Functions to upload an image to Azure Blob Storage. 
 
-When a user takes a photo using the app, it is sent as a `byte[]` to an Azure Function which saves the image to Azure Blob Storage. Once the file has been save to Azure Blob Storage, it is automatically assigned a direct-access URL that is saved along with the Photo Title to an Azure SQL Database.
+This Xamarin app uses a [SQLite Database](https://github.com/praeclarum/sqlite-net) to save the metadata of the Photos (e.g. Url, Title) locally. The local database syncs, via an [Azure Function](https://aka.ms/XamarinBlog/AzureFunctions), with an [Azure SQL Database](https://aka.ms/XamarinBlog/AzureSQL) that contains the metadata of the Photos stored in [Azure Blob Storage](https://aka.ms/xamarinblog/azureblobstorage).
 
-When the app launches, it hits a second Azure Function that returns all of the results from the Azure SQL Database that contains the photo titles and associated URLs.
+The Xamarin app also allows the user to take photos and save them to [Azure Blob Storage](https://aka.ms/xamarinblog/azureblobstorage). To do this, the Xamarin app uploads the image to an [Azure Function](https://aka.ms/XamarinBlog/AzureFunctions), and the [Azure Function](https://aka.ms/XamarinBlog/AzureFunctions) saves the image in [Azure Blob Storage](https://aka.ms/xamarinblog/azureblobstorage), then adds the image metadata to the [Azure SQL Database](https://aka.ms/XamarinBlog/AzureSQL). 
 
-To get started, visit the [Microsoft Docs](https://aka.ms/B5frc5).
+## Learn More
+- [Azure Blob Storage](https://aka.ms/xamarinblog/azureblobstorage)
+- [How to use Blob Storage from Xamarin](https://aka.ms/XamarinBlog/AzureBlobStorageWithXamarin)
+
+![Azure Blob Storage Sample App Diagram](https://github.com/brminnick/Videos/blob/master/AzureBlobStorageSampleApp/AzureBlobStorageSampleAppDiagram.png)
