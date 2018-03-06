@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>AzureBlobStorageSampleApp.Droid</RootNamespace>
     <AssemblyName>AzureBlobStorageSampleApp.Droid</AssemblyName>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
