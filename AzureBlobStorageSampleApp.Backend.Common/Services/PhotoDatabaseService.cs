@@ -12,7 +12,7 @@ using AzureBlobStorageSampleApp.Shared;
 
 namespace AzureBlobStorageSampleApp.Backend.Common
 {
-    public static class PhotoDatabaseService
+    public abstract class PhotoDatabaseService : BaseDatabaseService
     {
         #region Constant Fields
         readonly static string _connectionString = ConfigurationManager.ConnectionStrings["PhotoDatabaseConnectionString"].ConnectionString;
@@ -22,7 +22,7 @@ namespace AzureBlobStorageSampleApp.Backend.Common
         public static Task<IList<PhotoModel>> GetAllPhotos()
         {
             Func<DataContext, IList<PhotoModel>> getAllPhotosFunction = dataContext => dataContext.GetTable<PhotoModel>().ToList();
-            return  PerformDatabaseFunction(getAllPhotosFunction);
+            return PerformDatabaseFunction(getAllPhotosFunction, _connectionString);
         }
 
         public static Task<PhotoModel> InsertPhoto(PhotoModel photo)
@@ -42,7 +42,7 @@ namespace AzureBlobStorageSampleApp.Backend.Common
                 return photo;
             };
 
-            return PerformDatabaseFunction(insertPhotoFunction);
+            return PerformDatabaseFunction(insertPhotoFunction, _connectionString);
         }
 
         public static Task<PhotoModel> PatchPhoto(PhotoModel photo)
@@ -68,7 +68,7 @@ namespace AzureBlobStorageSampleApp.Backend.Common
                 return photoFromDatabase;
             };
 
-            return PerformDatabaseFunction(patchPhotoFunction);
+            return PerformDatabaseFunction(patchPhotoFunction, _connectionString);
         }
 
         public static Task<PhotoModel> DeletePhoto(string id)
@@ -83,40 +83,7 @@ namespace AzureBlobStorageSampleApp.Backend.Common
                 return photoFromDatabase;
             };
 
-            return PerformDatabaseFunction(deletePhotoFunction);
-        }
-
-        static async Task<TResult> PerformDatabaseFunction<TResult>(Func<DataContext, TResult> databaseFunction) where TResult : class
-        {
-            using (var sqlConnection = new SqlConnection(_connectionString))
-            {
-                await sqlConnection.OpenAsync();
-
-                var dbContext = new DataContext(sqlConnection);
-
-                var signUpTransaction = sqlConnection.BeginTransaction();
-                dbContext.Transaction = signUpTransaction;
-
-                try
-                {
-                    return databaseFunction?.Invoke(dbContext) ?? default(TResult);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("");
-                    Debug.WriteLine(e.Message);
-                    Debug.WriteLine(e.ToString());
-                    Debug.WriteLine("");
-
-                    return default(TResult);
-                }
-                finally
-                {
-                    dbContext.SubmitChanges();
-                    signUpTransaction.Commit();
-                    sqlConnection.Close();
-                }
-            }
+            return PerformDatabaseFunction(deletePhotoFunction, _connectionString);
         }
         #endregion
     }
