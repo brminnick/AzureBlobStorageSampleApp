@@ -12,10 +12,10 @@ using AzureBlobStorageSampleApp.Backend.Common;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public static class PostBlobFunction
+    public static class PostBlob
     {
         #region Methods
-        [FunctionName("PostBlob")]
+        [FunctionName(nameof(PostBlob))]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostBlob/{title}")]HttpRequestMessage req, string title, TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");
