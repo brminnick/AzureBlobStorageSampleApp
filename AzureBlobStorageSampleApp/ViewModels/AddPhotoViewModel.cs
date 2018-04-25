@@ -89,15 +89,7 @@ namespace AzureBlobStorageSampleApp
 
             try
             {
-                var postPhotoBlobResponse = await APIService.PostPhotoBlob(photoBlob, photoTitle).ConfigureAwait(false);
-
-                if (postPhotoBlobResponse == null && !postPhotoBlobResponse.IsSuccessStatusCode)
-                {
-                    OnSavePhotoFailed("Photo Upload Failed");
-                    return;
-                }
-
-                var photo = await JsonService.DeserializeMessage<PhotoModel>(postPhotoBlobResponse).ConfigureAwait(false);
+                var photo = await APIService.PostPhotoBlob(photoBlob, photoTitle).ConfigureAwait(false);
 
                 if (photo == null)
                 {

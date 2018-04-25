@@ -5,132 +5,133 @@ using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 
 using Newtonsoft.Json;
 
 using Xamarin.Forms;
+
+using AzureBlobStorageSampleApp.Shared;
 
 namespace AzureBlobStorageSampleApp
 {
     abstract class BaseHttpClientService
     {
         #region Constant Fields
-        static readonly JsonSerializer _serializer = new JsonSerializer();
-        static readonly HttpClient _client = CreateHttpClient(TimeSpan.FromSeconds(60));
+        static readonly Lazy<HttpClient> _clientHolder = new Lazy<HttpClient>(() => CreateHttpClient(TimeSpan.FromSeconds(5)));
         #endregion
 
         #region Fields
         static int _networkIndicatorCount = 0;
         #endregion
 
+        #region Properties
+        static HttpClient Client => _clientHolder.Value;
+        #endregion
+
         #region Methods
-        protected static Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
-            GetDataObjectFromAPI<T, object>(apiUrl);
-
-        protected static async Task<TDataObject> GetDataObjectFromAPI<TDataObject, TPayloadData>(string apiUrl, TPayloadData data = default(TPayloadData))
+        protected static async Task<T> GetObjectFromAPI<T>(string apiUrl)
         {
-            var stringPayload = string.Empty;
+            using (var responseMessage = await GetObjectFromAPI(apiUrl).ConfigureAwait(false))
+                return await DeserializeResponse<T>(responseMessage).ConfigureAwait(false);
+        }
 
-            if (data != null)
-                stringPayload = await Task.Run(() => JsonConvert.SerializeObject(data)).ConfigureAwait(false);
-
-            var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-
+        protected static async Task<HttpResponseMessage> GetObjectFromAPI(string apiUrl)
+        {
             try
             {
                 UpdateActivityIndicatorStatus(true);
 
-                using (var stream = await _client.GetStreamAsync(apiUrl).ConfigureAwait(false))
-                using (var reader = new StreamReader(stream))
-                using (var json = new JsonTextReader(reader))
-                {
-                    if (json == null)
-                        return default(TDataObject);
+                return await Client.GetAsync(apiUrl).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                Report(e);
+                return null;
+            }
+            finally
+            {
+                UpdateActivityIndicatorStatus(false);
+            }
+        }
 
-                    return await Task.Run(() => _serializer.Deserialize<TDataObject>(json)).ConfigureAwait(false);
+        protected static async Task<TResponse> PostObjectToAPI<TResponse, TRequest>(string apiUrl, TRequest requestData)
+        {
+            using (var responseMessage = await PostObjectToAPI(apiUrl, requestData).ConfigureAwait(false))
+                return await DeserializeResponse<TResponse>(responseMessage).ConfigureAwait(false);
+        }
+
+        protected static Task<HttpResponseMessage> PostObjectToAPI<T>(string apiUrl, T requestData) => SendAsync(HttpMethod.Post, apiUrl, requestData);
+
+        protected static async Task<TResponse> PutObjectToAPI<TResponse, TRequest>(string apiUrl, TRequest requestData)
+        {
+            using (var responseMessage = await PutObjectToAPI(apiUrl, requestData).ConfigureAwait(false))
+                return await DeserializeResponse<TResponse>(responseMessage).ConfigureAwait(false);
+        }
+
+        protected static Task<HttpResponseMessage> PutObjectToAPI<T>(string apiUrl, T requestData) => SendAsync(HttpMethod.Put, apiUrl, requestData);
+
+        protected static async Task<TResponse> PatchObjectToAPI<TResponse, TRequest>(string apiUrl, TRequest requestData)
+        {
+            using (var responseMessage = await PatchObjectToAPI(apiUrl, requestData).ConfigureAwait(false))
+                return await DeserializeResponse<TResponse>(responseMessage).ConfigureAwait(false);
+        }
+
+        protected static Task<HttpResponseMessage> PatchObjectToAPI<T>(string apiUrl, T requestData) => SendAsync(new HttpMethod("PATCH"), apiUrl, requestData);
+
+        protected static async Task<TResponse> DeleteObjectFromAPI<TResponse>(string apiUrl)
+        {
+            using (var responseMessage = await DeleteObjectFromAPI(apiUrl).ConfigureAwait(false))
+                return await DeserializeResponse<TResponse>(responseMessage).ConfigureAwait(false);
+        }
+
+        protected static Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl) => SendAsync<object>(HttpMethod.Delete, apiUrl);
+
+        static HttpClient CreateHttpClient(TimeSpan timeout)
+        {
+            HttpClient client;
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                case Device.Android:
+                    client = new HttpClient();
+                    break;
+                default:
+                    client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
+                    break;
+            }
+
+            client.Timeout = timeout;
+            client.DefaultRequestHeaders.Add("ZUMO-API-VERSION", "2.0.0");
+            client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            return client;
+        }
+
+        static async Task<HttpResponseMessage> SendAsync<T>(HttpMethod httpMethod, string apiUrl, T requestData = default)
+        {
+            using (var httpRequestMessage = await GetHttpRequestMessage(httpMethod, apiUrl, requestData).ConfigureAwait(false))
+            {
+                try
+                {
+                    UpdateActivityIndicatorStatus(true);
+
+                    return await Client.SendAsync(httpRequestMessage).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    Report(e);
+                    return null;
+                }
+                finally
+                {
+                    UpdateActivityIndicatorStatus(false);
                 }
             }
-            catch (Exception)
-            {
-                return default(TDataObject);
-            }
-            finally
-            {
-                UpdateActivityIndicatorStatus(false);
-            }
         }
 
-        protected static async Task<HttpResponseMessage> PostObjectToAPI<T>(string apiUrl, T data)
-        {
-            var stringPayload = await Task.Run(() => JsonConvert.SerializeObject(data)).ConfigureAwait(false);
-
-            var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-            try
-            {
-                UpdateActivityIndicatorStatus(true);
-
-                return await _client.PostAsync(apiUrl, httpContent).ConfigureAwait(false);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            finally
-            {
-                UpdateActivityIndicatorStatus(false);
-            }
-        }
-
-        protected static async Task<HttpResponseMessage> PatchObjectToAPI<T>(string apiUrl, T data)
-        {
-            var stringPayload = await Task.Run(() => JsonConvert.SerializeObject(data)).ConfigureAwait(false);
-
-            var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-
-            var httpRequest = new HttpRequestMessage
-            {
-                Method = new HttpMethod("PATCH"),
-                RequestUri = new Uri(apiUrl),
-                Content = httpContent
-            };
-
-            try
-            {
-                UpdateActivityIndicatorStatus(true);
-
-                return await _client.SendAsync(httpRequest).ConfigureAwait(false);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            finally
-            {
-                UpdateActivityIndicatorStatus(false);
-            }
-        }
-
-        protected static async Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
-        {
-            var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri(apiUrl));
-
-            try
-            {
-                UpdateActivityIndicatorStatus(true);
-
-                return await _client.SendAsync(httpRequest);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            finally
-            {
-                UpdateActivityIndicatorStatus(false);
-            }
-        }
-
-        static void UpdateActivityIndicatorStatus(bool isActivityIndicatorDisplayed)
+        protected static void UpdateActivityIndicatorStatus(bool isActivityIndicatorDisplayed)
         {
             if (isActivityIndicatorDisplayed)
             {
@@ -144,26 +145,43 @@ namespace AzureBlobStorageSampleApp
             }
         }
 
-        static HttpClient CreateHttpClient(TimeSpan timeout)
+        static async ValueTask<HttpRequestMessage> GetHttpRequestMessage<T>(HttpMethod method, string apiUrl, T requestData = default)
         {
-            HttpClient client;
+            var httpRequestMessage = new HttpRequestMessage(method, apiUrl);
 
-            switch (Device.RuntimePlatform)
+            switch (requestData)
             {
-                case Device.iOS:
-                case Device.Android:
-                    client = new HttpClient();
+                case T data when data.Equals(default(T)):
                     break;
+
+                case Stream stream:
+                    httpRequestMessage.Content = new StreamContent(stream);
+                    httpRequestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    break;
+
                 default:
-                    client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
+                    var stringPayload = await Task.Run(() => JsonConvert.SerializeObject(requestData)).ConfigureAwait(false);
+                    httpRequestMessage.Content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
                     break;
-
             }
-            client.Timeout = timeout;
-            client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
 
-            return client;
+            return httpRequestMessage;
         }
+
+        static async Task<T> DeserializeResponse<T>(HttpResponseMessage httpResponseMessage)
+        {
+            try
+            {
+                return await JsonService.DeserializeMessage<T>(httpResponseMessage).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                Report(e);
+                return default;
+            }
+        }
+
+        static void Report(Exception e) => DebugServices.Log(e);
         #endregion
     }
 }

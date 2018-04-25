@@ -11,10 +11,10 @@ namespace AzureBlobStorageSampleApp
     {
         #region Methods
         public static Task<List<PhotoModel>> GetAllPhotoModels() =>
-            GetDataObjectFromAPI<List<PhotoModel>>($"{BackendConstants.GetAllPhotosUrl}");
+            GetObjectFromAPI<List<PhotoModel>>($"{BackendConstants.GetAllPhotosUrl}");
 
-        public static Task<HttpResponseMessage> PostPhotoBlob(PhotoBlobModel photoBlob, string photoTitle) =>
-            PostObjectToAPI($"{BackendConstants.PostPhotoBlobUrl}/{photoTitle}?code={BackendConstants.PostPhotoBlobFunctionKey}", photoBlob);
+        public static Task<PhotoModel> PostPhotoBlob(PhotoBlobModel photoBlob, string photoTitle) =>
+            PostObjectToAPI<PhotoModel, PhotoBlobModel>($"{BackendConstants.PostPhotoBlobUrl}/{photoTitle}?code={BackendConstants.PostPhotoBlobFunctionKey}", photoBlob);
         #endregion
     }
 }
