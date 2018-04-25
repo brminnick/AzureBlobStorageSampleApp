@@ -101,7 +101,6 @@ namespace AzureBlobStorageSampleApp
             }
 
             client.Timeout = timeout;
-            client.DefaultRequestHeaders.Add("ZUMO-API-VERSION", "2.0.0");
             client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
