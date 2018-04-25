@@ -35,9 +35,9 @@ namespace AzureBlobStorageSampleApp.Shared
             using (var json = new JsonTextReader(reader))
             {
                 if (json == null)
-                    return default(T);
+                    return default;
 
-                return await Task.Run(() => Serializer.Deserialize<T>(json));
+                return await Task.Run(() => Serializer.Deserialize<T>(json)).ConfigureAwait(false);
             }
         }
     }
