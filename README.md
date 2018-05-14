@@ -5,6 +5,7 @@ This Xamarin app uses a [SQLite Database](https://github.com/praeclarum/sqlite-n
 The Xamarin app also allows the user to take photos and save them to [Azure Blob Storage](https://aka.ms/xamarinblog/azureblobstorage). To do this, the Xamarin app uploads the image to an [Azure Function](https://aka.ms/XamarinBlog/AzureFunctions), and the [Azure Function](https://aka.ms/XamarinBlog/AzureFunctions) saves the image in [Azure Blob Storage](https://aka.ms/xamarinblog/azureblobstorage), then adds the image metadata to the [Azure SQL Database](https://aka.ms/XamarinBlog/AzureSQL). 
 
 ## Learn More
+- [The Xamarin Show: Azure Blob Storage for Mobile](https://channel9.msdn.com/Shows/XamarinShow/Azure-Blob-Storage-for-Mobile-with-Brandon-Minnick/?WT.mc_id=none-github-bramin)
 - [Azure Blob Storage](https://aka.ms/xamarinblog/azureblobstorage)
 - [How to use Blob Storage from Xamarin](https://aka.ms/XamarinBlog/AzureBlobStorageWithXamarin)
 
