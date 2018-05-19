@@ -6,7 +6,6 @@ The Xamarin app also allows the user to take photos and save them to [Azure Blob
 
 ## Learn More
 - [The Xamarin Show: Azure Blob Storage for Mobile](https://channel9.msdn.com/Shows/XamarinShow/Azure-Blob-Storage-for-Mobile-with-Brandon-Minnick/?WT.mc_id=none-github-bramin)
-@@ -10,4 +8,4 @@ The Xamarin app also allows the user to take photos and save them to [Azure Blob
 - [Azure Blob Storage](https://aka.ms/xamarinblog/azureblobstorage)
 - [How to use Blob Storage from Xamarin](https://aka.ms/XamarinBlog/AzureBlobStorageWithXamarin)
 
