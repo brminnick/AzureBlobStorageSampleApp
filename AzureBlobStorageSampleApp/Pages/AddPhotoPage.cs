@@ -2,8 +2,6 @@
 
 using AzureBlobStorageSampleApp.Mobile.Shared;
 
-using EntryCustomReturn.Forms.Plugin.Abstractions;
-
 using FFImageLoading.Forms;
 
 using Xamarin.Forms;
@@ -14,7 +12,7 @@ namespace AzureBlobStorageSampleApp
     {
         #region Constant Fields
         readonly ToolbarItem _saveToobarItem, _cancelToolbarItem;
-        readonly CustomReturnEntry _photoTitleEntry;
+        readonly Entry _photoTitleEntry;
         readonly CachedImage _photoImage;
         readonly Button _takePhotoButton;
         #endregion
@@ -22,7 +20,7 @@ namespace AzureBlobStorageSampleApp
         #region Constructors
         public AddPhotoPage()
         {
-            _photoTitleEntry = new CustomReturnEntry
+            _photoTitleEntry = new Entry
             {
                 Placeholder = "Title",
                 BackgroundColor = Color.White,
@@ -31,7 +29,7 @@ namespace AzureBlobStorageSampleApp
                 ReturnType = ReturnType.Go
             };
             _photoTitleEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhotoTitle));
-            _photoTitleEntry.SetBinding(CustomReturnEntry.ReturnCommandProperty, nameof(ViewModel.TakePhotoCommand));
+            _photoTitleEntry.SetBinding(Entry.ReturnCommandProperty, nameof(ViewModel.TakePhotoCommand));
 
             _takePhotoButton = new Button
             {

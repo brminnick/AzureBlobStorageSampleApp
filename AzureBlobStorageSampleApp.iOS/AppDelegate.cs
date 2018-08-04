@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-using UIKit;
+﻿using UIKit;
 using Foundation;
 
 namespace AzureBlobStorageSampleApp.iOS
@@ -11,17 +9,14 @@ namespace AzureBlobStorageSampleApp.iOS
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             global::Xamarin.Forms.Forms.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
+#if DEBUG
+            Xamarin.Calabash.Start();
+#endif
             LoadApplication(new App());
-			FFImageLoading.Forms.Touch.CachedImageRenderer.Init();
-            EntryCustomReturn.Forms.Plugin.iOS.CustomReturnEntryRenderer.Init();
-
-            EnableAutomationAPIs();
 
             return base.FinishedLaunching(uiApplication, launchOptions);
         }
-
-        [Conditional("DEBUG")]
-        void EnableAutomationAPIs() => Xamarin.Calabash.Start();
     }
 }
