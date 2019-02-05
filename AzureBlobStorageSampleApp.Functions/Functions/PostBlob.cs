@@ -31,9 +31,9 @@ namespace AzureBlobStorageSampleApp.Functions
 
                 return new CreatedResult(photo.Url, photo);
             }
-            catch (Exception e)
+            catch
             {
-                return new InternalServerErrorResult($"Post Blob Failed: {e.GetType().ToString()}: {e.Message}");
+                return new InternalServerErrorResult();
             }
         }
         #endregion

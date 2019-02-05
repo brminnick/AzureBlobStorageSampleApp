@@ -26,9 +26,9 @@ namespace AzureBlobStorageSampleApp.Functions
                 var photoList = PhotoDatabaseService.GetAllPhotos();
                 return new OkObjectResult(photoList);
             }
-            catch (System.Exception e)
+            catch
             {
-                return new InternalServerErrorResult($"Get Photos Failed: {e.GetType().ToString()}: {e.Message}");
+                return new InternalServerErrorResult();
             }
         }
     }
