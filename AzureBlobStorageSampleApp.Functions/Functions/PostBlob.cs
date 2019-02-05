@@ -18,7 +18,7 @@ namespace AzureBlobStorageSampleApp.Functions
     {
         #region Methods
         [FunctionName(nameof(PostBlob))]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PostBlob/{title}")][FromBody] PhotoBlobModel imageBlob, string title, ILogger log)
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostBlob/{title}")][FromBody] PhotoBlobModel imageBlob, string title, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
