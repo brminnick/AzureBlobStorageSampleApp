@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26823.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28527.54
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.iOS", "AzureBlobStorageSampleApp.iOS\AzureBlobStorageSampleApp.iOS.csproj", "{23DC86F6-BDBD-45F0-AFDA-1914DAB289F6}"
 EndProject
@@ -18,14 +18,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.S
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Mobile.Shared", "AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.shproj", "{FDA2EE68-4202-4C8A-BC75-6B41E95EA3CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{9222A54C-E421-49B6-998B-678CC4E76203}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{9222A54C-E421-49B6-998B-678CC4E76203}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.UITests", "AzureBlobStorageSampleApp.UITests\AzureBlobStorageSampleApp.UITests.csproj", "{FD2382A9-2F14-4719-AFE7-1A3EFAC905B6}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems*{5c56af55-408c-4fee-8311-641762f75fe0}*SharedItemsImports = 13
-		AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems*{b222da7c-6760-4bc1-b5e6-90e3725e5d10}*SharedItemsImports = 4
 		AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems*{fd2382a9-2f14-4719-afe7-1a3efac905b6}*SharedItemsImports = 4
 		AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems*{fda2ee68-4202-4c8a-bc75-6b41e95ea3cc}*SharedItemsImports = 13
 	EndGlobalSection
