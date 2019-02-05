@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Configuration;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ namespace AzureBlobStorageSampleApp.Backend.Common
     public abstract class BaseBlobStorageService
     {
         #region Constant Fields
-        readonly static Lazy<string> _connectionStringHolder = new Lazy<string>(() => ConfigurationManager.ConnectionStrings["BlobStorageConnectionString"].ConnectionString);
+        readonly static Lazy<string> _connectionStringHolder = new Lazy<string>(() => Environment.GetEnvironmentVariable("BlobStorageConnectionString"));
         readonly static Lazy<CloudStorageAccount> _storageAccountHolder = new Lazy<CloudStorageAccount>(() => CloudStorageAccount.Parse(_connectionStringHolder.Value));
         readonly static Lazy<CloudBlobClient> _blobClientHolder = new Lazy<CloudBlobClient>(_storageAccountHolder.Value.CreateCloudBlobClient);
         #endregion
