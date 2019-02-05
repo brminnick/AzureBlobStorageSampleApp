@@ -1,4 +1,4 @@
-﻿using Xamarin.Forms;
+using Xamarin.Forms;
 
 using AzureBlobStorageSampleApp.Shared;
 
@@ -14,6 +14,7 @@ namespace AzureBlobStorageSampleApp
         #region Properties
         public Command<PhotoModel> SetPhotoCommand => _setPhotoCommand ??
             (_setPhotoCommand = new Command<PhotoModel>(photo => Photo = photo));
+            
         public ImageSource PhotoImageSource => ImageSource.FromUri(new System.Uri(Photo.Url));
         public string PhotoTitle => Photo.Title;
 

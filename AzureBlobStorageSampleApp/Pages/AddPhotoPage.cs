@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using AzureBlobStorageSampleApp.Mobile.Shared;
 
@@ -20,6 +20,10 @@ namespace AzureBlobStorageSampleApp
         #region Constructors
         public AddPhotoPage()
         {
+            ViewModel.NoCameraFound += HandleNoCameraFound;
+            ViewModel.SavePhotoCompleted += HandleSavePhotoCompleted;
+            ViewModel.SavePhotoFailed += HandleSavePhotoFailed;
+
             _photoTitleEntry = new Entry
             {
                 Placeholder = "Title",
@@ -58,6 +62,8 @@ namespace AzureBlobStorageSampleApp
                 Priority = 1,
                 AutomationId = AutomationIdConstants.CancelButton
             };
+            _cancelToolbarItem.Clicked += HandleCancelToolbarItemClicked;
+
             ToolbarItems.Add(_cancelToolbarItem);
 
             var activityIndicator = new ActivityIndicator();
@@ -88,22 +94,6 @@ namespace AzureBlobStorageSampleApp
         #endregion
 
         #region Methods
-        protected override void SubscribeEventHandlers()
-        {
-            ViewModel.NoCameraFound += HandleNoCameraFound;
-            _cancelToolbarItem.Clicked += HandleCancelToolbarItemClicked;
-            ViewModel.SavePhotoCompleted += HandleSavePhotoCompleted;
-            ViewModel.SavePhotoFailed += HandleSavePhotoFailed;
-        }
-
-        protected override void UnsubscribeEventHandlers()
-        {
-            ViewModel.NoCameraFound -= HandleNoCameraFound;
-            _cancelToolbarItem.Clicked -= HandleCancelToolbarItemClicked;
-            ViewModel.SavePhotoCompleted -= HandleSavePhotoCompleted;
-            ViewModel.SavePhotoFailed -= HandleSavePhotoFailed;
-        }
-
         void HandleSavePhotoCompleted(object sender, EventArgs e)
         {
             Device.BeginInvokeOnMainThread(async () =>

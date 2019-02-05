@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Xamarin.Forms;
 
@@ -22,6 +22,8 @@ namespace AzureBlobStorageSampleApp
                 Text = "+",
                 AutomationId = AutomationIdConstants.AddPhotoButton
             };
+            _addPhotosButton.Clicked += HandleAddContactButtonClicked;
+
             ToolbarItems.Add(_addPhotosButton);
 
             _photosListView = new ListView(ListViewCachingStrategy.RecycleElement)
@@ -32,6 +34,7 @@ namespace AzureBlobStorageSampleApp
                 AutomationId = AutomationIdConstants.PhotoListView,
                 SeparatorVisibility = SeparatorVisibility.None
             };
+            _photosListView.ItemSelected += HandleItemSelected;
             _photosListView.SetBinding(ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
             _photosListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllPhotosList));
             _photosListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
@@ -55,18 +58,6 @@ namespace AzureBlobStorageSampleApp
             base.OnAppearing();
 
             Device.BeginInvokeOnMainThread(_photosListView.BeginRefresh);
-        }
-
-        protected override void SubscribeEventHandlers()
-        {
-            _photosListView.ItemSelected += HandleItemSelected;
-            _addPhotosButton.Clicked += HandleAddContactButtonClicked;
-        }
-
-        protected override void UnsubscribeEventHandlers()
-        {
-            _photosListView.ItemSelected -= HandleItemSelected;
-            _addPhotosButton.Clicked -= HandleAddContactButtonClicked;
         }
 
         void HandleItemSelected(object sender, SelectedItemChangedEventArgs e)

@@ -1,4 +1,4 @@
-﻿using AzureBlobStorageSampleApp.Shared;
+using AzureBlobStorageSampleApp.Shared;
 using AzureBlobStorageSampleApp.Mobile.Shared;
 
 using FFImageLoading.Forms;
@@ -36,18 +36,6 @@ namespace AzureBlobStorageSampleApp
                     photoTitleLabel
                 }
             };
-        }
-        #endregion
-
-        #region Methods
-        protected override void SubscribeEventHandlers()
-        {
-
-        }
-
-        protected override void UnsubscribeEventHandlers()
-        {
-
         }
         #endregion
 

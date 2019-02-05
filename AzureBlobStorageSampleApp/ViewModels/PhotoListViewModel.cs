@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-using Xamarin.Forms;
-
+using AsyncAwaitBestPractices.MVVM;
 using AzureBlobStorageSampleApp.Shared;
 
 namespace AzureBlobStorageSampleApp
@@ -15,14 +14,14 @@ namespace AzureBlobStorageSampleApp
         #region Fields
         bool _isRefreshing;
         ICommand _refreshCommand;
-		ObservableCollection<PhotoModel> _allPhotosList;
+        ObservableCollection<PhotoModel> _allPhotosList;
         #endregion
 
         #region Properties
         public ICommand RefreshCommand => _refreshCommand ??
-            (_refreshCommand = new Command(async () => await ExecuteRefreshCommand()));
+            (_refreshCommand = new AsyncCommand(ExecuteRefreshCommand, continueOnCapturedContext: false));
 
-        public ObservableCollection<PhotoModel> AllPhotosList 
+        public ObservableCollection<PhotoModel> AllPhotosList
         {
             get => _allPhotosList;
             set => SetProperty(ref _allPhotosList, value);

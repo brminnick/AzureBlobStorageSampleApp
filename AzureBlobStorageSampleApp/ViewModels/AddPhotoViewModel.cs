@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows.Input;
 using System.Threading.Tasks;
@@ -10,11 +10,19 @@ using Plugin.Media.Abstractions;
 
 using AzureBlobStorageSampleApp.Shared;
 using AzureBlobStorageSampleApp.Mobile.Shared;
+using AsyncAwaitBestPractices.MVVM;
+using AsyncAwaitBestPractices;
 
 namespace AzureBlobStorageSampleApp
 {
     public class AddPhotoViewModel : BaseViewModel
     {
+        #region Constant Fields
+        readonly WeakEventManager _noCameraFoundEventManager = new WeakEventManager();
+        readonly WeakEventManager _savePhotoCompletedEventManager = new WeakEventManager();
+        readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
+        #endregion
+
         #region Fields
         ICommand _savePhotoCommand, _takePhotoCommand;
         string _photoTitle, _pageTitle = PageTitles.AddPhotoPage;
@@ -24,17 +32,31 @@ namespace AzureBlobStorageSampleApp
         #endregion
 
         #region Events
-        public event EventHandler NoCameraFound;
-        public event EventHandler SavePhotoCompleted;
-        public event EventHandler<string> SavePhotoFailed;
+        public event EventHandler NoCameraFound
+        {
+            add => _noCameraFoundEventManager.AddEventHandler(value);
+            remove => _noCameraFoundEventManager.RemoveEventHandler(value);
+        }
+
+        public event EventHandler SavePhotoCompleted
+        {
+            add => _savePhotoCompletedEventManager.AddEventHandler(value);
+            remove => _savePhotoCompletedEventManager.RemoveEventHandler(value);
+        }
+
+        public event EventHandler<string> SavePhotoFailed
+        {
+            add => _savePhotoFailedEventManager.AddEventHandler(value);
+            remove => _savePhotoFailedEventManager.RemoveEventHandler(value);
+        }
         #endregion
 
         #region Properties
         public ICommand TakePhotoCommand => _takePhotoCommand ??
-            (_takePhotoCommand = new Command(async () => await ExecuteTakePhotoCommand()));
+            (_takePhotoCommand = new AsyncCommand(ExecuteTakePhotoCommand, continueOnCapturedContext: false));
 
         public ICommand SavePhotoCommand => _savePhotoCommand ??
-            (_savePhotoCommand = new Command(async () => await ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle)));
+            (_savePhotoCommand = new AsyncCommand(() => ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle), continueOnCapturedContext: false));
 
         public string PageTitle
         {
@@ -91,7 +113,7 @@ namespace AzureBlobStorageSampleApp
             {
                 var photo = await APIService.PostPhotoBlob(photoBlob, photoTitle).ConfigureAwait(false);
 
-                if (photo == null)
+                if (photo is null)
                 {
                     OnSavePhotoFailed("Error Uploading Photo");
                 }
@@ -115,7 +137,7 @@ namespace AzureBlobStorageSampleApp
         {
             var mediaFile = await GetMediaFileFromCamera().ConfigureAwait(false);
 
-            if (mediaFile == null)
+            if (mediaFile is null)
                 return;
 
             PhotoBlob = new PhotoBlobModel
@@ -167,11 +189,9 @@ namespace AzureBlobStorageSampleApp
         void UpdatePhotoImageSource() =>
             PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(PhotoBlob.Image));
 
-        void OnSavePhotoFailed(string errorMessage) => SavePhotoFailed?.Invoke(this, errorMessage);
-
-        void OnNoCameraFound() => NoCameraFound?.Invoke(this, EventArgs.Empty);
-
-        void OnSavePhotoCompleted() => SavePhotoCompleted?.Invoke(this, EventArgs.Empty);
+        void OnSavePhotoFailed(string errorMessage) => _savePhotoFailedEventManager.HandleEvent(this, errorMessage, nameof(SavePhotoFailed));
+        void OnNoCameraFound() => _noCameraFoundEventManager.HandleEvent(this, EventArgs.Empty, nameof(NoCameraFound));
+        void OnSavePhotoCompleted() => _savePhotoCompletedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SavePhotoCompleted));
         #endregion
     }
 }
