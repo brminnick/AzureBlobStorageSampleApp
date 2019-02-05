@@ -13,14 +13,13 @@
         <DefineConstants>TRACE;RELEASE;NETSTANDARD1_6;MOBILE</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-        <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
+        <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.0" />
         <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
-        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.11" />
-        <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-        <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
-        <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.3.840" />
+        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.13" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+        <PackageReference Include="Xamarin.Forms" Version="3.4.0.1029999" />
+        <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.4.859" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Pages\" />
