@@ -5,9 +5,9 @@ using Android.Content.PM;
 
 using Plugin.Permissions;
 
-namespace AzureBlobStorageSampleApp.Droid
+namespace AzureBlobStorageSampleApp.Android
 {
-    [Activity(Label = "AzureBlobStorageSampleApp.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "AzureBlobStorageSampleApp.Android", Icon = "@mipmap/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)

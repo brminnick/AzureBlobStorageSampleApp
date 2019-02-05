@@ -4,13 +4,13 @@ using SQLite;
 
 using Xamarin.Forms;
 
-using AzureBlobStorageSampleApp.Droid;
+using AzureBlobStorageSampleApp.Android;
 
 [assembly: Dependency(typeof(SQLite_Android))]
-namespace AzureBlobStorageSampleApp.Droid
+namespace AzureBlobStorageSampleApp.Android
 {
 	public class SQLite_Android : ISQLite
-	{
+    {
 		#region ISQLite implementation
 		public SQLiteAsyncConnection GetConnection()
 		{
