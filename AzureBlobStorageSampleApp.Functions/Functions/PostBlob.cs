@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
 
 using AzureBlobStorageSampleApp.Shared;
 using AzureBlobStorageSampleApp.Backend.Common;
@@ -16,14 +17,14 @@ namespace AzureBlobStorageSampleApp.Functions
     {
         #region Methods
         [FunctionName(nameof(PostBlob))]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostBlob/{title}")]HttpRequestMessage req, string title, TraceWriter log)
+        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PostBlob/{title}")]HttpRequestMessage req, string title, ILogger log)
         {
-            log.Info("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
-                var imageBlob = await JsonService.DeserializeMessage<PhotoBlobModel>(req);
-                var photo = await PhotosBlobStorageService.SavePhoto(imageBlob.Image, title);
+                var imageBlob = await JsonService.DeserializeMessage<PhotoBlobModel>(req).ConfigureAwait(false);
+                var photo = await PhotosBlobStorageService.SavePhoto(imageBlob.Image, title).ConfigureAwait(false);
 
                 await PhotoDatabaseService.InsertPhoto(photo);
 
