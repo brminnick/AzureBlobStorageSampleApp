@@ -18,7 +18,6 @@
         <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
         <PackageReference Include="NPoco" Version="3.9.4" />
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
-        <PackageReference Include="Polly" Version="6.1.2" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
     </ItemGroup>
     <ItemGroup>
