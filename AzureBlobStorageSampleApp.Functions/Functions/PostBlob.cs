@@ -11,7 +11,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
 using AzureBlobStorageSampleApp.Shared;
-using AzureBlobStorageSampleApp.Backend.Common;
 
 namespace AzureBlobStorageSampleApp.Functions
 {

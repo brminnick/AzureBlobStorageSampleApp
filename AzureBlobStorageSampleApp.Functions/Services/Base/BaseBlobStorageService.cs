@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace AzureBlobStorageSampleApp.Backend.Common
+namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class BaseBlobStorageService
     {

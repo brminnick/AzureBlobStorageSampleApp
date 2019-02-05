@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 using NPoco;
 
-namespace AzureBlobStorageSampleApp.Backend.Common
+namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class PhotoDatabaseService : BaseDatabaseService
     {

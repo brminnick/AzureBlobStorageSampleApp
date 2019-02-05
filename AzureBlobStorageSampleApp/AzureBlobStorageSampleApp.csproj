@@ -33,15 +33,6 @@
         <Folder Include="Views\" />
         <Folder Include="Views\PhotoList\" />
     </ItemGroup>
-    <ItemGroup>
-        <Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />
-        <Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\PhotoModel.cs" />
-        <Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />
-        <Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\PhotoModel.cs" />
-        <Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\IBaseModel.cs" />
-        <Compile Remove="..\AzureBlobStorageSampleApp.Shared\Models\PhotoModel.cs" />
-        <Compile Remove="Services\Base\BaseHttpClientService.cs" />
-    </ItemGroup>
     <Import Project="..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems')" />
     <Import Project="..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems')" />
 </Project>

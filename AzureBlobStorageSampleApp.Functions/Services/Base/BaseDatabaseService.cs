@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using NPoco;
 
-namespace AzureBlobStorageSampleApp.Backend.Common
+namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class BaseDatabaseService
     {

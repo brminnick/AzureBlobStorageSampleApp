@@ -8,7 +8,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 using AzureBlobStorageSampleApp.Shared;
 
-namespace AzureBlobStorageSampleApp.Backend.Common
+namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class PhotosBlobStorageService : BaseBlobStorageService
     {
