@@ -17,7 +17,7 @@ namespace AzureBlobStorageSampleApp.Functions
     public static class GetPhotos
     {
         [FunctionName(nameof(GetPhotos))]
-        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] ILogger log)
+        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]HttpRequestMessage req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 

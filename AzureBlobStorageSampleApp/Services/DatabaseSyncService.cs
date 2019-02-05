@@ -1,4 +1,3 @@
-﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -17,25 +16,25 @@ namespace AzureBlobStorageSampleApp
 
             var (photosToPatchToLocalDatabase, photosToPatchToRemoteDatabase) = GetModelsThatNeedUpdating(photoListFromLocalDatabase, photoListFromRemoteDatabase, photosInBothDatabases);
 
-            await Savephotos(photosInRemoteDatabaseButNotStoredLocally.Concat(photosToPatchToLocalDatabase).ToList());
+            await SavePhotos(photosInRemoteDatabaseButNotStoredLocally.Concat(photosToPatchToLocalDatabase).ToList(), photosInLocalDatabaseButNotStoredRemotely.Concat(photosToPatchToRemoteDatabase).ToList());
         }
 
-		static async Task<(List<PhotoModel> photoListFromLocalDatabase,
-	        List<PhotoModel> photoListFromRemoteDatabase)> GetAllSavedPhotos()
-		{
-			var photoListFromLocalDatabaseTask = PhotoDatabase.GetAllPhotos();
-			var photoListFromRemoteDatabaseTask = APIService.GetAllPhotoModels();
+        static async Task<(List<PhotoModel> photoListFromLocalDatabase,
+            List<PhotoModel> photoListFromRemoteDatabase)> GetAllSavedPhotos()
+        {
+            var photoListFromLocalDatabaseTask = PhotoDatabase.GetAllPhotos();
+            var photoListFromRemoteDatabaseTask = APIService.GetAllPhotoModels();
 
-			await Task.WhenAll(photoListFromLocalDatabaseTask, photoListFromRemoteDatabaseTask).ConfigureAwait(false);
+            await Task.WhenAll(photoListFromLocalDatabaseTask, photoListFromRemoteDatabaseTask).ConfigureAwait(false);
 
-			return (await photoListFromLocalDatabaseTask ?? new List<PhotoModel>(),
-					await photoListFromRemoteDatabaseTask ?? new List<PhotoModel>());
-		}
+            return (await photoListFromLocalDatabaseTask ?? new List<PhotoModel>(),
+                    await photoListFromRemoteDatabaseTask ?? new List<PhotoModel>());
+        }
 
-        static (List<T> photosInLocalDatabaseButNotStoredRemotely,
-            List<T> photosInRemoteDatabaseButNotStoredLocally,
-            List<T> photosInBothDatabases) GetMatchingModels<T>(List<T> modelListFromLocalDatabase, 
-                                                                      List<T> modelListFromRemoteDatabase) where T: IBaseModel
+        static (List<T> contactsInLocalDatabaseButNotStoredRemotely,
+            List<T> contactsInRemoteDatabaseButNotStoredLocally,
+            List<T> contactsInBothDatabases) GetMatchingModels<T>(List<T> modelListFromLocalDatabase,
+                                                                      List<T> modelListFromRemoteDatabase) where T : IBaseModel
         {
             var modelIdFromRemoteDatabaseList = modelListFromRemoteDatabase?.Select(x => x.Id).ToList() ?? new List<string>();
             var modelIdFromLocalDatabaseList = modelListFromLocalDatabase?.Select(x => x.Id).ToList() ?? new List<string>();
@@ -48,7 +47,7 @@ namespace AzureBlobStorageSampleApp
             var modelsInLocalDatabaseButNotStoredRemotely = modelListFromLocalDatabase?.Where(x => modelIdsInLocalDatabaseButNotStoredRemotely?.Contains(x?.Id) ?? false).ToList() ?? new List<T>();
 
             var modelsInBothDatabases = modelListFromLocalDatabase?.Where(x => modelIdsInBothDatabases?.Contains(x?.Id) ?? false)
-                                            .Concat(modelListFromRemoteDatabase?.Where(x => modelIdsInBothDatabases?.Contains(x?.Id) ?? false)).ToList() ?? new List<T>();
+                                            .ToList() ?? new List<T>();
 
             return (modelsInLocalDatabaseButNotStoredRemotely ?? new List<T>(),
                     modelsInRemoteDatabaseButNotStoredLocally ?? new List<T>(),
@@ -56,34 +55,37 @@ namespace AzureBlobStorageSampleApp
 
         }
 
-		static (List<T> photosToPatchToLocalDatabase,
-		    List<T> photosToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
-																			  List<T> modelListFromRemoteDatabase,
-																			  List<T> modelsFoundInBothDatabases) where T : IBaseModel
-		{
+        static (List<T> contactsToPatchToLocalDatabase,
+            List<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
+                                                                              List<T> modelListFromRemoteDatabase,
+                                                                              List<T> modelsFoundInBothDatabases) where T : IBaseModel
+        {
             var modelsToPatchToRemoteDatabase = new List<T>();
             var modelsToPatchToLocalDatabase = new List<T>();
-			foreach (var photo in modelsFoundInBothDatabases)
-			{
-                var modelFromLocalDatabase = modelListFromLocalDatabase.Where(x => x.Id.Equals(photo.Id)).FirstOrDefault();
-                var modelFromRemoteDatabase = modelListFromRemoteDatabase.Where(x => x.Id.Equals(photo.Id)).FirstOrDefault();
+            foreach (var contact in modelsFoundInBothDatabases)
+            {
+                var modelFromLocalDatabase = modelListFromLocalDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
+                var modelFromRemoteDatabase = modelListFromRemoteDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
 
-				if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) > 0)
-					modelsToPatchToRemoteDatabase.Add(photo);
-				else if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) < 0)
-					modelsToPatchToLocalDatabase.Add(photo);
-			}
+                if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default) > 0)
+                    modelsToPatchToRemoteDatabase.Add(modelFromLocalDatabase);
+                else if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default) < 0)
+                    modelsToPatchToLocalDatabase.Add(modelFromRemoteDatabase);
+            }
 
-			return (modelsToPatchToLocalDatabase ?? new List<T>(),
-					modelsToPatchToRemoteDatabase ?? new List<T>());
-		}
+            return (modelsToPatchToLocalDatabase ?? new List<T>(),
+                    modelsToPatchToRemoteDatabase ?? new List<T>());
+        }
 
-        static Task Savephotos(List<PhotoModel> photosToSaveToLocalDatabase)
+        static Task SavePhotos(List<PhotoModel> photosToSaveToLocalDatabase,
+                                List<PhotoModel> photosToSaveToRemoteDatabase)
         {
             var savephotoTaskList = new List<Task>();
 
             foreach (var photo in photosToSaveToLocalDatabase)
                 savephotoTaskList.Add(PhotoDatabase.SavePhoto(photo));
+
+            //ToDo Add Patch API
 
             return Task.WhenAll(savephotoTaskList);
         }

@@ -16,7 +16,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.S
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AzureBlobStorageSampleApp.Mobile.Shared", "AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.shproj", "{FDA2EE68-4202-4C8A-BC75-6B41E95EA3CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{9222A54C-E421-49B6-998B-678CC4E76203}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.Functions", "AzureBlobStorageSampleApp.Functions\AzureBlobStorageSampleApp.Functions.csproj", "{9222A54C-E421-49B6-998B-678CC4E76203}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.UITests", "AzureBlobStorageSampleApp.UITests\AzureBlobStorageSampleApp.UITests.csproj", "{FD2382A9-2F14-4719-AFE7-1A3EFAC905B6}"
 EndProject
