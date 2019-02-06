@@ -11,20 +11,19 @@ namespace AzureBlobStorageSampleApp
     {
         #region Constant Fields
         readonly ListView _photosListView;
-        readonly ToolbarItem _addPhotosButton;
         #endregion
 
         #region Constructors
         public PhotoListPage()
         {
-            _addPhotosButton = new ToolbarItem
+            var addPhotosButton = new ToolbarItem
             {
                 Text = "+",
                 AutomationId = AutomationIdConstants.AddPhotoButton
             };
-            _addPhotosButton.Clicked += HandleAddContactButtonClicked;
+            addPhotosButton.Clicked += HandleAddContactButtonClicked;
 
-            ToolbarItems.Add(_addPhotosButton);
+            ToolbarItems.Add(addPhotosButton);
 
             _photosListView = new ListView(ListViewCachingStrategy.RecycleElement)
             {
@@ -34,7 +33,7 @@ namespace AzureBlobStorageSampleApp
                 AutomationId = AutomationIdConstants.PhotoListView,
                 SeparatorVisibility = SeparatorVisibility.None
             };
-            _photosListView.ItemSelected += HandleItemSelected;
+            _photosListView.ItemTapped += HandleItemTapped;
             _photosListView.SetBinding(ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
             _photosListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllPhotosList));
             _photosListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
@@ -60,16 +59,16 @@ namespace AzureBlobStorageSampleApp
             Device.BeginInvokeOnMainThread(_photosListView.BeginRefresh);
         }
 
-        void HandleItemSelected(object sender, SelectedItemChangedEventArgs e)
+        void HandleItemTapped(object sender, ItemTappedEventArgs e)
         {
-            var listView = sender as ListView;
-            var selectedPhoto = e?.SelectedItem as PhotoModel;
-
-            Device.BeginInvokeOnMainThread(async () =>
+            if (sender is ListView listView && e?.Item is PhotoModel selectedPhoto)
             {
-                await Navigation.PushAsync(new PhotoDetailsPage(selectedPhoto));
-                listView.SelectedItem = null;
-            });
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PushAsync(new PhotoDetailsPage(selectedPhoto));
+                    listView.SelectedItem = null;
+                });
+            }
         }
 
         void HandleAddContactButtonClicked(object sender, EventArgs e) =>

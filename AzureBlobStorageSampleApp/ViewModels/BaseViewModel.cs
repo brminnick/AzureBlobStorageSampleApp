@@ -13,24 +13,12 @@ namespace AzureBlobStorageSampleApp
         readonly WeakEventManager _notifyPropertyChangedEventManager = new WeakEventManager();
         #endregion
 
-        #region Fields
-        bool _isInternetConnectionActive;
-		#endregion
-
 		#region Events
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             add => _notifyPropertyChangedEventManager.AddEventHandler(value);
             remove => _notifyPropertyChangedEventManager.RemoveEventHandler(value);
         }
-		#endregion
-
-		#region Properties
-		public bool IsInternetConnectionActive
-		{
-			get => _isInternetConnectionActive;
-			set => SetProperty(ref _isInternetConnectionActive, value);
-		}
 		#endregion
 
 		#region Methods

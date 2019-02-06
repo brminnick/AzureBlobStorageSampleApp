@@ -8,7 +8,6 @@ namespace AzureBlobStorageSampleApp
         {
             BindingContext = ViewModel;
             BackgroundColor = ColorConstants.PageBackgroundColor;
-            this.SetBinding(IsBusyProperty, nameof(ViewModel.IsInternetConnectionActive));
         }
 
         protected T ViewModel { get; } = new T();

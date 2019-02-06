@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using SQLite;
 
@@ -19,17 +19,17 @@ namespace AzureBlobStorageSampleApp
         #endregion
 
         #region Methods
-        protected static async ValueTask<SQLiteAsyncConnection> GetDatabaseConnectionAsync()
+        protected static async ValueTask<SQLiteAsyncConnection> GetDatabaseConnection()
         {
             if (!_isInitialized)
-				await Initialize();
+				await Initialize().ConfigureAwait(false);
                 
             return _databaseConnection;
         }
 
         static async Task Initialize()
         {
-            await _databaseConnection.CreateTableAsync<PhotoModel>();
+            await _databaseConnection.CreateTableAsync<PhotoModel>().ConfigureAwait(false);
             _isInitialized = true;
         }
         #endregion

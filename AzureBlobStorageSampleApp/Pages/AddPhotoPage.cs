@@ -10,13 +10,6 @@ namespace AzureBlobStorageSampleApp
 {
     public class AddPhotoPage : BaseContentPage<AddPhotoViewModel>
     {
-        #region Constant Fields
-        readonly ToolbarItem _saveToobarItem, _cancelToolbarItem;
-        readonly Entry _photoTitleEntry;
-        readonly CachedImage _photoImage;
-        readonly Button _takePhotoButton;
-        #endregion
-
         #region Constructors
         public AddPhotoPage()
         {
@@ -24,7 +17,7 @@ namespace AzureBlobStorageSampleApp
             ViewModel.SavePhotoCompleted += HandleSavePhotoCompleted;
             ViewModel.SavePhotoFailed += HandleSavePhotoFailed;
 
-            _photoTitleEntry = new Entry
+            var photoTitleEntry = new Entry
             {
                 Placeholder = "Title",
                 BackgroundColor = Color.White,
@@ -32,39 +25,39 @@ namespace AzureBlobStorageSampleApp
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 ReturnType = ReturnType.Go
             };
-            _photoTitleEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhotoTitle));
-            _photoTitleEntry.SetBinding(Entry.ReturnCommandProperty, nameof(ViewModel.TakePhotoCommand));
+            photoTitleEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhotoTitle));
+            photoTitleEntry.SetBinding(Entry.ReturnCommandProperty, nameof(ViewModel.TakePhotoCommand));
 
-            _takePhotoButton = new Button
+            var takePhotoButton = new Button
             {
                 Text = "Take Photo",
                 BackgroundColor = ColorConstants.NavigationBarBackgroundColor,
                 TextColor = ColorConstants.TextColor
             };
-            _takePhotoButton.SetBinding(Button.CommandProperty, nameof(ViewModel.TakePhotoCommand));
-            _takePhotoButton.SetBinding(IsEnabledProperty, new Binding(nameof(ViewModel.IsPhotoSaving), BindingMode.Default, new InverseBooleanConverter(), ViewModel.IsPhotoSaving));
+            takePhotoButton.SetBinding(Button.CommandProperty, nameof(ViewModel.TakePhotoCommand));
+            takePhotoButton.SetBinding(IsEnabledProperty, new Binding(nameof(ViewModel.IsPhotoSaving), BindingMode.Default, new InverseBooleanConverter(), ViewModel.IsPhotoSaving));
 
-            _photoImage = new CachedImage();
-            _photoImage.SetBinding(CachedImage.SourceProperty, nameof(ViewModel.PhotoImageSource));
+            var photoImage = new CachedImage();
+            photoImage.SetBinding(CachedImage.SourceProperty, nameof(ViewModel.PhotoImageSource));
 
-            _saveToobarItem = new ToolbarItem
+            var saveToobarItem = new ToolbarItem
             {
                 Text = "Save",
                 Priority = 0,
                 AutomationId = AutomationIdConstants.AddPhotoPage_SaveButton,
             };
-            _saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ViewModel.SavePhotoCommand));
-            ToolbarItems.Add(_saveToobarItem);
+            saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ViewModel.SavePhotoCommand));
+            ToolbarItems.Add(saveToobarItem);
 
-            _cancelToolbarItem = new ToolbarItem
+            var cancelToolbarItem = new ToolbarItem
             {
                 Text = "Cancel",
                 Priority = 1,
                 AutomationId = AutomationIdConstants.CancelButton
             };
-            _cancelToolbarItem.Clicked += HandleCancelToolbarItemClicked;
+            cancelToolbarItem.Clicked += HandleCancelToolbarItemClicked;
 
-            ToolbarItems.Add(_cancelToolbarItem);
+            ToolbarItems.Add(cancelToolbarItem);
 
             var activityIndicator = new ActivityIndicator();
             activityIndicator.SetBinding(IsVisibleProperty, nameof(ViewModel.IsPhotoSaving));
@@ -82,9 +75,9 @@ namespace AzureBlobStorageSampleApp
                 HorizontalOptions = LayoutOptions.FillAndExpand,
 
                 Children = {
-                    _photoImage,
-                    _photoTitleEntry,
-                    _takePhotoButton,
+                    photoImage,
+                    photoTitleEntry,
+                    takePhotoButton,
                     activityIndicator
                 }
             };

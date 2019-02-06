@@ -168,11 +168,13 @@ namespace AzureBlobStorageSampleApp
             var mediaFileTCS = new TaskCompletionSource<MediaFile>();
             Device.BeginInvokeOnMainThread(async () =>
             {
-                mediaFileTCS.SetResult(await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                 {
                     PhotoSize = PhotoSize.Small,
                     DefaultCamera = CameraDevice.Rear
-                }));
+                }).ConfigureAwait(false);
+
+                mediaFileTCS.SetResult(photo);
             });
 
             return await mediaFileTCS.Task;
