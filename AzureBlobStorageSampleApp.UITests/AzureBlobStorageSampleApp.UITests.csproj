@@ -26,7 +26,7 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="NUnit" Version="2.6.4" />
-        <PackageReference Include="Xamarin.UITest" Version="2.2.7.2001-dev" />
+        <PackageReference Include="Xamarin.UITest" Version="2.2.7.2002-dev" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="AppInitializer.cs" />
@@ -41,20 +41,6 @@
         <None Include="app.config" />
     </ItemGroup>
     <ItemGroup />
-    <ItemGroup>
-        <ProjectReference Include="..\AzureBlobStorageSampleApp.iOS\AzureBlobStorageSampleApp.iOS.csproj">
-            <Project>{23DC86F6-BDBD-45F0-AFDA-1914DAB289F6}</Project>
-            <Name>AzureBlobStorageSampleApp.iOS</Name>
-            <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
-            <Private>False</Private>
-        </ProjectReference>
-        <ProjectReference Include="..\AzureBlobStorageSampleApp.Android\AzureBlobStorageSampleApp.Android.csproj">
-            <Project>{9AA352A4-133F-4D31-8517-91B11010DD0C}</Project>
-            <Name>AzureBlobStorageSampleApp.Android</Name>
-            <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
-            <Private>False</Private>
-        </ProjectReference>
-    </ItemGroup>
     <Import Project="..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems')" />
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
