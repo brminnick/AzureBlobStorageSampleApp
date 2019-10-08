@@ -1,38 +1,38 @@
+using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-
+using Polly;
 using SQLite;
-
-using Xamarin.Forms;
-
-using AzureBlobStorageSampleApp.Shared;
+using Xamarin.Essentials;
 
 namespace AzureBlobStorageSampleApp
 {
-    public abstract class BaseDatabase
-    {
-        #region Constant Fields
-        static readonly SQLiteAsyncConnection _databaseConnection = DependencyService.Get<ISQLite>().GetConnection();
-        #endregion
+	public abstract class BaseDatabase
+	{
+		static readonly string DatabasePath = Path.Combine(FileSystem.AppDataDirectory, $"{nameof(AzureBlobStorageSampleApp)}.db3");
 
-        #region Fields
-        static bool _isInitialized;
-        #endregion
+		static readonly Lazy<SQLiteAsyncConnection> _databaseConnectionHolder =
+			new Lazy<SQLiteAsyncConnection>(() => new SQLiteAsyncConnection(DatabasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache));
 
-        #region Methods
-        protected static async ValueTask<SQLiteAsyncConnection> GetDatabaseConnection()
-        {
-            if (!_isInitialized)
-				await Initialize().ConfigureAwait(false);
-                
-            return _databaseConnection;
-        }
+		static SQLiteAsyncConnection DatabaseConnection => _databaseConnectionHolder.Value;
 
-        static async Task Initialize()
-        {
-            await _databaseConnection.CreateTableAsync<PhotoModel>().ConfigureAwait(false);
-            _isInitialized = true;
-        }
-        #endregion
+		protected static async ValueTask<SQLiteAsyncConnection> GetDatabaseConnection<T>()
+		{
+			if (!DatabaseConnection.TableMappings.Any(x => x.MappedType.Name == typeof(T).Name))
+			{
+				await DatabaseConnection.EnableWriteAheadLoggingAsync().ConfigureAwait(false);
+				await DatabaseConnection.CreateTablesAsync(CreateFlags.None, typeof(T)).ConfigureAwait(false);
+			}
 
-    }
+			return DatabaseConnection;
+		}
+
+		protected static Task<T> AttemptAndRetry<T>(Func<Task<T>> action, int numRetries = 3)
+		{
+			return Policy.Handle<SQLiteException>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
+
+			TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
+		}
+	}
 }

@@ -17,21 +17,16 @@ namespace AzureBlobStorageSampleApp
 {
     public class AddPhotoViewModel : BaseViewModel
     {
-        #region Constant Fields
         readonly WeakEventManager _noCameraFoundEventManager = new WeakEventManager();
         readonly WeakEventManager _savePhotoCompletedEventManager = new WeakEventManager();
         readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
-        #endregion
 
-        #region Fields
         ICommand _savePhotoCommand, _takePhotoCommand;
         string _photoTitle, _pageTitle = PageTitles.AddPhotoPage;
         bool _isPhotoSaving;
         ImageSource _photoImageSource;
         PhotoBlobModel _photoBlob;
-        #endregion
 
-        #region Events
         public event EventHandler NoCameraFound
         {
             add => _noCameraFoundEventManager.AddEventHandler(value);
@@ -49,14 +44,12 @@ namespace AzureBlobStorageSampleApp
             add => _savePhotoFailedEventManager.AddEventHandler(value);
             remove => _savePhotoFailedEventManager.RemoveEventHandler(value);
         }
-        #endregion
 
-        #region Properties
         public ICommand TakePhotoCommand => _takePhotoCommand ??
-            (_takePhotoCommand = new AsyncCommand(ExecuteTakePhotoCommand, continueOnCapturedContext: false));
+            (_takePhotoCommand = new AsyncCommand(ExecuteTakePhotoCommand));
 
         public ICommand SavePhotoCommand => _savePhotoCommand ??
-            (_savePhotoCommand = new AsyncCommand(() => ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle), continueOnCapturedContext: false));
+            (_savePhotoCommand = new AsyncCommand(() => ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle)));
 
         public string PageTitle
         {
@@ -87,9 +80,7 @@ namespace AzureBlobStorageSampleApp
             get => _photoBlob;
             set => SetProperty(ref _photoBlob, value, UpdatePhotoImageSource);
         }
-        #endregion
 
-        #region Methods
         async Task ExecuteSavePhotoCommand(PhotoBlobModel photoBlob, string photoTitle)
         {
             if (IsPhotoSaving)
@@ -158,19 +149,14 @@ namespace AzureBlobStorageSampleApp
                 return null;
             }
 
-            var mediaFileTCS = new TaskCompletionSource<MediaFile>();
-            Device.BeginInvokeOnMainThread(async () =>
+            return await Device.InvokeOnMainThreadAsync(() =>
             {
-                var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                return CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                 {
                     PhotoSize = PhotoSize.Small,
                     DefaultCamera = CameraDevice.Rear
-                }).ConfigureAwait(false);
-
-                mediaFileTCS.SetResult(photo);
+                });
             });
-
-            return await mediaFileTCS.Task;
         }
 
         void UpdatePageTilte()
@@ -187,6 +173,5 @@ namespace AzureBlobStorageSampleApp
         void OnSavePhotoFailed(string errorMessage) => _savePhotoFailedEventManager.HandleEvent(this, errorMessage, nameof(SavePhotoFailed));
         void OnNoCameraFound() => _noCameraFoundEventManager.HandleEvent(this, EventArgs.Empty, nameof(NoCameraFound));
         void OnSavePhotoCompleted() => _savePhotoCompletedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SavePhotoCompleted));
-        #endregion
     }
 }

@@ -17,15 +17,10 @@ namespace AzureBlobStorageSampleApp.Functions
 {
     public static class PostBlob
     {
-        #region Constant Fields
         static readonly Lazy<JsonSerializer> _serializerHolder = new Lazy<JsonSerializer>();
-        #endregion
 
-        #region Properties
         static JsonSerializer Serializer => _serializerHolder.Value;
-        #endregion
 
-        #region Methods
         [FunctionName(nameof(PostBlob))]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostBlob/{title}")]HttpRequestMessage req, string title, ILogger log)
         {
@@ -61,6 +56,5 @@ namespace AzureBlobStorageSampleApp.Functions
                 return await Task.Run(() => Serializer.Deserialize<T>(json)).ConfigureAwait(false);
             }
         }
-        #endregion
     }
 }

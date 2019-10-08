@@ -8,20 +8,15 @@ namespace AzureBlobStorageSampleApp.UITests
     [TestFixture(Platform.Android)]
     public abstract class BaseTest
     {
-        #region Constructors
         protected BaseTest(Platform platform) => Platform = platform;
-        #endregion
 
-        #region Properties
         protected Platform Platform { get; }
 
         protected AddPhotosPage AddPhotosPage { get; private set; }
         protected PhotoDetailPage PhotoDetailPage { get; private set; }
         protected PhotoListPage PhotoListPage { get; private set; }
         protected IApp App { get; private set; }
-        #endregion
 
-        #region Methods
         [SetUp]
         protected virtual void BeforeEachTest()
         {
@@ -39,8 +34,6 @@ namespace AzureBlobStorageSampleApp.UITests
         {
 
         }
-
-        #endregion
     }
 }
 

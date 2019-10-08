@@ -1,22 +1,14 @@
 using System;
-using System.Linq;
-using System.Diagnostics;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Threading.Tasks;
 using AzureBlobStorageSampleApp.Shared;
-
-using Microsoft.Extensions.Logging;
-
 using NPoco;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class PhotoDatabaseService : BaseDatabaseService
     {
-        #region Methods
         public static List<PhotoModel> GetAllPhotos() => GetAllPhotos(x => true);
 
         public static List<PhotoModel> GetAllPhotos(Func<PhotoModel, bool> wherePredicate)
@@ -56,7 +48,7 @@ namespace AzureBlobStorageSampleApp.Functions
 
             async Task<PhotoModel> updatePhoto(Database dataContext)
             {
-                var photoFromDatabase = dataContext.Fetch<PhotoModel>().Where(y => y.Id.Equals(photo.Id)).FirstOrDefault();
+                var photoFromDatabase = dataContext.Fetch<PhotoModel>().Single(y => y.Id.Equals(photo.Id));
 
                 photoFromDatabase.IsDeleted = photo.IsDeleted;
                 photoFromDatabase.Title = photo.Title;
@@ -75,13 +67,12 @@ namespace AzureBlobStorageSampleApp.Functions
 
             async Task<PhotoModel> removePunModelDatabaseFunction(Database dataContext)
             {
-                var photoFromDatabase = dataContext.Fetch<PhotoModel>().Where(x => x.Id.Equals(id)).First();
+                var photoFromDatabase = dataContext.Fetch<PhotoModel>().Single(x => x.Id.Equals(id));
 
                 await dataContext.DeleteAsync(photoFromDatabase).ConfigureAwait(false);
 
                 return photoFromDatabase;
             }
         }
-        #endregion
     }
 }

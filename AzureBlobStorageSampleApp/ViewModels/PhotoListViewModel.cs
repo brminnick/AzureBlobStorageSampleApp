@@ -11,30 +11,20 @@ namespace AzureBlobStorageSampleApp
 {
     public class PhotoListViewModel : BaseViewModel
     {
-        #region Fields
         bool _isRefreshing;
         ICommand _refreshCommand;
-        ObservableCollection<PhotoModel> _allPhotosList;
-        #endregion
 
-        #region Properties
         public ICommand RefreshCommand => _refreshCommand ??
-            (_refreshCommand = new AsyncCommand(ExecuteRefreshCommand, continueOnCapturedContext: false));
+            (_refreshCommand = new AsyncCommand(ExecuteRefreshCommand));
 
-        public ObservableCollection<PhotoModel> AllPhotosList
-        {
-            get => _allPhotosList;
-            set => SetProperty(ref _allPhotosList, value);
-        }
+        public ObservableCollection<PhotoModel> AllPhotosList { get; } = new ObservableCollection<PhotoModel>();
 
         public bool IsRefreshing
         {
             get => _isRefreshing;
             set => SetProperty(ref _isRefreshing, value);
         }
-        #endregion
 
-        #region Methods
         async Task ExecuteRefreshCommand()
         {
             IsRefreshing = true;
@@ -46,7 +36,13 @@ namespace AzureBlobStorageSampleApp
                 await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
 
                 var unsortedPhotosList = await PhotoDatabase.GetAllPhotos().ConfigureAwait(false);
-                AllPhotosList = new ObservableCollection<PhotoModel>(unsortedPhotosList.OrderBy(x => x.Title));
+
+                AllPhotosList.Clear();
+
+                foreach (var photo in unsortedPhotosList.OrderBy(x => x.Title))
+                {
+                    AllPhotosList.Add(photo);
+                }
 
                 await oneSecondTaskToShowSpinner.ConfigureAwait(false);
             }
@@ -59,6 +55,5 @@ namespace AzureBlobStorageSampleApp
                 IsRefreshing = false;
             }
         }
-        #endregion
     }
 }

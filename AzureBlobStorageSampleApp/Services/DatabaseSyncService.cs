@@ -19,46 +19,46 @@ namespace AzureBlobStorageSampleApp
             await SavePhotos(photosInRemoteDatabaseButNotStoredLocally.Concat(photosToPatchToLocalDatabase).ToList(), photosInLocalDatabaseButNotStoredRemotely.Concat(photosToPatchToRemoteDatabase).ToList());
         }
 
-        static async Task<(List<PhotoModel> photoListFromLocalDatabase,
-            List<PhotoModel> photoListFromRemoteDatabase)> GetAllSavedPhotos()
+        static async Task<(IEnumerable<PhotoModel> photoListFromLocalDatabase,
+            IEnumerable<PhotoModel> photoListFromRemoteDatabase)> GetAllSavedPhotos()
         {
             var photoListFromLocalDatabaseTask = PhotoDatabase.GetAllPhotos();
             var photoListFromRemoteDatabaseTask = APIService.GetAllPhotoModels();
 
             await Task.WhenAll(photoListFromLocalDatabaseTask, photoListFromRemoteDatabaseTask).ConfigureAwait(false);
 
-            return (await photoListFromLocalDatabaseTask ?? new List<PhotoModel>(),
-                    await photoListFromRemoteDatabaseTask ?? new List<PhotoModel>());
+            return (await photoListFromLocalDatabaseTask ?? Enumerable.Empty<PhotoModel>(),
+                    await photoListFromRemoteDatabaseTask ?? Enumerable.Empty<PhotoModel>());
         }
 
-        static (List<T> contactsInLocalDatabaseButNotStoredRemotely,
-            List<T> contactsInRemoteDatabaseButNotStoredLocally,
-            List<T> contactsInBothDatabases) GetMatchingModels<T>(List<T> modelListFromLocalDatabase,
-                                                                      List<T> modelListFromRemoteDatabase) where T : IBaseModel
+        static (IEnumerable<T> contactsInLocalDatabaseButNotStoredRemotely,
+            IEnumerable<T> contactsInRemoteDatabaseButNotStoredLocally,
+            IEnumerable<T> contactsInBothDatabases) GetMatchingModels<T>(IEnumerable<T> modelListFromLocalDatabase,
+                                                                      IEnumerable<T> modelListFromRemoteDatabase) where T : IBaseModel
         {
-            var modelIdFromRemoteDatabaseList = modelListFromRemoteDatabase?.Select(x => x.Id).ToList() ?? new List<string>();
-            var modelIdFromLocalDatabaseList = modelListFromLocalDatabase?.Select(x => x.Id).ToList() ?? new List<string>();
+            var modelIdFromRemoteDatabaseList = modelListFromRemoteDatabase?.Select(x => x.Id).ToList() ?? Enumerable.Empty<string>();
+            var modelIdFromLocalDatabaseList = modelListFromLocalDatabase?.Select(x => x.Id).ToList() ?? Enumerable.Empty<string>();
 
-            var modelIdsInRemoteDatabaseButNotStoredLocally = modelIdFromRemoteDatabaseList?.Except(modelIdFromLocalDatabaseList)?.ToList() ?? new List<string>();
-            var modelIdsInLocalDatabaseButNotStoredRemotely = modelIdFromLocalDatabaseList?.Except(modelIdFromRemoteDatabaseList)?.ToList() ?? new List<string>();
-            var modelIdsInBothDatabases = modelIdFromRemoteDatabaseList?.Where(x => modelIdFromLocalDatabaseList?.Contains(x) ?? false).ToList() ?? new List<string>();
+            var modelIdsInRemoteDatabaseButNotStoredLocally = modelIdFromRemoteDatabaseList?.Except(modelIdFromLocalDatabaseList)?.ToList() ?? Enumerable.Empty<string>();
+            var modelIdsInLocalDatabaseButNotStoredRemotely = modelIdFromLocalDatabaseList?.Except(modelIdFromRemoteDatabaseList)?.ToList() ?? Enumerable.Empty<string>();
+            var modelIdsInBothDatabases = modelIdFromRemoteDatabaseList?.Where(x => modelIdFromLocalDatabaseList?.Contains(x) ?? false).ToList() ?? Enumerable.Empty<string>();
 
-            var modelsInRemoteDatabaseButNotStoredLocally = modelListFromRemoteDatabase?.Where(x => modelIdsInRemoteDatabaseButNotStoredLocally?.Contains(x?.Id) ?? false).ToList() ?? new List<T>();
-            var modelsInLocalDatabaseButNotStoredRemotely = modelListFromLocalDatabase?.Where(x => modelIdsInLocalDatabaseButNotStoredRemotely?.Contains(x?.Id) ?? false).ToList() ?? new List<T>();
+            var modelsInRemoteDatabaseButNotStoredLocally = modelListFromRemoteDatabase?.Where(x => modelIdsInRemoteDatabaseButNotStoredLocally?.Contains(x?.Id) ?? false).ToList() ?? Enumerable.Empty<T>();
+            var modelsInLocalDatabaseButNotStoredRemotely = modelListFromLocalDatabase?.Where(x => modelIdsInLocalDatabaseButNotStoredRemotely?.Contains(x?.Id) ?? false).ToList() ?? Enumerable.Empty<T>();
 
             var modelsInBothDatabases = modelListFromLocalDatabase?.Where(x => modelIdsInBothDatabases?.Contains(x?.Id) ?? false)
-                                            .ToList() ?? new List<T>();
+                                            .ToList() ?? Enumerable.Empty<T>();
 
-            return (modelsInLocalDatabaseButNotStoredRemotely ?? new List<T>(),
-                    modelsInRemoteDatabaseButNotStoredLocally ?? new List<T>(),
-                    modelsInBothDatabases ?? new List<T>());
+            return (modelsInLocalDatabaseButNotStoredRemotely ?? Enumerable.Empty<T>(),
+                    modelsInRemoteDatabaseButNotStoredLocally ?? Enumerable.Empty<T>(),
+                    modelsInBothDatabases ?? Enumerable.Empty<T>());
 
         }
 
-        static (List<T> contactsToPatchToLocalDatabase,
-            List<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
-                                                                              List<T> modelListFromRemoteDatabase,
-                                                                              List<T> modelsFoundInBothDatabases) where T : IBaseModel
+        static (IEnumerable<T> contactsToPatchToLocalDatabase,
+            IEnumerable<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(IEnumerable<T> modelListFromLocalDatabase,
+                                                                              IEnumerable<T> modelListFromRemoteDatabase,
+                                                                              IEnumerable<T> modelsFoundInBothDatabases) where T : IBaseModel
         {
             var modelsToPatchToRemoteDatabase = new List<T>();
             var modelsToPatchToLocalDatabase = new List<T>();
@@ -73,12 +73,12 @@ namespace AzureBlobStorageSampleApp
                     modelsToPatchToLocalDatabase.Add(modelFromRemoteDatabase);
             }
 
-            return (modelsToPatchToLocalDatabase ?? new List<T>(),
-                    modelsToPatchToRemoteDatabase ?? new List<T>());
+            return (modelsToPatchToLocalDatabase ?? Enumerable.Empty<T>(),
+                    modelsToPatchToRemoteDatabase ?? Enumerable.Empty<T>());
         }
 
-        static Task SavePhotos(List<PhotoModel> photosToSaveToLocalDatabase,
-                                List<PhotoModel> photosToSaveToRemoteDatabase)
+        static Task SavePhotos(IEnumerable<PhotoModel> photosToSaveToLocalDatabase,
+                                IEnumerable<PhotoModel> photosToSaveToRemoteDatabase)
         {
             var savephotoTaskList = new List<Task>();
 

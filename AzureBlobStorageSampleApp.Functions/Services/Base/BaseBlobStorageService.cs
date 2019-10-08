@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Configuration;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -11,17 +10,12 @@ namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class BaseBlobStorageService
     {
-        #region Constant Fields
         readonly static Lazy<string> _connectionStringHolder = new Lazy<string>(() => Environment.GetEnvironmentVariable("BlobStorageConnectionString"));
         readonly static Lazy<CloudStorageAccount> _storageAccountHolder = new Lazy<CloudStorageAccount>(() => CloudStorageAccount.Parse(_connectionStringHolder.Value));
         readonly static Lazy<CloudBlobClient> _blobClientHolder = new Lazy<CloudBlobClient>(_storageAccountHolder.Value.CreateCloudBlobClient);
-        #endregion
 
-        #region Properties
         static CloudBlobClient BlobClient => _blobClientHolder.Value;
-        #endregion
 
-        #region Methods
         protected static async Task<CloudBlockBlob> SaveBlockBlob(string containerName, byte[] blob, string blobTitle)
         {
             var blobContainer = GetBlobContainer(containerName);
@@ -62,6 +56,5 @@ namespace AzureBlobStorageSampleApp.Functions
         }
 
         static CloudBlobContainer GetBlobContainer(string containerName) => BlobClient.GetContainerReference(containerName);
-        #endregion
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Configuration;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -12,11 +11,8 @@ namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class PhotosBlobStorageService : BaseBlobStorageService
     {
-        #region Constant Fields
         readonly static string _photosContainerName = Environment.GetEnvironmentVariable("PhotoContainerName");
-        #endregion
 
-        #region Methods
         public static async Task<PhotoModel> SavePhoto(byte[] photo, string photoTitle)
         {
             var photoBlob = await SaveBlockBlob(_photosContainerName, photo, photoTitle).ConfigureAwait(false);
@@ -32,6 +28,5 @@ namespace AzureBlobStorageSampleApp.Functions
 
             return photoList;
         }
-        #endregion
     }
 }

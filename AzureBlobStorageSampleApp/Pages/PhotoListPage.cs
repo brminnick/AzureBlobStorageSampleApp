@@ -9,11 +9,8 @@ namespace AzureBlobStorageSampleApp
 {
     public class PhotoListPage : BaseContentPage<PhotoListViewModel>
     {
-        #region Constant Fields
         readonly ListView _photosListView;
-        #endregion
 
-        #region Constructors
         public PhotoListPage()
         {
             var addPhotosButton = new ToolbarItem
@@ -49,9 +46,7 @@ namespace AzureBlobStorageSampleApp
 
             Content = relativeLayout;
         }
-        #endregion
 
-        #region Methods
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -73,6 +68,5 @@ namespace AzureBlobStorageSampleApp
 
         void HandleAddContactButtonClicked(object sender, EventArgs e) =>
             Device.BeginInvokeOnMainThread(async () => await Navigation.PushModalAsync(new BaseNavigationPage(new AddPhotoPage())));
-        #endregion
     }
 }

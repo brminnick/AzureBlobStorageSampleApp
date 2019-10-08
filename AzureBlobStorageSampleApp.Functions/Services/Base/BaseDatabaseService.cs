@@ -9,17 +9,15 @@ namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class BaseDatabaseService
     {
-        #region Constant Fields
         readonly static string _connectionString = Environment.GetEnvironmentVariable("PhotoDatabaseConnectionString");
-        #endregion
 
-        protected static async Task<TResult> PerformDatabaseFunction<TResult>(Func<Database, Task<TResult>> databaseFunction) where TResult : class
+        protected static async Task<TResult> PerformDatabaseFunction<TResult>(Func<Database, Task<TResult>> databaseFunction)
         {
             using (var connection = new Database(_connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance))
             {
                 try
                 {
-                    return await databaseFunction?.Invoke(connection) ?? default;
+                    return await (databaseFunction?.Invoke(connection) ?? Task.FromResult<TResult>(default)).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {

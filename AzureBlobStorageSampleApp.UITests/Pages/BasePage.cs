@@ -1,29 +1,15 @@
-﻿using System;
-using System.Linq;
-
-using Xamarin.UITest;
-using Xamarin.UITest.Queries;
+﻿using Xamarin.UITest;
 
 namespace AzureBlobStorageSampleApp.UITests
 {
     public abstract class BasePage
     {
-        #region Constructors
-        protected BasePage(IApp app, string pageTitle)
-        {
-            App = app;
-            Title = pageTitle;
-        }
-        #endregion
+        protected BasePage(IApp app, string pageTitle) => (App, Title) = (app, pageTitle);
 
-        #region Properties
         public string Title { get; }
         protected IApp App { get; }
-        #endregion
 
-        #region Methods
         public virtual void WaitForPageToLoad() => App.WaitForElement(Title);
-        #endregion
     }
 }
 

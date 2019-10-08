@@ -9,7 +9,6 @@ namespace AzureBlobStorageSampleApp
 {
     public class PhotoDetailsPage : BaseContentPage<PhotoDetailsViewModel>
     {
-        #region Constructors
         public PhotoDetailsPage(PhotoModel selectedPhoto)
         {
             ViewModel.SetPhotoCommand?.Execute(selectedPhoto);
@@ -37,9 +36,7 @@ namespace AzureBlobStorageSampleApp
                 }
             };
         }
-        #endregion
 
-        #region Classes
         class PhotoDetailLabel : Label
         {
             public PhotoDetailLabel(string automationId)
@@ -50,6 +47,5 @@ namespace AzureBlobStorageSampleApp
                 FontAttributes = FontAttributes.Bold;
             }
         }
-        #endregion
     }
 }

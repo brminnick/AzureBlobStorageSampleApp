@@ -1,5 +1,5 @@
 using System;
-
+using System.Threading.Tasks;
 using AzureBlobStorageSampleApp.Mobile.Shared;
 
 using FFImageLoading.Forms;
@@ -10,7 +10,6 @@ namespace AzureBlobStorageSampleApp
 {
     public class AddPhotoPage : BaseContentPage<AddPhotoViewModel>
     {
-        #region Constructors
         public AddPhotoPage()
         {
             ViewModel.NoCameraFound += HandleNoCameraFound;
@@ -84,33 +83,29 @@ namespace AzureBlobStorageSampleApp
 
             Content = new ScrollView { Content = stackLayout };
         }
-        #endregion
 
-        #region Methods
         void HandleSavePhotoCompleted(object sender, EventArgs e)
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
                 await DisplayAlert("Photo Saved", string.Empty, "OK");
-                ClosePage();
+                await ClosePage();
             });
         }
 
-        void HandleCancelToolbarItemClicked(object sender, EventArgs e)
+        async void HandleCancelToolbarItemClicked(object sender, EventArgs e)
         {
             if (!ViewModel.IsPhotoSaving)
-                ClosePage();
+                await ClosePage();
         }
 
-        void HandleSavePhotoFailed(object sender, string errorMessage) => DisplayErrorMessage(errorMessage);
+        async void HandleSavePhotoFailed(object sender, string errorMessage) => await DisplayErrorMessage(errorMessage);
 
-        void HandleNoCameraFound(object sender, EventArgs e) => DisplayErrorMessage("No Camera Found");
+        async void HandleNoCameraFound(object sender, EventArgs e) => await DisplayErrorMessage("No Camera Found");
 
-        void DisplayErrorMessage(string message) =>
-            Device.BeginInvokeOnMainThread(async () => await DisplayAlert("Error", message, "Ok"));
+        Task DisplayErrorMessage(string message) =>
+            Device.InvokeOnMainThreadAsync(() => DisplayAlert("Error", message, "Ok"));
 
-        void ClosePage() =>
-            Device.BeginInvokeOnMainThread(async () => await Navigation.PopModalAsync());
-        #endregion
+        Task ClosePage() => Device.InvokeOnMainThreadAsync(Navigation.PopModalAsync);
     }
 }
