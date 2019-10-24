@@ -129,6 +129,7 @@
         <Compile Include="AppDelegate.cs" />
         <Compile Include="Custom Renderers\PhotosListImageCellCustomRenderer.cs" />
         <Compile Include="Custom Renderers\NavigationPageCustomRenderer.cs" />
+        <Compile Include="Custom Renderers\EntryCustomRederer.cs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\AzureBlobStorageSampleApp\AzureBlobStorageSampleApp.csproj">
