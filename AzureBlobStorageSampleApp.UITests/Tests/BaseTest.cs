@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 using Xamarin.UITest;
 
@@ -8,23 +9,28 @@ namespace AzureBlobStorageSampleApp.UITests
     [TestFixture(Platform.Android)]
     public abstract class BaseTest
     {
+        AddPhotosPage? _addPhotosPage;
+        PhotoDetailPage? _photoDetailPage;
+        PhotoListPage? _photoListPage;
+        IApp? _app;
+
         protected BaseTest(Platform platform) => Platform = platform;
 
         protected Platform Platform { get; }
 
-        protected AddPhotosPage AddPhotosPage { get; private set; }
-        protected PhotoDetailPage PhotoDetailPage { get; private set; }
-        protected PhotoListPage PhotoListPage { get; private set; }
-        protected IApp App { get; private set; }
+        protected AddPhotosPage AddPhotosPage => _addPhotosPage ?? throw new NullReferenceException();
+        protected PhotoDetailPage PhotoDetailPage => _photoDetailPage ?? throw new NullReferenceException();
+        protected PhotoListPage PhotoListPage => _photoListPage ?? throw new NullReferenceException();
+        protected IApp App => _app ?? throw new NullReferenceException();
 
         [SetUp]
         protected virtual void BeforeEachTest()
         {
-            App = AppInitializer.StartApp(Platform);
+            _app = AppInitializer.StartApp(Platform);
 
-            AddPhotosPage = new AddPhotosPage(App);
-            PhotoDetailPage = new PhotoDetailPage(App);
-            PhotoListPage = new PhotoListPage(App);
+            _addPhotosPage = new AddPhotosPage(App);
+            _photoDetailPage = new PhotoDetailPage(App);
+            _photoListPage = new PhotoListPage(App);
 
             App.Screenshot("App Launched");
         }

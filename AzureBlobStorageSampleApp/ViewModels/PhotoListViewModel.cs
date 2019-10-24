@@ -12,11 +12,9 @@ namespace AzureBlobStorageSampleApp
     public class PhotoListViewModel : BaseViewModel
     {
         bool _isRefreshing;
-        ICommand _refreshCommand;
+        ICommand? _refreshCommand;
 
-        public ICommand RefreshCommand => _refreshCommand ??
-            (_refreshCommand = new AsyncCommand(ExecuteRefreshCommand));
-
+        public ICommand RefreshCommand => _refreshCommand ??= new AsyncCommand(ExecuteRefreshCommand);
         public ObservableCollection<PhotoModel> AllPhotosList { get; } = new ObservableCollection<PhotoModel>();
 
         public bool IsRefreshing
@@ -27,8 +25,6 @@ namespace AzureBlobStorageSampleApp
 
         async Task ExecuteRefreshCommand()
         {
-            IsRefreshing = true;
-
             try
             {
                 var oneSecondTaskToShowSpinner = Task.Delay(1000);

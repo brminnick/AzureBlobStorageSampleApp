@@ -18,36 +18,34 @@ namespace AzureBlobStorageSampleApp.iOS
         {
             base.ViewWillAppear(animated);
 
-            var thisElement = Element as ContentPage;
+            var thisElement = (ContentPage)Element;
 
             var leftNavList = new List<UIBarButtonItem>();
             var rightNavList = new List<UIBarButtonItem>();
 
-            var navigationItem = NavigationController.TopViewController.NavigationItem;
-
-            if (navigationItem?.LeftBarButtonItems?.Any() == true)
-                return;
-
-            for (var i = 0; i < thisElement.ToolbarItems.Count; i++)
+            if (NavigationController?.TopViewController?.NavigationItem is UINavigationItem navigationItem
+                && navigationItem.LeftBarButtonItems.Any())
             {
-
-                var reorder = (thisElement.ToolbarItems.Count - 1);
-                var itemPriority = thisElement.ToolbarItems[reorder - i].Priority;
-
-                if (itemPriority == 1)
+                for (var i = 0; i < thisElement.ToolbarItems.Count; i++)
                 {
-                    UIBarButtonItem LeftNavItems = navigationItem.RightBarButtonItems[i];
-                    leftNavList.Add(LeftNavItems);
+                    var reorder = thisElement.ToolbarItems.Count - 1;
+                    var itemPriority = thisElement.ToolbarItems[reorder - i].Priority;
+
+                    if (itemPriority is 1)
+                    {
+                        var leftNavItem = navigationItem.RightBarButtonItems[i];
+                        leftNavList.Add(leftNavItem);
+                    }
+                    else if (itemPriority is 0)
+                    {
+                        var rightNavItem = navigationItem.RightBarButtonItems[i];
+                        rightNavList.Add(rightNavItem);
+                    }
                 }
-                else if (itemPriority == 0)
-                {
-                    UIBarButtonItem RightNavItems = navigationItem.RightBarButtonItems[i];
-                    rightNavList.Add(RightNavItems);
-                }
+
+                navigationItem.SetLeftBarButtonItems(leftNavList.ToArray(), false);
+                navigationItem.SetRightBarButtonItems(rightNavList.ToArray(), false);
             }
-
-            navigationItem.SetLeftBarButtonItems(leftNavList.ToArray(), false);
-            navigationItem.SetRightBarButtonItems(rightNavList.ToArray(), false);
         }
     }
 }

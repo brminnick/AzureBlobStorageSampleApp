@@ -21,11 +21,14 @@ namespace AzureBlobStorageSampleApp
         readonly WeakEventManager _savePhotoCompletedEventManager = new WeakEventManager();
         readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
 
-        ICommand _savePhotoCommand, _takePhotoCommand;
-        string _photoTitle, _pageTitle = PageTitles.AddPhotoPage;
+        ICommand? _savePhotoCommand, _takePhotoCommand;
+        ImageSource? _photoImageSource;
+        PhotoBlobModel? _photoBlob;
+
+        string _photoTitle = string.Empty,
+            _pageTitle = PageTitles.AddPhotoPage;
+
         bool _isPhotoSaving;
-        ImageSource _photoImageSource;
-        PhotoBlobModel _photoBlob;
 
         public event EventHandler NoCameraFound
         {
@@ -45,11 +48,8 @@ namespace AzureBlobStorageSampleApp
             remove => _savePhotoFailedEventManager.RemoveEventHandler(value);
         }
 
-        public ICommand TakePhotoCommand => _takePhotoCommand ??
-            (_takePhotoCommand = new AsyncCommand(ExecuteTakePhotoCommand));
-
-        public ICommand SavePhotoCommand => _savePhotoCommand ??
-            (_savePhotoCommand = new AsyncCommand(() => ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle)));
+        public ICommand TakePhotoCommand => _takePhotoCommand ??= new AsyncCommand(ExecuteTakePhotoCommand);
+        public ICommand SavePhotoCommand => _savePhotoCommand ??= new AsyncCommand(() => ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle));
 
         public string PageTitle
         {
@@ -69,19 +69,19 @@ namespace AzureBlobStorageSampleApp
             set => SetProperty(ref _photoTitle, value, UpdatePageTilte);
         }
 
-        public ImageSource PhotoImageSource
+        public ImageSource? PhotoImageSource
         {
             get => _photoImageSource;
             set => SetProperty(ref _photoImageSource, value);
         }
 
-        PhotoBlobModel PhotoBlob
+        PhotoBlobModel? PhotoBlob
         {
             get => _photoBlob;
             set => SetProperty(ref _photoBlob, value, UpdatePhotoImageSource);
         }
 
-        async Task ExecuteSavePhotoCommand(PhotoBlobModel photoBlob, string photoTitle)
+        async Task ExecuteSavePhotoCommand(PhotoBlobModel? photoBlob, string photoTitle)
         {
             if (IsPhotoSaving)
                 return;
@@ -95,6 +95,12 @@ namespace AzureBlobStorageSampleApp
             if (string.IsNullOrWhiteSpace(photoTitle))
             {
                 OnSavePhotoFailed("Title Cannot Be Empty");
+                return;
+            }
+
+            if (photoBlob is null)
+            {
+                OnSavePhotoFailed("Photo Cannot Be Empty");
                 return;
             }
 
@@ -124,22 +130,18 @@ namespace AzureBlobStorageSampleApp
             if (mediaFile is null)
                 return;
 
-            PhotoBlob = new PhotoBlobModel
-            {
-                Image = ConvertStreamToByteArrary(mediaFile.GetStream())
-            };
+            PhotoBlob = new PhotoBlobModel(ConvertStreamToByteArrary(mediaFile.GetStream()));
         }
 
         byte[] ConvertStreamToByteArrary(Stream stream)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                stream.CopyTo(memoryStream);
-                return memoryStream.ToArray();
-            }
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+
+            return memoryStream.ToArray();
         }
 
-        async Task<MediaFile> GetMediaFileFromCamera()
+        async Task<MediaFile?> GetMediaFileFromCamera()
         {
             await CrossMedia.Current.Initialize().ConfigureAwait(false);
 
@@ -168,7 +170,7 @@ namespace AzureBlobStorageSampleApp
         }
 
         void UpdatePhotoImageSource() =>
-            PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(PhotoBlob.Image));
+            PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(PhotoBlob?.Image));
 
         void OnSavePhotoFailed(string errorMessage) => _savePhotoFailedEventManager.HandleEvent(this, errorMessage, nameof(SavePhotoFailed));
         void OnNoCameraFound() => _noCameraFoundEventManager.HandleEvent(this, EventArgs.Empty, nameof(NoCameraFound));

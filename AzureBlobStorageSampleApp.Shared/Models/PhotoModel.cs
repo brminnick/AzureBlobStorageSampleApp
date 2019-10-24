@@ -21,7 +21,7 @@ namespace AzureBlobStorageSampleApp.Shared
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
-        public string Url { get; set; }
-        public string Title { get; set; }
+        public string Url { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
     }
 }

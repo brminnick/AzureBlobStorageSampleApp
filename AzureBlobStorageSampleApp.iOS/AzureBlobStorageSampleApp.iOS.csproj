@@ -10,6 +10,8 @@
         <AssemblyName>AzureBlobStorageSampleApp.iOS</AssemblyName>
         <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+        <Nullable>enable</Nullable>
+        <LangVersion>8.0</LangVersion>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
     </PropertyGroup>

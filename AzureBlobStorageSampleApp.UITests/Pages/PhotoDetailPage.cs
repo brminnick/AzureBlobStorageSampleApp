@@ -18,7 +18,7 @@ namespace AzureBlobStorageSampleApp.UITests
             _photoImage = x => x.Marked(AutomationIdConstants.PhotoImage);
         }
 
-        public string PhotoTitle => App.Query(_photoTitleLabel)?.FirstOrDefault()?.Text;
+        public string PhotoTitle => App.Query(_photoTitleLabel).First().Text;
 
         public void WaitForImageToAppear()
         {

@@ -1,8 +1,8 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
 
 using AzureBlobStorageSampleApp.Shared;
 
@@ -40,21 +40,20 @@ namespace AzureBlobStorageSampleApp.Functions
             catch (Exception e)
             {
                 log.LogError(e, e.Message);
-                return new InternalServerErrorResult();
+                return new ObjectResult(e)
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
             }
         }
 
         static async Task<T> DeserializeMessage<T>(HttpRequestMessage requestMessage)
         {
-            using (var stream = await requestMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
-            using (var reader = new StreamReader(stream))
-            using (var json = new JsonTextReader(reader))
-            {
-                if (json is null)
-                    return default;
+            using var stream = await requestMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            using var reader = new StreamReader(stream);
+            using var json = new JsonTextReader(reader);
 
-                return await Task.Run(() => Serializer.Deserialize<T>(json)).ConfigureAwait(false);
-            }
+            return await Task.Run(() => Serializer.Deserialize<T>(json)).ConfigureAwait(false);
         }
     }
 }

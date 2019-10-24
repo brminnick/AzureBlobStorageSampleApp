@@ -6,16 +6,15 @@ namespace AzureBlobStorageSampleApp
 {
     public class PhotoDetailsViewModel : BaseViewModel
     {
-        Command<PhotoModel> _setPhotoCommand;
-        PhotoModel _photo;
+        Command<PhotoModel>? _setPhotoCommand;
+        PhotoModel? _photo;
 
-        public Command<PhotoModel> SetPhotoCommand => _setPhotoCommand ??
-            (_setPhotoCommand = new Command<PhotoModel>(photo => Photo = photo));
+        public Command<PhotoModel> SetPhotoCommand => _setPhotoCommand ??= new Command<PhotoModel>(photo => Photo = photo);
             
-        public ImageSource PhotoImageSource => ImageSource.FromUri(new System.Uri(Photo.Url));
-        public string PhotoTitle => Photo.Title;
+        public ImageSource PhotoImageSource => ImageSource.FromUri(new System.Uri(Photo?.Url ?? string.Empty));
+        public string PhotoTitle => Photo?.Title ?? string.Empty;
 
-        PhotoModel Photo
+        PhotoModel? Photo
         {
             get => _photo;
             set

@@ -18,6 +18,8 @@
         <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
         <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+        <Nullable>enable</Nullable>
+        <LangVersion>8.0</LangVersion>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
         <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>

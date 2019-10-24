@@ -1,5 +1,6 @@
+using System;
+using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -21,9 +22,13 @@ namespace AzureBlobStorageSampleApp.Functions
                 var photoList = PhotoDatabaseService.GetAllPhotos();
                 return new OkObjectResult(photoList);
             }
-            catch
+            catch (Exception e)
             {
-                return new InternalServerErrorResult();
+                log.LogError(e, e.Message);
+                return new ObjectResult(e)
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
             }
         }
     }

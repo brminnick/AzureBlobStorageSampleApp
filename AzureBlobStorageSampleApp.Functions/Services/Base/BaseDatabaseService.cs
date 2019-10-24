@@ -11,23 +11,41 @@ namespace AzureBlobStorageSampleApp.Functions
     {
         readonly static string _connectionString = Environment.GetEnvironmentVariable("PhotoDatabaseConnectionString");
 
+        protected static TResult PerformDatabaseFunction<TResult>(Func<Database, TResult> databaseFunction)
+        {
+            using var connection = new Database(_connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance);
+
+            try
+            {
+                return databaseFunction(connection);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("");
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.ToString());
+                Debug.WriteLine("");
+
+                throw;
+            }
+        }
+
         protected static async Task<TResult> PerformDatabaseFunction<TResult>(Func<Database, Task<TResult>> databaseFunction)
         {
-            using (var connection = new Database(_connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance))
-            {
-                try
-                {
-                    return await (databaseFunction?.Invoke(connection) ?? Task.FromResult<TResult>(default)).ConfigureAwait(false);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("");
-                    Debug.WriteLine(e.Message);
-                    Debug.WriteLine(e.ToString());
-                    Debug.WriteLine("");
+            using var connection = new Database(_connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance);
 
-                    throw;
-                }
+            try
+            {
+                return await databaseFunction(connection).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("");
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.ToString());
+                Debug.WriteLine("");
+
+                throw;
             }
         }
     }

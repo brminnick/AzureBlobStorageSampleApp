@@ -2,6 +2,8 @@
 {
     public class PhotoBlobModel
     {
-        public byte[] Image { get; set; }
+        public PhotoBlobModel(byte[] image) => Image = image;
+
+        public byte[] Image { get; }
     }
 }

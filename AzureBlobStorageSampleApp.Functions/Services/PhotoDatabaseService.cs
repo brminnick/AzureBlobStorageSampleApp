@@ -13,12 +13,12 @@ namespace AzureBlobStorageSampleApp.Functions
 
         public static List<PhotoModel> GetAllPhotos(Func<PhotoModel, bool> wherePredicate)
         {
-            return PerformDatabaseFunction(getAllPhotos).GetAwaiter().GetResult();
+            return PerformDatabaseFunction(getAllPhotos);
 
-            Task<List<PhotoModel>> getAllPhotos(Database dataContext)
+            List<PhotoModel> getAllPhotos(Database dataContext)
             {
                 var photoList = dataContext.Fetch<PhotoModel>().Where(wherePredicate).ToList();
-                return Task.FromResult(photoList);
+                return photoList;
             }
         }
 

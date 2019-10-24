@@ -17,7 +17,7 @@ namespace AzureBlobStorageSampleApp
             remove => _notifyPropertyChangedEventManager.RemoveEventHandler(value);
         }
 
-        protected void SetProperty<T>(ref T backingStore, T value, Action onChanged = null, [CallerMemberName] string propertyname = "")
+        protected void SetProperty<T>(ref T backingStore, in T value, in Action? onChanged = null, [CallerMemberName] in string propertyname = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return;
@@ -29,7 +29,7 @@ namespace AzureBlobStorageSampleApp
             OnPropertyChanged(propertyname);
         }
 
-        protected void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
+        protected void OnPropertyChanged([CallerMemberName] in string propertyName = "") =>
             _notifyPropertyChangedEventManager.HandleEvent(this, new PropertyChangedEventArgs(propertyName), nameof(INotifyPropertyChanged.PropertyChanged));
     }
 }

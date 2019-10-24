@@ -31,26 +31,19 @@ namespace AzureBlobStorageSampleApp.Functions
             var blobContainer = GetBlobContainer(containerName);
 
             var blobList = new List<T>();
-            BlobContinuationToken continuationToken = null;
+            BlobContinuationToken? continuationToken = null;
 
-            try
+            do
             {
-                do
+                var response = await blobContainer.ListBlobsSegmentedAsync(prefix, true, blobListingDetails, maxresultsPerQuery, continuationToken, null, null).ConfigureAwait(false);
+                continuationToken = response?.ContinuationToken;
+
+                foreach (var blob in response?.Results?.OfType<T>() ?? Enumerable.Empty<T>())
                 {
-                    var response = await blobContainer.ListBlobsSegmentedAsync(prefix, true, blobListingDetails, maxresultsPerQuery, continuationToken, null, null).ConfigureAwait(false);
-                    continuationToken = response?.ContinuationToken;
+                    blobList.Add(blob);
+                }
 
-                    foreach (var blob in response?.Results?.OfType<T>())
-                    {
-                        blobList.Add(blob);
-                    }
-
-                } while (continuationToken != null);
-            }
-            catch
-            {
-
-            }
+            } while (continuationToken != null);
 
             return blobList;
         }

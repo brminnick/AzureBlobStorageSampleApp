@@ -9,7 +9,7 @@ namespace AzureBlobStorageSampleApp
     {
         [Conditional("DEBUG")]
         public static void Log(Exception exception,
-                                IDictionary<string, string> properties = null,
+                                IDictionary<string, string>? properties = null,
                                 [CallerMemberName] string callerMemberName = "",
                                 [CallerLineNumber] int lineNumber = 0,
                                 [CallerFilePath] string filePath = "")

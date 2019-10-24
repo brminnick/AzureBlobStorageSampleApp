@@ -3,8 +3,9 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <AzureFunctionsVersion>v2</AzureFunctionsVersion>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>8.0</LangVersion>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>
