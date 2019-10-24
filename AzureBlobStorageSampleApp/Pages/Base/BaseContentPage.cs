@@ -1,4 +1,6 @@
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace AzureBlobStorageSampleApp
 {
@@ -6,6 +8,7 @@ namespace AzureBlobStorageSampleApp
     {
         protected BaseContentPage()
         {
+            On<iOS>().SetModalPresentationStyle(UIModalPresentationStyle.FormSheet);
             BindingContext = ViewModel;
             BackgroundColor = ColorConstants.PageBackgroundColor;
         }
