@@ -1,9 +1,16 @@
-﻿using Xamarin.Forms;
+﻿using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace AzureBlobStorageSampleApp
 {
-    public class App : Application
+    public class App : Xamarin.Forms.Application
     {
-        public App() => MainPage = new BaseNavigationPage(new PhotoListPage());
+        public App()
+        {
+            var navigationPage = new BaseNavigationPage(new PhotoListPage());
+            navigationPage.On<iOS>().SetPrefersLargeTitles(true);
+
+            MainPage = navigationPage;
+        }
     }
 }
