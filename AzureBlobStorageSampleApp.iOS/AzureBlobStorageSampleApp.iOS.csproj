@@ -127,7 +127,6 @@
     <ItemGroup>
         <Compile Include="Main.cs" />
         <Compile Include="AppDelegate.cs" />
-        <Compile Include="Custom Renderers\ContentPageCustomRenderer.cs" />
         <Compile Include="Custom Renderers\PhotosListImageCellCustomRenderer.cs" />
     </ItemGroup>
     <ItemGroup>

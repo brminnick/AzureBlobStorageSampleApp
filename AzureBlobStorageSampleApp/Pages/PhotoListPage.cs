@@ -60,7 +60,13 @@ namespace AzureBlobStorageSampleApp
             }
         }
 
-        void HandleAddContactButtonClicked(object sender, EventArgs e) =>
-            Device.BeginInvokeOnMainThread(async () => await Navigation.PushModalAsync(new BaseNavigationPage(new AddPhotoPage())));
+        async void HandleAddContactButtonClicked(object sender, EventArgs e)
+        {
+            //iOS uses UIModalPresentationStyle.FormSheet
+            if (Device.RuntimePlatform is Device.iOS)
+                await Navigation.PushModalAsync(new AddPhotoPage());
+            else
+                await Navigation.PushModalAsync(new BaseNavigationPage(new AddPhotoPage()));
+        }
     }
 }

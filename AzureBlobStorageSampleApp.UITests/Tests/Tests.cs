@@ -25,6 +25,8 @@ namespace AzureBlobStorageSampleApp.UITests
 
             //Act
             PhotoListPage.SelectPhoto(photoTitle);
+
+            PhotoDetailPage.WaitForPageToLoad();
             PhotoDetailPage.WaitForImageToAppear();
 
             //Assert

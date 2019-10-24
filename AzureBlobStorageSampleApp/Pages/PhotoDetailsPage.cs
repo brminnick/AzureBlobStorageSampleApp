@@ -19,7 +19,7 @@ namespace AzureBlobStorageSampleApp
             var photoImage = new CachedImage { AutomationId = AutomationIdConstants.PhotoImage };
             photoImage.SetBinding(CachedImage.SourceProperty, nameof(PhotoDetailsViewModel.PhotoImageSource));
 
-            Title = PageTitles.PhotoListPage;
+            Title = PageTitles.PhotoDetailsPage;
 
             Padding = new Thickness(20);
 

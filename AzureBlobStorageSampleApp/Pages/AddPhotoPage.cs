@@ -50,22 +50,13 @@ namespace AzureBlobStorageSampleApp
             saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(AddPhotoViewModel.SavePhotoCommand));
             ToolbarItems.Add(saveToobarItem);
 
-            var cancelToolbarItem = new ToolbarItem
-            {
-                Text = "Cancel",
-                Priority = 1,
-                AutomationId = AutomationIdConstants.CancelButton
-            };
-            cancelToolbarItem.Command = new AsyncCommand(ExecuteCancelButtonCommand);
-
-            ToolbarItems.Add(cancelToolbarItem);
-
             var activityIndicator = new ActivityIndicator();
             activityIndicator.SetBinding(IsVisibleProperty, nameof(AddPhotoViewModel.IsPhotoSaving));
             activityIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(AddPhotoViewModel.IsPhotoSaving));
 
             this.SetBinding(TitleProperty, nameof(AddPhotoViewModel.PhotoTitle));
 
+            Title = PageTitles.AddPhotoPage;
             Padding = new Thickness(20);
 
             var stackLayout = new StackLayout
@@ -83,7 +74,45 @@ namespace AzureBlobStorageSampleApp
                 }
             };
 
+            //Add title to UIModalPresentationStyle.FormSheet on iOS
+            if (Device.RuntimePlatform is Device.iOS)
+            {
+                var titleLabel = new Label
+                {
+                    FontAttributes = FontAttributes.Bold,
+                    FontSize = 24,
+                    Margin = new Thickness(0, 24, 5, 0)
+                };
+                titleLabel.SetBinding(Label.TextProperty, nameof(AddPhotoViewModel.PhotoTitle));
+                titleLabel.Text = PageTitles.AddPhotoPage;
+
+                stackLayout.Children.Insert(0, titleLabel);
+            }
+
+            //Cancel Button only needed for Android becuase iOS can swipe down to return to previous page
+            if (Device.RuntimePlatform is Device.Android)
+            {
+                var cancelToolbarItem = new ToolbarItem
+                {
+                    Text = "Cancel",
+                    Priority = 1,
+                    AutomationId = AutomationIdConstants.CancelButton
+                };
+                cancelToolbarItem.Command = new AsyncCommand(ExecuteCancelButtonCommand);
+
+                ToolbarItems.Add(cancelToolbarItem);
+            }
+
             Content = new ScrollView { Content = stackLayout };
+        }
+
+        protected override async void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            //Word-around to ensure page is popped from ModalStack on iOS: https://github.com/xamarin/Xamarin.Forms/issues/7878#issuecomment-544195130
+            if (Navigation.ModalStack.Count > 0)
+                await Navigation.PopModalAsync();
         }
 
         void HandleSavePhotoCompleted(object sender, EventArgs e)
@@ -99,7 +128,7 @@ namespace AzureBlobStorageSampleApp
 
         async void HandleNoCameraFound(object sender, EventArgs e) => await DisplayErrorMessage("No Camera Found");
 
-        Task ClosePage () => Device.InvokeOnMainThreadAsync(Navigation.PopModalAsync);
+        Task ClosePage() => Device.InvokeOnMainThreadAsync(Navigation.PopModalAsync);
 
         Task DisplayErrorMessage(string message) =>
             Device.InvokeOnMainThreadAsync(() => DisplayAlert("Error", message, "Ok"));
