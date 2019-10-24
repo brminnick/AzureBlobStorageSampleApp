@@ -2,9 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
 using AzureBlobStorageSampleApp.Mobile.Shared;
-
 using FFImageLoading.Forms;
-
 using Xamarin.Forms;
 
 namespace AzureBlobStorageSampleApp
@@ -13,6 +11,7 @@ namespace AzureBlobStorageSampleApp
     {
         public AddPhotoPage()
         {
+            Disappearing += HandleAddPhotoPageDisappearing;
             ViewModel.NoCameraFound += HandleNoCameraFound;
             ViewModel.SavePhotoCompleted += HandleSavePhotoCompleted;
             ViewModel.SavePhotoFailed += HandleSavePhotoFailed;
@@ -24,31 +23,15 @@ namespace AzureBlobStorageSampleApp
                 BackgroundColor = Color.White,
                 TextColor = ColorConstants.TextColor,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                ReturnType = ReturnType.Go
             };
             photoTitleEntry.SetBinding(Entry.TextProperty, nameof(AddPhotoViewModel.PhotoTitle));
-            photoTitleEntry.SetBinding(Entry.ReturnCommandProperty, nameof(AddPhotoViewModel.TakePhotoCommand));
 
-            var takePhotoButton = new Button
-            {
-                Text = "Take Photo",
-                BackgroundColor = ColorConstants.NavigationBarBackgroundColor,
-                TextColor = ColorConstants.TextColor
-            };
-            takePhotoButton.SetBinding(Button.CommandProperty, nameof(AddPhotoViewModel.TakePhotoCommand));
+            var takePhotoButton = new AddPhotoPageButton("Take Photo");
+            takePhotoButton.Clicked += HandleTakePhotoButtonClicked;
             takePhotoButton.SetBinding(IsEnabledProperty, new Binding(nameof(AddPhotoViewModel.IsPhotoSaving), BindingMode.Default, new InverseBooleanConverter(), ViewModel.IsPhotoSaving));
 
             var photoImage = new CachedImage();
             photoImage.SetBinding(CachedImage.SourceProperty, nameof(AddPhotoViewModel.PhotoImageSource));
-
-            var saveToobarItem = new ToolbarItem
-            {
-                Text = "Save",
-                Priority = 0,
-                AutomationId = AutomationIdConstants.AddPhotoPage_SaveButton,
-            };
-            saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(AddPhotoViewModel.SavePhotoCommand));
-            ToolbarItems.Add(saveToobarItem);
 
             var activityIndicator = new ActivityIndicator();
             activityIndicator.SetBinding(IsVisibleProperty, nameof(AddPhotoViewModel.IsPhotoSaving));
@@ -70,13 +53,12 @@ namespace AzureBlobStorageSampleApp
                     photoImage,
                     photoTitleEntry,
                     takePhotoButton,
-                    activityIndicator
                 }
             };
 
-            //Add title to UIModalPresentationStyle.FormSheet on iOS
             if (Device.RuntimePlatform is Device.iOS)
             {
+                //Add title to UIModalPresentationStyle.FormSheet on iOS
                 var titleLabel = new Label
                 {
                     FontAttributes = FontAttributes.Bold,
@@ -86,12 +68,15 @@ namespace AzureBlobStorageSampleApp
                 titleLabel.SetBinding(Label.TextProperty, nameof(AddPhotoViewModel.PhotoTitle));
                 titleLabel.Text = PageTitles.AddPhotoPage;
 
-                stackLayout.Children.Insert(0, titleLabel);
-            }
+                var savePhotoButton = new AddPhotoPageButton("Save");
+                savePhotoButton.SetBinding(Button.CommandProperty, nameof(AddPhotoViewModel.SavePhotoCommand));
 
-            //Cancel Button only needed for Android becuase iOS can swipe down to return to previous page
-            if (Device.RuntimePlatform is Device.Android)
+                stackLayout.Children.Insert(0, titleLabel);
+                stackLayout.Children.Add(savePhotoButton);
+            }
+            else
             {
+                //Cancel Button only needed for Android becuase iOS can swipe down to return to previous page
                 var cancelToolbarItem = new ToolbarItem
                 {
                     Text = "Cancel",
@@ -100,19 +85,46 @@ namespace AzureBlobStorageSampleApp
                 };
                 cancelToolbarItem.Command = new AsyncCommand(ExecuteCancelButtonCommand);
 
+                //Save Button can be added to the Navigation Bar
+                var saveToobarItem = new ToolbarItem
+                {
+                    Text = "Save",
+                    Priority = 0,
+                    AutomationId = AutomationIdConstants.AddPhotoPage_SaveButton,
+                };
+                saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(AddPhotoViewModel.SavePhotoCommand));
+
+                ToolbarItems.Add(saveToobarItem);
                 ToolbarItems.Add(cancelToolbarItem);
             }
+
+            stackLayout.Children.Add(activityIndicator);
 
             Content = new ScrollView { Content = stackLayout };
         }
 
-        void HandleSavePhotoCompleted(object sender, EventArgs e)
+        async void HandleTakePhotoButtonClicked(object sender, EventArgs e)
         {
-            Device.BeginInvokeOnMainThread(async () =>
+            if (ViewModel.TakePhotoCommand.CanExecute(null))
             {
-                await DisplayAlert("Photo Saved", string.Empty, "OK");
-                await ClosePage();
-            });
+                Disappearing -= HandleAddPhotoPageDisappearing;
+
+                await ViewModel.TakePhotoCommand.ExecuteAsync();
+
+                Disappearing += HandleAddPhotoPageDisappearing;
+            }
+        }
+
+        async void HandleSavePhotoCompleted(object sender, EventArgs e)
+        {
+            await DisplayAlert("Photo Saved", string.Empty, "OK");
+            await ClosePage();
+        }
+
+        async void HandleAddPhotoPageDisappearing(object sender, EventArgs e)
+        {
+            if (Navigation.ModalStack.Count > 0)
+                await Navigation.PopModalAsync();
         }
 
         async void HandleSavePhotoFailed(object sender, string errorMessage) => await DisplayErrorMessage(errorMessage);
@@ -128,6 +140,16 @@ namespace AzureBlobStorageSampleApp
         {
             if (!ViewModel.IsPhotoSaving)
                 await ClosePage();
+        }
+
+        class AddPhotoPageButton : Button
+        {
+            public AddPhotoPageButton(string text)
+            {
+                Text = text;
+                BackgroundColor = ColorConstants.NavigationBarBackgroundColor;
+                TextColor = Color.White;
+            }
         }
     }
 }

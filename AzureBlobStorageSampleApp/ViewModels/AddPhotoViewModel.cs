@@ -21,7 +21,7 @@ namespace AzureBlobStorageSampleApp
         readonly WeakEventManager _savePhotoCompletedEventManager = new WeakEventManager();
         readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
 
-        ICommand? _savePhotoCommand, _takePhotoCommand;
+        AsyncCommand? _savePhotoCommand, _takePhotoCommand;
         ImageSource? _photoImageSource;
         PhotoBlobModel? _photoBlob;
 
@@ -48,8 +48,9 @@ namespace AzureBlobStorageSampleApp
             remove => _savePhotoFailedEventManager.RemoveEventHandler(value);
         }
 
-        public ICommand TakePhotoCommand => _takePhotoCommand ??= new AsyncCommand(ExecuteTakePhotoCommand);
-        public ICommand SavePhotoCommand => _savePhotoCommand ??= new AsyncCommand(() => ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle));
+        public AsyncCommand TakePhotoCommand => _takePhotoCommand ??= new AsyncCommand(ExecuteTakePhotoCommand, _ => !IsPhotoSaving);
+        public AsyncCommand SavePhotoCommand => _savePhotoCommand ??= new AsyncCommand(() => ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle),
+                                                                                        _ => !IsPhotoSaving && !string.IsNullOrWhiteSpace(PhotoTitle) && PhotoImageSource != null);
 
         public string PageTitle
         {
@@ -60,19 +61,19 @@ namespace AzureBlobStorageSampleApp
         public bool IsPhotoSaving
         {
             get => _isPhotoSaving;
-            set => SetProperty(ref _isPhotoSaving, value);
+            set => SetProperty(ref _isPhotoSaving, value, async () => await UpdateCanExecute().ConfigureAwait(false));
         }
 
         public string PhotoTitle
         {
             get => _photoTitle;
-            set => SetProperty(ref _photoTitle, value, UpdatePageTilte);
+            set => SetProperty(ref _photoTitle, value, async () => await UpdatePageTilte().ConfigureAwait(false));
         }
 
         public ImageSource? PhotoImageSource
         {
             get => _photoImageSource;
-            set => SetProperty(ref _photoImageSource, value);
+            set => SetProperty(ref _photoImageSource, value, async () => await UpdateCanExecute().ConfigureAwait(false));
         }
 
         PhotoBlobModel? PhotoBlob
@@ -161,12 +162,23 @@ namespace AzureBlobStorageSampleApp
             }).ConfigureAwait(false);
         }
 
-        void UpdatePageTilte()
+        Task UpdatePageTilte()
         {
             if (string.IsNullOrWhiteSpace(PhotoTitle))
                 PageTitle = PageTitles.AddPhotoPage;
             else
                 PageTitle = PhotoTitle;
+
+            return UpdateCanExecute();
+        }
+
+        Task UpdateCanExecute()
+        {
+            return Device.InvokeOnMainThreadAsync(() =>
+            {
+                SavePhotoCommand.RaiseCanExecuteChanged();
+                TakePhotoCommand.RaiseCanExecuteChanged();
+            });
         }
 
         void UpdatePhotoImageSource() =>
