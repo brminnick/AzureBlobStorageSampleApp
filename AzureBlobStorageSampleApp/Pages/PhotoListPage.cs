@@ -12,6 +12,8 @@ namespace AzureBlobStorageSampleApp
 
         public PhotoListPage()
         {
+            ViewModel.RefreshFailed += HandleRefreshFailed;
+
             var addPhotosButton = new ToolbarItem
             {
                 Text = "+",
@@ -68,5 +70,8 @@ namespace AzureBlobStorageSampleApp
             else
                 await Navigation.PushModalAsync(new BaseNavigationPage(new AddPhotoPage()));
         }
+
+        async void HandleRefreshFailed(object sender, Exception exception) =>
+            await DisplayAlert("Get Photos Failed", exception.ToString(), "OK");
     }
 }

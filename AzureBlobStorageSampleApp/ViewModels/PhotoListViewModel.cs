@@ -1,9 +1,9 @@
 using System;
-using System.Linq;
-using System.Windows.Input;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
 using AzureBlobStorageSampleApp.Shared;
 
@@ -11,11 +11,19 @@ namespace AzureBlobStorageSampleApp
 {
     public class PhotoListViewModel : BaseViewModel
     {
+        readonly WeakEventManager<Exception> _refreshFailedEventManager = new WeakEventManager<Exception>();
+
         bool _isRefreshing;
         ICommand? _refreshCommand;
 
-        public ICommand RefreshCommand => _refreshCommand ??= new AsyncCommand(ExecuteRefreshCommand);
         public ObservableCollection<PhotoModel> AllPhotosList { get; } = new ObservableCollection<PhotoModel>();
+        public ICommand RefreshCommand => _refreshCommand ??= new AsyncCommand(ExecuteRefreshCommand);
+
+        public event EventHandler<Exception> RefreshFailed
+        {
+            add => _refreshFailedEventManager.AddEventHandler(value);
+            remove => _refreshFailedEventManager.RemoveEventHandler(value);
+        }
 
         public bool IsRefreshing
         {
@@ -45,11 +53,14 @@ namespace AzureBlobStorageSampleApp
             catch (Exception e)
             {
                 DebugServices.Log(e);
+                OnRefreshFailedEventManager(e);
             }
             finally
             {
                 IsRefreshing = false;
             }
         }
+
+        void OnRefreshFailedEventManager(Exception exception) => _refreshFailedEventManager.HandleEvent(this, exception, nameof(RefreshFailed));
     }
 }
