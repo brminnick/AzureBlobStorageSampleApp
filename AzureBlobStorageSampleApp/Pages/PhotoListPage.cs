@@ -44,11 +44,15 @@ namespace AzureBlobStorageSampleApp
             Content = _photosCollectionRefreshView;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
             _photosCollectionRefreshView.IsRefreshing = true;
+
+            //Work-around to ensure page is popped from ModalStack on iOS: https://github.com/xamarin/Xamarin.Forms/issues/7878#issuecomment-544195130
+            if (Navigation.ModalStack.Count > 0)
+                await Navigation.PopModalAsync();
         }
 
         async void HandlePhotoCollectionSelectionChanged(object sender, SelectionChangedEventArgs e)

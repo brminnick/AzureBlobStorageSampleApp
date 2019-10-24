@@ -106,15 +106,6 @@ namespace AzureBlobStorageSampleApp
             Content = new ScrollView { Content = stackLayout };
         }
 
-        protected override async void OnDisappearing()
-        {
-            base.OnDisappearing();
-
-            //Word-around to ensure page is popped from ModalStack on iOS: https://github.com/xamarin/Xamarin.Forms/issues/7878#issuecomment-544195130
-            if (Navigation.ModalStack.Count > 0)
-                await Navigation.PopModalAsync();
-        }
-
         void HandleSavePhotoCompleted(object sender, EventArgs e)
         {
             Device.BeginInvokeOnMainThread(async () =>

@@ -158,7 +158,7 @@ namespace AzureBlobStorageSampleApp
                     PhotoSize = PhotoSize.Small,
                     DefaultCamera = CameraDevice.Rear
                 });
-            });
+            }).ConfigureAwait(false);
         }
 
         void UpdatePageTilte()
