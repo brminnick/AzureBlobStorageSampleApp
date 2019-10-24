@@ -26,10 +26,10 @@ namespace AzureBlobStorageSampleApp.Functions
         {
             try
             {
-                var imageBlob = await DeserializeMessage<PhotoBlobModel>(req).ConfigureAwait(false);
-                log.LogInformation("Deserialized Image Blob");
+                var multipartMemoryStreamProvider = await req.Content.ReadAsMultipartAsync().ConfigureAwait(false);
+                var photoStream = await multipartMemoryStreamProvider.Contents[0].ReadAsStreamAsync().ConfigureAwait(false);
 
-                var photo = await PhotosBlobStorageService.SavePhoto(imageBlob.Image, title).ConfigureAwait(false);
+                var photo = await PhotosBlobStorageService.SavePhoto(photoStream, title).ConfigureAwait(false);
                 log.LogInformation("Saved Photo to Blob Storage");
 
                 await PhotoDatabaseService.InsertPhoto(photo).ConfigureAwait(false);
@@ -40,6 +40,7 @@ namespace AzureBlobStorageSampleApp.Functions
             catch (Exception e)
             {
                 log.LogError(e, e.Message);
+
                 return new ObjectResult(e)
                 {
                     StatusCode = (int)HttpStatusCode.InternalServerError

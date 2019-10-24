@@ -8,7 +8,6 @@ using Xamarin.Forms;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 
-using AzureBlobStorageSampleApp.Shared;
 using AzureBlobStorageSampleApp.Mobile.Shared;
 using AsyncAwaitBestPractices.MVVM;
 using AsyncAwaitBestPractices;
@@ -21,9 +20,9 @@ namespace AzureBlobStorageSampleApp
         readonly WeakEventManager _savePhotoCompletedEventManager = new WeakEventManager();
         readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
 
+        MediaFile? _photoMediaFile;
         AsyncCommand? _savePhotoCommand, _takePhotoCommand;
         ImageSource? _photoImageSource;
-        PhotoBlobModel? _photoBlob;
 
         string _photoTitle = string.Empty,
             _pageTitle = PageTitles.AddPhotoPage;
@@ -49,7 +48,7 @@ namespace AzureBlobStorageSampleApp
         }
 
         public AsyncCommand TakePhotoCommand => _takePhotoCommand ??= new AsyncCommand(ExecuteTakePhotoCommand, _ => !IsPhotoSaving);
-        public AsyncCommand SavePhotoCommand => _savePhotoCommand ??= new AsyncCommand(() => ExecuteSavePhotoCommand(PhotoBlob, PhotoTitle),
+        public AsyncCommand SavePhotoCommand => _savePhotoCommand ??= new AsyncCommand(() => ExecuteSavePhotoCommand(_photoMediaFile, PhotoTitle),
                                                                                         _ => !IsPhotoSaving && !string.IsNullOrWhiteSpace(PhotoTitle) && PhotoImageSource != null);
 
         public string PageTitle
@@ -76,13 +75,7 @@ namespace AzureBlobStorageSampleApp
             set => SetProperty(ref _photoImageSource, value, async () => await UpdateCanExecute().ConfigureAwait(false));
         }
 
-        PhotoBlobModel? PhotoBlob
-        {
-            get => _photoBlob;
-            set => SetProperty(ref _photoBlob, value, UpdatePhotoImageSource);
-        }
-
-        async Task ExecuteSavePhotoCommand(PhotoBlobModel? photoBlob, string photoTitle)
+        async Task ExecuteSavePhotoCommand(MediaFile? photoMediaFile, string photoTitle)
         {
             if (IsPhotoSaving)
                 return;
@@ -99,7 +92,7 @@ namespace AzureBlobStorageSampleApp
                 return;
             }
 
-            if (photoBlob is null)
+            if (photoMediaFile is null)
             {
                 OnSavePhotoFailed("Photo Cannot Be Empty");
                 return;
@@ -109,9 +102,10 @@ namespace AzureBlobStorageSampleApp
 
             try
             {
-                var photo = await APIService.PostPhotoBlob(photoBlob, photoTitle).ConfigureAwait(false);
+                var photoModel = await APIService.PostPhotoBlob(photoTitle, photoMediaFile.GetStream()).ConfigureAwait(false);
 
-                await PhotoDatabase.SavePhoto(photo).ConfigureAwait(false);
+                await PhotoDatabase.SavePhoto(photoModel).ConfigureAwait(false);
+
                 OnSavePhotoCompleted();
             }
             catch (Exception e)
@@ -131,15 +125,8 @@ namespace AzureBlobStorageSampleApp
             if (mediaFile is null)
                 return;
 
-            PhotoBlob = new PhotoBlobModel(ConvertStreamToByteArrary(mediaFile.GetStream()));
-        }
-
-        byte[] ConvertStreamToByteArrary(Stream stream)
-        {
-            using var memoryStream = new MemoryStream();
-            stream.CopyTo(memoryStream);
-
-            return memoryStream.ToArray();
+            _photoMediaFile = mediaFile;
+            UpdatePhotoImageSource(mediaFile.GetStream());
         }
 
         async Task<MediaFile?> GetMediaFileFromCamera()
@@ -181,8 +168,8 @@ namespace AzureBlobStorageSampleApp
             });
         }
 
-        void UpdatePhotoImageSource() =>
-            PhotoImageSource = ImageSource.FromStream(() => new MemoryStream(PhotoBlob?.Image));
+        void UpdatePhotoImageSource(Stream photoStream) =>
+            PhotoImageSource = ImageSource.FromStream(() => photoStream);
 
         void OnSavePhotoFailed(string errorMessage) => _savePhotoFailedEventManager.HandleEvent(this, errorMessage, nameof(SavePhotoFailed));
         void OnNoCameraFound() => _noCameraFoundEventManager.HandleEvent(this, EventArgs.Empty, nameof(NoCameraFound));

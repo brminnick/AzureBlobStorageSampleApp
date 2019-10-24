@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace AzureBlobStorageSampleApp
         static IPhotosAPI PhotosApiClient => _photosApiClientHolder.Value;
 
         public static Task<List<PhotoModel>> GetAllPhotoModels() => ExecutePollyFunction(PhotosApiClient.GetAllPhotoModels);
-        public static Task<PhotoModel> PostPhotoBlob(PhotoBlobModel photoBlob, string photoTitle) => ExecutePollyFunction(() => PhotosApiClient.PostPhotoBlob(photoBlob, photoTitle, BackendConstants.PostPhotoBlobFunctionKey));
+        public static Task<PhotoModel> PostPhotoBlob(string photoTitle, Stream photoStream) => ExecutePollyFunction(() => PhotosApiClient.PostPhotoBlob(photoTitle, new StreamPart(photoStream, $"{photoTitle}"), BackendConstants.PostPhotoBlobFunctionKey));
 
         static Task<T> ExecutePollyFunction<T>(Func<Task<T>> action, int numRetries = 3)
         {

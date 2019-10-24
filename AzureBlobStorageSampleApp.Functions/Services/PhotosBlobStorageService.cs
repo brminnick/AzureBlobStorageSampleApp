@@ -1,11 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-
-using Microsoft.WindowsAzure.Storage.Blob;
-
 using AzureBlobStorageSampleApp.Shared;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
@@ -13,9 +12,9 @@ namespace AzureBlobStorageSampleApp.Functions
     {
         readonly static string _photosContainerName = Environment.GetEnvironmentVariable("PhotoContainerName");
 
-        public static async Task<PhotoModel> SavePhoto(byte[] photo, string photoTitle)
+        public static async Task<PhotoModel> SavePhoto(Stream photoStream, string photoTitle)
         {
-            var photoBlob = await SaveBlockBlob(_photosContainerName, photo, photoTitle).ConfigureAwait(false);
+            var photoBlob = await SaveBlockBlob(_photosContainerName, photoStream, photoTitle).ConfigureAwait(false);
 
             return new PhotoModel { Title = photoTitle, Url = photoBlob.Uri.ToString() };
         }

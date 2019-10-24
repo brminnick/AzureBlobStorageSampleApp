@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -16,12 +16,12 @@ namespace AzureBlobStorageSampleApp.Functions
 
         static CloudBlobClient BlobClient => _blobClientHolder.Value;
 
-        protected static async Task<CloudBlockBlob> SaveBlockBlob(string containerName, byte[] blob, string blobTitle)
+        protected static async Task<CloudBlockBlob> SaveBlockBlob(string containerName, Stream photoStream, string blobTitle)
         {
             var blobContainer = GetBlobContainer(containerName);
 
             var blockBlob = blobContainer.GetBlockBlobReference(blobTitle);
-            await blockBlob.UploadFromByteArrayAsync(blob, 0, blob.Length).ConfigureAwait(false);
+            await blockBlob.UploadFromStreamAsync(photoStream).ConfigureAwait(false);
 
             return blockBlob;
         }

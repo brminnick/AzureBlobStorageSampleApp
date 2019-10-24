@@ -14,6 +14,5 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Models\IBaseModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PhotoModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\PhotoBlobModel.cs" />
   </ItemGroup>
 </Project>
