@@ -12,7 +12,7 @@ namespace AzureBlobStorageSampleApp.UITests
 
         public PhotoListPage(IApp app) : base(app, PageTitles.PhotoListPage)
         {
-            _photoListView = x => x.Marked(AutomationIdConstants.PhotoListView);
+            _photoListView = x => x.Marked(AutomationIdConstants.PhotosCollectionView);
             _addPhotoButton = x => x.Marked(AutomationIdConstants.AddPhotoButton);
         }
 

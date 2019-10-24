@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using AsyncAwaitBestPractices.MVVM;
 using AzureBlobStorageSampleApp.Mobile.Shared;
 
 using FFImageLoading.Forms;
@@ -55,7 +56,7 @@ namespace AzureBlobStorageSampleApp
                 Priority = 1,
                 AutomationId = AutomationIdConstants.CancelButton
             };
-            cancelToolbarItem.Clicked += HandleCancelToolbarItemClicked;
+            cancelToolbarItem.Command = new AsyncCommand(ExecuteCancelButtonCommand);
 
             ToolbarItems.Add(cancelToolbarItem);
 
@@ -94,19 +95,19 @@ namespace AzureBlobStorageSampleApp
             });
         }
 
-        async void HandleCancelToolbarItemClicked(object sender, EventArgs e)
-        {
-            if (!ViewModel.IsPhotoSaving)
-                await ClosePage();
-        }
-
         async void HandleSavePhotoFailed(object sender, string errorMessage) => await DisplayErrorMessage(errorMessage);
 
         async void HandleNoCameraFound(object sender, EventArgs e) => await DisplayErrorMessage("No Camera Found");
 
+        Task ClosePage () => Device.InvokeOnMainThreadAsync(Navigation.PopModalAsync);
+
         Task DisplayErrorMessage(string message) =>
             Device.InvokeOnMainThreadAsync(() => DisplayAlert("Error", message, "Ok"));
 
-        Task ClosePage() => Device.InvokeOnMainThreadAsync(Navigation.PopModalAsync);
+        async Task ExecuteCancelButtonCommand()
+        {
+            if (!ViewModel.IsPhotoSaving)
+                await ClosePage();
+        }
     }
 }

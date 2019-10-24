@@ -14,10 +14,10 @@ namespace AzureBlobStorageSampleApp
             ViewModel.SetPhotoCommand?.Execute(selectedPhoto);
 
             var photoTitleLabel = new PhotoDetailLabel(AutomationIdConstants.PhotoTitleLabel);
-            photoTitleLabel.SetBinding(Label.TextProperty, nameof(ViewModel.PhotoTitle));
+            photoTitleLabel.SetBinding(Label.TextProperty, nameof(PhotoDetailsViewModel.PhotoTitle));
 
             var photoImage = new CachedImage { AutomationId = AutomationIdConstants.PhotoImage };
-            photoImage.SetBinding(CachedImage.SourceProperty, nameof(ViewModel.PhotoImageSource));
+            photoImage.SetBinding(CachedImage.SourceProperty, nameof(PhotoDetailsViewModel.PhotoImageSource));
 
             Title = PageTitles.PhotoListPage;
 

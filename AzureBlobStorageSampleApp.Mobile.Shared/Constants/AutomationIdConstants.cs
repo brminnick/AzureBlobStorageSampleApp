@@ -4,7 +4,7 @@
     {
         #region Photo List Page
         public const string AddPhotoButton = nameof(AddPhotoButton);
-        public const string PhotoListView = nameof(PhotoListView);
+        public const string PhotosCollectionView = nameof(PhotosCollectionView);
         #endregion
 
         #region Photo Detail Page

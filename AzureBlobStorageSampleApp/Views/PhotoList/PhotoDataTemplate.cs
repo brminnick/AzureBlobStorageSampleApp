@@ -4,15 +4,19 @@ using AzureBlobStorageSampleApp.Shared;
 
 namespace AzureBlobStorageSampleApp
 {
-    public class PhotoViewCell : ViewCell
+    public class PhotoDataTemplate : DataTemplate
     {
-        public PhotoViewCell()
+        public PhotoDataTemplate() : base(CreatePhotoDataTemplate)
+        {
+        }
+
+        static Grid CreatePhotoDataTemplate()
         {
             var photo = new Image
             {
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
-                Margin = new Thickness(0,5),
+                Margin = new Thickness(0, 5),
                 Aspect = Aspect.AspectFit,
                 BackgroundColor = ColorConstants.PageBackgroundColor
             };
@@ -23,7 +27,7 @@ namespace AzureBlobStorageSampleApp
 
             var grid = new Grid
             {
-                Margin = new Thickness(10, 0),
+                Padding = new Thickness(10, 0),
                 ColumnSpacing = 10,
                 RowDefinitions = {
                     new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) },},
@@ -34,7 +38,7 @@ namespace AzureBlobStorageSampleApp
             grid.Children.Add(photo, 0, 0);
             grid.Children.Add(title, 1, 0);
 
-            View = grid;
+            return grid;
         }
     }
 }

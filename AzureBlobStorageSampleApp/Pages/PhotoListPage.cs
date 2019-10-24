@@ -1,15 +1,14 @@
 using System;
-
-using Xamarin.Forms;
-
-using AzureBlobStorageSampleApp.Shared;
+using System.Linq;
 using AzureBlobStorageSampleApp.Mobile.Shared;
+using AzureBlobStorageSampleApp.Shared;
+using Xamarin.Forms;
 
 namespace AzureBlobStorageSampleApp
 {
     public class PhotoListPage : BaseContentPage<PhotoListViewModel>
     {
-        readonly ListView _photosListView;
+        readonly RefreshView _photosCollectionRefreshView;
 
         public PhotoListPage()
         {
@@ -22,47 +21,42 @@ namespace AzureBlobStorageSampleApp
 
             ToolbarItems.Add(addPhotosButton);
 
-            _photosListView = new ListView(ListViewCachingStrategy.RecycleElement)
+            var photoCollectionView = new CollectionView
             {
-                ItemTemplate = new DataTemplate(typeof(PhotoViewCell)),
-                IsPullToRefreshEnabled = true,
-                BackgroundColor = Color.Transparent,
-                AutomationId = AutomationIdConstants.PhotoListView,
-                SeparatorVisibility = SeparatorVisibility.None
+                ItemTemplate = new PhotoDataTemplate(),
+                SelectionMode = SelectionMode.Single,
+                AutomationId = AutomationIdConstants.PhotosCollectionView,
             };
-            _photosListView.ItemTapped += HandleItemTapped;
-            _photosListView.SetBinding(ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
-            _photosListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllPhotosList));
-            _photosListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
+            photoCollectionView.SelectionChanged += HandlePhotoCollectionSelectionChanged;
+            photoCollectionView.SetBinding(CollectionView.ItemsSourceProperty, nameof(PhotoListViewModel.AllPhotosList));
+
+            _photosCollectionRefreshView = new RefreshView
+            {
+                Content = photoCollectionView
+            };
+            _photosCollectionRefreshView.SetBinding(RefreshView.IsRefreshingProperty, nameof(PhotoListViewModel.IsRefreshing));
+            _photosCollectionRefreshView.SetBinding(RefreshView.CommandProperty, nameof(PhotoListViewModel.RefreshCommand));
 
             Title = PageTitles.PhotoListPage;
 
-            var relativeLayout = new RelativeLayout();
-            relativeLayout.Children.Add(_photosListView,
-                                       Constraint.Constant(0),
-                                       Constraint.Constant(0),
-                                       Constraint.RelativeToParent(parent => parent.Width),
-                                       Constraint.RelativeToParent(parent => parent.Height));
-
-            Content = relativeLayout;
+            Content = _photosCollectionRefreshView;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            Device.BeginInvokeOnMainThread(_photosListView.BeginRefresh);
+            _photosCollectionRefreshView.IsRefreshing = true;
         }
 
-        void HandleItemTapped(object sender, ItemTappedEventArgs e)
+        async void HandlePhotoCollectionSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ListView listView && e?.Item is PhotoModel selectedPhoto)
+            var collectionView = (CollectionView)sender;
+            collectionView.SelectedItem = null;
+
+            if (e.CurrentSelection.FirstOrDefault() is PhotoModel selectedPhoto)
             {
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    await Navigation.PushAsync(new PhotoDetailsPage(selectedPhoto));
-                    listView.SelectedItem = null;
-                });
+                await Navigation.PushAsync(new PhotoDetailsPage(selectedPhoto));
             }
         }
 

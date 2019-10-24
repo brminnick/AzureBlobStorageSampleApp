@@ -29,9 +29,9 @@ namespace AzureBlobStorageSampleApp
             {
                 var oneSecondTaskToShowSpinner = Task.Delay(1000);
 
-                await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
+                await DatabaseSyncService.SyncRemoteAndLocalDatabases();
 
-                var unsortedPhotosList = await PhotoDatabase.GetAllPhotos().ConfigureAwait(false);
+                var unsortedPhotosList = await PhotoDatabase.GetAllPhotos();
 
                 AllPhotosList.Clear();
 
@@ -40,7 +40,7 @@ namespace AzureBlobStorageSampleApp
                     AllPhotosList.Add(photo);
                 }
 
-                await oneSecondTaskToShowSpinner.ConfigureAwait(false);
+                await oneSecondTaskToShowSpinner;
             }
             catch (Exception e)
             {
