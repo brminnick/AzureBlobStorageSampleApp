@@ -18,14 +18,15 @@ namespace AzureBlobStorageSampleApp
 
             var photoTitleEntry = new Entry
             {
+                ClearButtonVisibility = ClearButtonVisibility.WhileEditing,
                 Placeholder = "Title",
                 BackgroundColor = Color.White,
                 TextColor = ColorConstants.TextColor,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 ReturnType = ReturnType.Go
             };
-            photoTitleEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhotoTitle));
-            photoTitleEntry.SetBinding(Entry.ReturnCommandProperty, nameof(ViewModel.TakePhotoCommand));
+            photoTitleEntry.SetBinding(Entry.TextProperty, nameof(AddPhotoViewModel.PhotoTitle));
+            photoTitleEntry.SetBinding(Entry.ReturnCommandProperty, nameof(AddPhotoViewModel.TakePhotoCommand));
 
             var takePhotoButton = new Button
             {
@@ -33,11 +34,11 @@ namespace AzureBlobStorageSampleApp
                 BackgroundColor = ColorConstants.NavigationBarBackgroundColor,
                 TextColor = ColorConstants.TextColor
             };
-            takePhotoButton.SetBinding(Button.CommandProperty, nameof(ViewModel.TakePhotoCommand));
-            takePhotoButton.SetBinding(IsEnabledProperty, new Binding(nameof(ViewModel.IsPhotoSaving), BindingMode.Default, new InverseBooleanConverter(), ViewModel.IsPhotoSaving));
+            takePhotoButton.SetBinding(Button.CommandProperty, nameof(AddPhotoViewModel.TakePhotoCommand));
+            takePhotoButton.SetBinding(IsEnabledProperty, new Binding(nameof(AddPhotoViewModel.IsPhotoSaving), BindingMode.Default, new InverseBooleanConverter(), ViewModel.IsPhotoSaving));
 
             var photoImage = new CachedImage();
-            photoImage.SetBinding(CachedImage.SourceProperty, nameof(ViewModel.PhotoImageSource));
+            photoImage.SetBinding(CachedImage.SourceProperty, nameof(AddPhotoViewModel.PhotoImageSource));
 
             var saveToobarItem = new ToolbarItem
             {
@@ -45,7 +46,7 @@ namespace AzureBlobStorageSampleApp
                 Priority = 0,
                 AutomationId = AutomationIdConstants.AddPhotoPage_SaveButton,
             };
-            saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ViewModel.SavePhotoCommand));
+            saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(AddPhotoViewModel.SavePhotoCommand));
             ToolbarItems.Add(saveToobarItem);
 
             var cancelToolbarItem = new ToolbarItem
@@ -59,10 +60,10 @@ namespace AzureBlobStorageSampleApp
             ToolbarItems.Add(cancelToolbarItem);
 
             var activityIndicator = new ActivityIndicator();
-            activityIndicator.SetBinding(IsVisibleProperty, nameof(ViewModel.IsPhotoSaving));
-            activityIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(ViewModel.IsPhotoSaving));
+            activityIndicator.SetBinding(IsVisibleProperty, nameof(AddPhotoViewModel.IsPhotoSaving));
+            activityIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(AddPhotoViewModel.IsPhotoSaving));
 
-            this.SetBinding(TitleProperty, nameof(ViewModel.PhotoTitle));
+            this.SetBinding(TitleProperty, nameof(AddPhotoViewModel.PhotoTitle));
 
             Padding = new Thickness(20);
 

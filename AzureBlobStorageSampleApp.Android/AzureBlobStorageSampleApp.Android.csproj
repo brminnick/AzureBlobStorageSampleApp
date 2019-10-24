@@ -15,8 +15,9 @@
         <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
         <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
         <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-        <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
         <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
         <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
@@ -56,7 +57,7 @@
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
         <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-        <PackageReference Include="Xamarin.Forms" Version="4.3.0.851321-pre3" />
+        <PackageReference Include="Xamarin.Forms" Version="4.3.0.908675" />
         <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
         <PackageReference Include="Polly" Version="7.1.1" />
         <PackageReference Include="Refit" Version="4.7.51" />
