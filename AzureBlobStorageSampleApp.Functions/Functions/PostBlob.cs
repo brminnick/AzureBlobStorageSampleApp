@@ -22,7 +22,7 @@ namespace AzureBlobStorageSampleApp.Functions
         static JsonSerializer Serializer => _serializerHolder.Value;
 
         [FunctionName(nameof(PostBlob))]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostBlob/{title}")]HttpRequestMessage req, string title, ILogger log)
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PostBlob/{title}")]HttpRequestMessage req, string title, ILogger log)
         {
             try
             {

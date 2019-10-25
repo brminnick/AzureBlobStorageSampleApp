@@ -115,10 +115,13 @@ namespace AzureBlobStorageSampleApp
             }
         }
 
-        async void HandleSavePhotoCompleted(object sender, EventArgs e)
+        void HandleSavePhotoCompleted(object sender, EventArgs e)
         {
-            await DisplayAlert("Photo Saved", string.Empty, "OK");
-            await ClosePage();
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await DisplayAlert("Photo Saved", string.Empty, "OK");
+                await ClosePage();
+            });
         }
 
         async void HandleAddPhotoPageDisappearing(object sender, EventArgs e)

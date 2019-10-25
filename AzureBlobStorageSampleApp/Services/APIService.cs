@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-
 using AzureBlobStorageSampleApp.Mobile.Shared;
 using AzureBlobStorageSampleApp.Shared;
-
+using Plugin.Media.Abstractions;
 using Polly;
 using Refit;
 
@@ -19,7 +17,7 @@ namespace AzureBlobStorageSampleApp
         static IPhotosAPI PhotosApiClient => _photosApiClientHolder.Value;
 
         public static Task<List<PhotoModel>> GetAllPhotoModels() => ExecutePollyFunction(PhotosApiClient.GetAllPhotoModels);
-        public static Task<PhotoModel> PostPhotoBlob(string photoTitle, Stream photoStream) => ExecutePollyFunction(() => PhotosApiClient.PostPhotoBlob(photoTitle, new StreamPart(photoStream, $"{photoTitle}"), BackendConstants.PostPhotoBlobFunctionKey));
+        public static Task<PhotoModel> PostPhotoBlob(string photoTitle, MediaFile photoMediaFile) => ExecutePollyFunction(() => PhotosApiClient.PostPhotoBlob(photoTitle, new StreamPart(photoMediaFile.GetStream(), $"{photoTitle}")));
 
         static Task<T> ExecutePollyFunction<T>(Func<Task<T>> action, int numRetries = 3)
         {

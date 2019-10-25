@@ -15,6 +15,6 @@ namespace AzureBlobStorageSampleApp
         Task<List<PhotoModel>> GetAllPhotoModels();
 
         [Post("/PostBlob/{photoTitle}"), Multipart]
-        Task<PhotoModel> PostPhotoBlob(string photoTitle, [AliasAs("photo")] StreamPart photoStream, [AliasAs("code")] string functionKey);
+        Task<PhotoModel> PostPhotoBlob(string photoTitle, [AliasAs("photo")] StreamPart photoStream);
     }
 }

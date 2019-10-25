@@ -80,12 +80,6 @@ namespace AzureBlobStorageSampleApp
             if (IsPhotoSaving)
                 return;
 
-            if (string.IsNullOrWhiteSpace(BackendConstants.PostPhotoBlobFunctionKey))
-            {
-                OnSavePhotoFailed("Invalid Azure Function Key");
-                return;
-            }
-
             if (string.IsNullOrWhiteSpace(photoTitle))
             {
                 OnSavePhotoFailed("Title Cannot Be Empty");
@@ -102,7 +96,7 @@ namespace AzureBlobStorageSampleApp
 
             try
             {
-                var photoModel = await APIService.PostPhotoBlob(photoTitle, photoMediaFile.GetStream()).ConfigureAwait(false);
+                var photoModel = await APIService.PostPhotoBlob(photoTitle, photoMediaFile).ConfigureAwait(false);
 
                 await PhotoDatabase.SavePhoto(photoModel).ConfigureAwait(false);
 
