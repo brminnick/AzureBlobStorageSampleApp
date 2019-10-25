@@ -196,5 +196,3 @@ Title varchar(128) NOT NULL
 
 1. In [BackendConstants.cs](https://github.com/brminnick/AzureBlobStorageSampleApp/blob/master/AzureBlobStorageSampleApp.Mobile.Shared/Constants/BackendConstants.cs), you'll need to customize the value of `FunctionsAPIBaseUrl` to match yours
 - Notice the URL in the upper right of the photo.  You'll only need to change the subdomain to match yours (ie. it is important that the URL in code retains the `/api`).
-
-![](https://user-images.githubusercontent.com/3628580/52378976-2abb5a00-2a37-11e9-9fd0-5cbb68e01439.png)
