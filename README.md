@@ -198,6 +198,3 @@ Title varchar(128) NOT NULL
 - Notice the URL in the upper right of the photo.  You'll only need to change the subdomain to match yours (ie. it is important that the URL in code retains the `/api`).
 
 ![](https://user-images.githubusercontent.com/3628580/52378976-2abb5a00-2a37-11e9-9fd0-5cbb68e01439.png)
-
-2. In [BackendConstants.cs](https://github.com/brminnick/AzureBlobStorageSampleApp/blob/master/AzureBlobStorageSampleApp.Mobile.Shared/Constants/BackendConstants.cs), change the value of `PostPhotoBlobFunctionKey` to match your Azure Function Key for PostBlob
-- As in the image above, click Manage under the PostBlob function.  Then under the section `Function Keys`, you'll see a function key with the name `default`.  You can `Click to show` to see the value or simply click the `Copy` action.  Careful that you specifically use the one under the section `Function Keys`.
