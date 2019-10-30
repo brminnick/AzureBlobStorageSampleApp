@@ -4,7 +4,7 @@ namespace AzureBlobStorageSampleApp
 {
     public class BaseNavigationPage : NavigationPage
     {
-        public BaseNavigationPage(ContentPage root) : base(root)
+        public BaseNavigationPage(Page root) : base(root)
         {
             BarBackgroundColor = ColorConstants.NavigationBarBackgroundColor;
             BarTextColor = ColorConstants.NavigationBarTextColor;
