@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureBlobStorageSampleApp.Shared;
-using NPoco;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class PhotoDatabaseService : BaseDatabaseService
     {
-        public static List<PhotoModel> GetAllPhotos() => GetAllPhotos(x => true);
+        public static Task<List<PhotoModel>> GetAllPhotos() => GetAllPhotos(x => true);
 
-        public static List<PhotoModel> GetAllPhotos(Func<PhotoModel, bool> wherePredicate)
+        public static Task<List<PhotoModel>> GetAllPhotos(Func<PhotoModel, bool> wherePredicate)
         {
             return PerformDatabaseFunction(getAllPhotos);
 
-            List<PhotoModel> getAllPhotos(Database dataContext)
+            List<PhotoModel> getAllPhotos(PhotosContext dataContext)
             {
-                var photoList = dataContext.Fetch<PhotoModel>().Where(wherePredicate).ToList();
+                var photoList = dataContext.Photos.Where(wherePredicate).ToList();
                 return photoList;
             }
         }
@@ -26,7 +25,7 @@ namespace AzureBlobStorageSampleApp.Functions
         {
             return PerformDatabaseFunction(insertPhoto);
 
-            async Task<PhotoModel> insertPhoto(Database dataContext)
+            async Task<PhotoModel> insertPhoto(PhotosContext dataContext)
             {
                 if (string.IsNullOrWhiteSpace(photo.Id))
                     photo.Id = Guid.NewGuid().ToString();
@@ -36,7 +35,7 @@ namespace AzureBlobStorageSampleApp.Functions
                 photo.CreatedAt = currentTime;
                 photo.UpdatedAt = currentTime;
 
-                await dataContext.InsertAsync(photo).ConfigureAwait(false);
+                await dataContext.AddAsync(photo).ConfigureAwait(false);
 
                 return photo;
             }
@@ -46,16 +45,16 @@ namespace AzureBlobStorageSampleApp.Functions
         {
             return PerformDatabaseFunction(updatePhoto);
 
-            async Task<PhotoModel> updatePhoto(Database dataContext)
+            PhotoModel updatePhoto(PhotosContext dataContext)
             {
-                var photoFromDatabase = dataContext.Fetch<PhotoModel>().Single(y => y.Id.Equals(photo.Id));
+                var photoFromDatabase = dataContext.Photos.Single(y => y.Id.Equals(photo.Id));
 
                 photoFromDatabase.IsDeleted = photo.IsDeleted;
                 photoFromDatabase.Title = photo.Title;
                 photoFromDatabase.Url = photo.Url;
                 photoFromDatabase.UpdatedAt = DateTimeOffset.UtcNow;
 
-                await dataContext.UpdateAsync(photoFromDatabase).ConfigureAwait(false);
+                dataContext.Update(photoFromDatabase);
 
                 return photoFromDatabase;
             }
@@ -65,11 +64,11 @@ namespace AzureBlobStorageSampleApp.Functions
         {
             return PerformDatabaseFunction(removePunModelDatabaseFunction);
 
-            async Task<PhotoModel> removePunModelDatabaseFunction(Database dataContext)
+            PhotoModel removePunModelDatabaseFunction(PhotosContext dataContext)
             {
-                var photoFromDatabase = dataContext.Fetch<PhotoModel>().Single(x => x.Id.Equals(id));
+                var photoFromDatabase = dataContext.Photos.Single(x => x.Id.Equals(id));
 
-                await dataContext.DeleteAsync(photoFromDatabase).ConfigureAwait(false);
+                dataContext.Remove(photoFromDatabase);
 
                 return photoFromDatabase;
             }

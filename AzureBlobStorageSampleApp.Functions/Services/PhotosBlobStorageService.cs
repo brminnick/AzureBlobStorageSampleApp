@@ -10,7 +10,7 @@ namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class PhotosBlobStorageService : BaseBlobStorageService
     {
-        readonly static string _photosContainerName = Environment.GetEnvironmentVariable("PhotoContainerName");
+        readonly static string _photosContainerName = Environment.GetEnvironmentVariable("PhotoContainerName") ?? string.Empty;
 
         public static async Task<PhotoModel> SavePhoto(Stream photoStream, string photoTitle)
         {

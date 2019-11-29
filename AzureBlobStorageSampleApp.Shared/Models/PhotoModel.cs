@@ -1,6 +1,7 @@
 using System;
 #if BACKEND
-using NPoco;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 #elif MOBILE
 using SQLite;
 #endif
@@ -8,7 +9,7 @@ using SQLite;
 namespace AzureBlobStorageSampleApp.Shared
 {
 #if BACKEND
-    [TableName("PhotoModels"), PrimaryKey(nameof(Id), AutoIncrement = false)]
+    [Table("PhotoModels")]
 #endif
     public class PhotoModel : IBaseModel
     {
@@ -16,6 +17,8 @@ namespace AzureBlobStorageSampleApp.Shared
 
 #if MOBILE
         [PrimaryKey, Unique]
+#else
+        [Key]
 #endif
         public string Id { get; set; }
         public DateTimeOffset CreatedAt { get; set; }

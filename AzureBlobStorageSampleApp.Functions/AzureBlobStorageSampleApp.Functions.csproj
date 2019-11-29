@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <AzureFunctionsVersion>v2</AzureFunctionsVersion>
-        <LangVersion>8.0</LangVersion>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <AzureFunctionsVersion>v3-preview</AzureFunctionsVersion>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -16,9 +15,8 @@
         <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.30-beta2" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-        <PackageReference Include="NPoco" Version="4.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.1" />
+        <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.0-preview2" />
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
     </ItemGroup>

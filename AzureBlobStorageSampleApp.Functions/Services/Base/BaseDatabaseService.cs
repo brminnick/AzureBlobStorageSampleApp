@@ -1,23 +1,27 @@
+using AzureBlobStorageSampleApp.Shared;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data.Common;
 using System.Diagnostics;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
-
-using NPoco;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
     public abstract class BaseDatabaseService
     {
-        readonly static string _connectionString = Environment.GetEnvironmentVariable("PhotoDatabaseConnectionString");
+        readonly static string _connectionString = Environment.GetEnvironmentVariable("PhotoDatabaseConnectionString") ?? string.Empty;
 
-        protected static TResult PerformDatabaseFunction<TResult>(Func<Database, TResult> databaseFunction)
+        protected static async Task<TResult> PerformDatabaseFunction<TResult>(Func<PhotosContext, TResult> databaseFunction)
         {
-            using var connection = new Database(_connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance);
+            using var connection = new PhotosContext();
 
             try
             {
-                return databaseFunction(connection);
+                var result = databaseFunction(connection);
+
+                await connection.SaveChangesAsync().ConfigureAwait(false);
+
+                return result;
             }
             catch (Exception e)
             {
@@ -30,13 +34,18 @@ namespace AzureBlobStorageSampleApp.Functions
             }
         }
 
-        protected static async Task<TResult> PerformDatabaseFunction<TResult>(Func<Database, Task<TResult>> databaseFunction)
+        protected static async Task<TResult> PerformDatabaseFunction<TResult>(Func<PhotosContext, Task<TResult>> databaseFunction)
         {
-            using var connection = new Database(_connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance);
+            using var connection = new PhotosContext();
 
             try
             {
-                return await databaseFunction(connection).ConfigureAwait(false);
+                var result = await databaseFunction(connection).ConfigureAwait(false);
+
+                await connection.SaveChangesAsync().ConfigureAwait(false);
+
+                return result;
+
             }
             catch (Exception e)
             {
@@ -47,6 +56,13 @@ namespace AzureBlobStorageSampleApp.Functions
 
                 throw;
             }
+        }
+
+        protected class PhotosContext : DbContext
+        {
+            public DbSet<PhotoModel>? Photos { get; set; }
+
+            protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer(_connectionString);
         }
     }
 }
