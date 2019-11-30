@@ -19,13 +19,12 @@ namespace AzureBlobStorageSampleApp.Functions
             return new PhotoModel { Title = photoTitle, Url = photoBlob.Uri.ToString() };
         }
 
-        public static async Task<List<PhotoModel>> GetAllPhotos()
+        public static async IAsyncEnumerable<PhotoModel> GetAllPhotos()
         {
-            var blobList = await GetBlobs<CloudBlockBlob>(_photosContainerName).ConfigureAwait(false);
-
-            var photoList = blobList.Select(x => new PhotoModel { Url = x.Uri.ToString() }).ToList();
-
-            return photoList;
+            await foreach (var blob in GetBlobs<CloudBlockBlob>(_photosContainerName).ConfigureAwait(false))
+            {
+                yield return new PhotoModel { Url = blob.Uri.ToString() };
+            }
         }
     }
 }

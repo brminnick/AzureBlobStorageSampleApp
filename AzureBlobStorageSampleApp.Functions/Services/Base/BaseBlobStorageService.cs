@@ -26,11 +26,10 @@ namespace AzureBlobStorageSampleApp.Functions
             return blockBlob;
         }
 
-        protected static async Task<List<T>> GetBlobs<T>(string containerName, string prefix = "", int? maxresultsPerQuery = null, BlobListingDetails blobListingDetails = BlobListingDetails.None) where T : ICloudBlob
+        protected static async IAsyncEnumerable<T> GetBlobs<T>(string containerName, string prefix = "", int? maxresultsPerQuery = null, BlobListingDetails blobListingDetails = BlobListingDetails.None) where T : ICloudBlob
         {
             var blobContainer = GetBlobContainer(containerName);
 
-            var blobList = new List<T>();
             BlobContinuationToken? continuationToken = null;
 
             do
@@ -40,12 +39,10 @@ namespace AzureBlobStorageSampleApp.Functions
 
                 foreach (var blob in response?.Results?.OfType<T>() ?? Enumerable.Empty<T>())
                 {
-                    blobList.Add(blob);
+                    yield return blob;
                 }
 
             } while (continuationToken != null);
-
-            return blobList;
         }
 
         static CloudBlobContainer GetBlobContainer(string containerName) => BlobClient.GetContainerReference(containerName);
