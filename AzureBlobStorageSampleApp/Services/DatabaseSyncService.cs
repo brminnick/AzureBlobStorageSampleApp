@@ -16,7 +16,7 @@ namespace AzureBlobStorageSampleApp
 
             var (photosToPatchToLocalDatabase, photosToPatchToRemoteDatabase) = GetModelsThatNeedUpdating(photoListFromLocalDatabase, photoListFromRemoteDatabase, photosInBothDatabases);
 
-            await SavePhotos(photosInRemoteDatabaseButNotStoredLocally.Concat(photosToPatchToLocalDatabase).ToList(), photosInLocalDatabaseButNotStoredRemotely.Concat(photosToPatchToRemoteDatabase).ToList());
+            await SavePhotos(photosInRemoteDatabaseButNotStoredLocally.Concat(photosToPatchToLocalDatabase).ToList(), photosInLocalDatabaseButNotStoredRemotely.Concat(photosToPatchToRemoteDatabase).ToList()).ConfigureAwait(false);
         }
 
         static async Task<(IEnumerable<PhotoModel> photoListFromLocalDatabase,
@@ -27,8 +27,8 @@ namespace AzureBlobStorageSampleApp
 
             await Task.WhenAll(photoListFromLocalDatabaseTask, photoListFromRemoteDatabaseTask).ConfigureAwait(false);
 
-            return (await photoListFromLocalDatabaseTask ?? Enumerable.Empty<PhotoModel>(),
-                    await photoListFromRemoteDatabaseTask ?? Enumerable.Empty<PhotoModel>());
+            return (await photoListFromLocalDatabaseTask.ConfigureAwait(false) ?? Enumerable.Empty<PhotoModel>(),
+                    await photoListFromRemoteDatabaseTask.ConfigureAwait(false) ?? Enumerable.Empty<PhotoModel>());
         }
 
         static (IEnumerable<T> contactsInLocalDatabaseButNotStoredRemotely,

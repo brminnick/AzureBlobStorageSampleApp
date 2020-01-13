@@ -1,9 +1,8 @@
-using AzureBlobStorageSampleApp.Shared;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Data.Common;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using AzureBlobStorageSampleApp.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace AzureBlobStorageSampleApp.Functions
 {

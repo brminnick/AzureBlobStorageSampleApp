@@ -6,11 +6,11 @@ using AzureBlobStorageSampleApp.Shared;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public abstract class PhotoDatabaseService : BaseDatabaseService
+    public class PhotoDatabaseService : BaseDatabaseService
     {
-        public static Task<List<PhotoModel>> GetAllPhotos() => GetAllPhotos(x => true);
+        public Task<List<PhotoModel>> GetAllPhotos() => GetAllPhotos(x => true);
 
-        public static Task<List<PhotoModel>> GetAllPhotos(Func<PhotoModel, bool> wherePredicate)
+        public Task<List<PhotoModel>> GetAllPhotos(Func<PhotoModel, bool> wherePredicate)
         {
             return PerformDatabaseFunction(getAllPhotos);
 
@@ -21,7 +21,7 @@ namespace AzureBlobStorageSampleApp.Functions
             }
         }
 
-        public static Task<PhotoModel> InsertPhoto(PhotoModel photo)
+        public Task<PhotoModel> InsertPhoto(PhotoModel photo)
         {
             return PerformDatabaseFunction(insertPhoto);
 
@@ -41,7 +41,7 @@ namespace AzureBlobStorageSampleApp.Functions
             }
         }
 
-        public static Task<PhotoModel> UpdatePhoto(PhotoModel photo)
+        public Task<PhotoModel> UpdatePhoto(PhotoModel photo)
         {
             return PerformDatabaseFunction(updatePhoto);
 
@@ -60,7 +60,7 @@ namespace AzureBlobStorageSampleApp.Functions
             }
         }
 
-        public static Task<PhotoModel> DeletePhoto(string id)
+        public Task<PhotoModel> DeletePhoto(string id)
         {
             return PerformDatabaseFunction(removePunModelDatabaseFunction);
 
