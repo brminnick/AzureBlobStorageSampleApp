@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
-        <AzureFunctionsVersion>v3-preview</AzureFunctionsVersion>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AzureFunctionsVersion>v3</AzureFunctionsVersion>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <Nullable>enable</Nullable>
     </PropertyGroup>
