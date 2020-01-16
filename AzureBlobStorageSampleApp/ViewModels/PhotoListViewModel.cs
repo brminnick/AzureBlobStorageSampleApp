@@ -48,7 +48,7 @@ namespace AzureBlobStorageSampleApp
                     AllPhotosList.Add(photo);
                 }
 
-                await oneSecondTaskToShowSpinner;
+                await oneSecondTaskToShowSpinner.ConfigureAwait(false);
             }
             catch (Exception e)
             {
