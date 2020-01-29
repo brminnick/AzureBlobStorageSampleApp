@@ -59,6 +59,8 @@ namespace AzureBlobStorageSampleApp.Functions
 
         protected class PhotosContext : DbContext
         {
+            public PhotosContext() => Database.EnsureCreated();
+
             public DbSet<PhotoModel>? Photos { get; set; }
 
             protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlServer(_connectionString);
