@@ -80,33 +80,7 @@ The Xamarin app also allows the user to take photos and save them to [Azure Blob
 3. Click Apply
 15. Click Create
 
-### 3. Create the PhotoModel Table in the SQL Database
-
-1. In the Azure Portal, navigate to the SQL Database we created in a previous step
-
-![](https://user-images.githubusercontent.com/3628580/52374023-32283680-2a2a-11e9-9b66-ff0fe65227f7.png)
-
-2. Select Query editor (preview).  Using Authorization type: SQL server Authentication, login with the server credentials we created in the previous step.
-
-![image](https://user-images.githubusercontent.com/3628580/52374674-d9599d80-2a2b-11e9-88fb-4a97eba4e333.png)
-
-3. In the query field, copy and paste the following.  And then Click Run.  
-
-```
-CREATE TABLE PhotoModels(
-Id varchar(128) NOT NULL PRIMARY KEY,
-CreatedAt datetimeoffset(7) NOT NULL,
-UpdatedAt datetimeoffset(7) NOT NULL,
-IsDeleted bit NOT NULL,
-Url varchar(255) NOT NULL,
-Title varchar(128) NOT NULL
-);
-```
-![image](https://user-images.githubusercontent.com/3628580/52374508-749e4300-2a2b-11e9-92b4-1d0814087d0f.png)
-
-4. If successful, when you click Tables, you should see the above Table. If you don't see anything immediately, try refreshing the web page.
-
-### 4. Get SQL Database Connection String
+### 3. Get SQL Database Connection String
 
 ![](https://user-images.githubusercontent.com/13558917/29198409-9d0dcab2-7df8-11e7-8c41-4797228ee4ab.png)
 
@@ -119,7 +93,7 @@ Title varchar(128) NOT NULL
 4. In the text editor, change "{your_username}" and "{your_password}" to match the SQL Database Username / Password created above
 - Don't use my username / password because it won't work ;-)
 
-### 5. Connect SQL Database to the Azure Function App
+### 4. Connect SQL Database to the Azure Function App
 
 ![](https://user-images.githubusercontent.com/13558917/29198794-f3673e5e-7dfb-11e7-89fc-ee042fe34704.png)
 
@@ -132,7 +106,7 @@ Title varchar(128) NOT NULL
 - Copy/paste the Azure SQL connection string from the text editor as the corresponding value
 5. Scroll up and click Save (Note! If you don't click Save - the change will not be reflected.)
 
-### 6. Create a (Blob) Storage Account
+### 5. Create a (Blob) Storage Account
 
 ![](https://user-images.githubusercontent.com/3628580/52376722-d57c4a00-2a30-11e9-8c09-1374df8de3db.png)
 
@@ -150,7 +124,7 @@ Title varchar(128) NOT NULL
 
 3. Click Review and Create
 
-### 7. Create a Blob container
+### 6. Create a Blob container
 1. Click into the Storage account you created.
 
 ![image](https://user-images.githubusercontent.com/3628580/52377203-2cceea00-2a32-11e9-840c-4cdf66c7d90f.png)
@@ -162,7 +136,7 @@ Title varchar(128) NOT NULL
 4. Use "photos" for the Name, and for the purposes of this exercise, chose Public access level: Container (anonymous read access for containers and blob)
 - In future apps, you'll likely want to increase the privacy of your blob containers
 
-### 8. Connect the (Blob) Storage Account to the Azure Function App
+### 7. Connect the (Blob) Storage Account to the Azure Function App
 
 ![](https://user-images.githubusercontent.com/3628580/52377592-5f2d1700-2a33-11e9-90e1-7703890ce69a.png)
 
@@ -190,7 +164,7 @@ Title varchar(128) NOT NULL
 
 6. Scroll up and click Save (Note! If you don't click Save - the change will not be reflected.)
 
-### 11. Configure Azure Function Url & Keys for Mobile App
+### 8. Configure Azure Function Url & Keys for Mobile App
 
 ![](https://user-images.githubusercontent.com/3628580/52378689-5c7ff100-2a36-11e9-81ff-caf04aa70767.png)
 
