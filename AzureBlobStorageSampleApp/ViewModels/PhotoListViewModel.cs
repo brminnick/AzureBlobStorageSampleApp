@@ -77,6 +77,6 @@ namespace AzureBlobStorageSampleApp
             }
         }
 
-        void OnRefreshFailedEventManager(Exception exception) => _refreshFailedEventManager.HandleEvent(this, exception, nameof(RefreshFailed));
+        void OnRefreshFailedEventManager(Exception exception) => _refreshFailedEventManager.RaiseEvent(this, exception, nameof(RefreshFailed));
     }
 }

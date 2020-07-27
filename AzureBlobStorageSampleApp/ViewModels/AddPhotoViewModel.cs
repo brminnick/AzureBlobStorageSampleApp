@@ -165,8 +165,8 @@ namespace AzureBlobStorageSampleApp
         void UpdatePhotoImageSource(Stream photoStream) =>
             PhotoImageSource = ImageSource.FromStream(() => photoStream);
 
-        void OnSavePhotoFailed(string errorMessage) => _savePhotoFailedEventManager.HandleEvent(this, errorMessage, nameof(SavePhotoFailed));
-        void OnNoCameraFound() => _noCameraFoundEventManager.HandleEvent(this, EventArgs.Empty, nameof(NoCameraFound));
-        void OnSavePhotoCompleted() => _savePhotoCompletedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SavePhotoCompleted));
+        void OnSavePhotoFailed(string errorMessage) => _savePhotoFailedEventManager.RaiseEvent(this, errorMessage, nameof(SavePhotoFailed));
+        void OnNoCameraFound() => _noCameraFoundEventManager.RaiseEvent(this, EventArgs.Empty, nameof(NoCameraFound));
+        void OnSavePhotoCompleted() => _savePhotoCompletedEventManager.RaiseEvent(this, EventArgs.Empty, nameof(SavePhotoCompleted));
     }
 }
