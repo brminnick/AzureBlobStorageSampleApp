@@ -1,16 +1,12 @@
 using System;
 using System.IO;
-using System.Windows.Input;
 using System.Threading.Tasks;
-
-using Xamarin.Forms;
-
+using AsyncAwaitBestPractices;
+using AsyncAwaitBestPractices.MVVM;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
-
-using AzureBlobStorageSampleApp.Mobile.Shared;
-using AsyncAwaitBestPractices.MVVM;
-using AsyncAwaitBestPractices;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace AzureBlobStorageSampleApp
 {
@@ -21,11 +17,10 @@ namespace AzureBlobStorageSampleApp
         readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
 
         MediaFile? _photoMediaFile;
-        AsyncCommand? _savePhotoCommand, _takePhotoCommand;
         ImageSource? _photoImageSource;
+        AsyncCommand? _savePhotoCommand, _takePhotoCommand;
 
-        string _photoTitle = string.Empty,
-            _pageTitle = PageTitles.AddPhotoPage;
+        string _photoTitle = string.Empty;
 
         bool _isPhotoSaving;
 
@@ -51,12 +46,6 @@ namespace AzureBlobStorageSampleApp
         public AsyncCommand SavePhotoCommand => _savePhotoCommand ??= new AsyncCommand(() => ExecuteSavePhotoCommand(_photoMediaFile, PhotoTitle),
                                                                                         _ => !IsPhotoSaving && !string.IsNullOrWhiteSpace(PhotoTitle) && PhotoImageSource != null);
 
-        public string PageTitle
-        {
-            get => _pageTitle;
-            set => SetProperty(ref _pageTitle, value);
-        }
-
         public bool IsPhotoSaving
         {
             get => _isPhotoSaving;
@@ -66,7 +55,7 @@ namespace AzureBlobStorageSampleApp
         public string PhotoTitle
         {
             get => _photoTitle;
-            set => SetProperty(ref _photoTitle, value, async () => await UpdatePageTilte().ConfigureAwait(false));
+            set => SetProperty(ref _photoTitle, value, async () => await UpdateCanExecute().ConfigureAwait(false));
         }
 
         public ImageSource? PhotoImageSource
@@ -133,7 +122,7 @@ namespace AzureBlobStorageSampleApp
                 return null;
             }
 
-            return await Device.InvokeOnMainThreadAsync(() =>
+            return await MainThread.InvokeOnMainThreadAsync(() =>
             {
                 return CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                 {
@@ -143,30 +132,17 @@ namespace AzureBlobStorageSampleApp
             }).ConfigureAwait(false);
         }
 
-        Task UpdatePageTilte()
+        Task UpdateCanExecute() => MainThread.InvokeOnMainThreadAsync(() =>
         {
-            if (string.IsNullOrWhiteSpace(PhotoTitle))
-                PageTitle = PageTitles.AddPhotoPage;
-            else
-                PageTitle = PhotoTitle;
-
-            return UpdateCanExecute();
-        }
-
-        Task UpdateCanExecute()
-        {
-            return Device.InvokeOnMainThreadAsync(() =>
-            {
-                SavePhotoCommand.RaiseCanExecuteChanged();
-                TakePhotoCommand.RaiseCanExecuteChanged();
-            });
-        }
+            SavePhotoCommand.RaiseCanExecuteChanged();
+            TakePhotoCommand.RaiseCanExecuteChanged();
+        });
 
         void UpdatePhotoImageSource(Stream photoStream) =>
             PhotoImageSource = ImageSource.FromStream(() => photoStream);
 
-        void OnSavePhotoFailed(string errorMessage) => _savePhotoFailedEventManager.RaiseEvent(this, errorMessage, nameof(SavePhotoFailed));
         void OnNoCameraFound() => _noCameraFoundEventManager.RaiseEvent(this, EventArgs.Empty, nameof(NoCameraFound));
         void OnSavePhotoCompleted() => _savePhotoCompletedEventManager.RaiseEvent(this, EventArgs.Empty, nameof(SavePhotoCompleted));
+        void OnSavePhotoFailed(in string errorMessage) => _savePhotoFailedEventManager.RaiseEvent(this, errorMessage, nameof(SavePhotoFailed));
     }
 }

@@ -1,6 +1,8 @@
-﻿using Xamarin.Forms;
-
-using AzureBlobStorageSampleApp.Shared;
+﻿using AzureBlobStorageSampleApp.Shared;
+using Xamarin.Forms;
+using Xamarin.Forms.Markup;
+using static AzureBlobStorageSampleApp.MarkupExtensions;
+using static Xamarin.Forms.Markup.GridRowsColumns;
 
 namespace AzureBlobStorageSampleApp
 {
@@ -10,35 +12,26 @@ namespace AzureBlobStorageSampleApp
         {
         }
 
-        static Grid CreatePhotoDataTemplate()
+        static Grid CreatePhotoDataTemplate() => new Grid
         {
-            var photo = new Image
+            RowDefinitions = Rows.Define(AbsoluteGridLength(50)),
+
+            ColumnDefinitions = Columns.Define(
+                (Column.Image, AbsoluteGridLength(50)),
+                (Column.Title, Star)),
+
+            Children =
             {
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                Margin = new Thickness(0, 5),
-                Aspect = Aspect.AspectFit,
-                BackgroundColor = ColorConstants.PageBackgroundColor
-            };
-            photo.SetBinding(Image.SourceProperty, nameof(PhotoModel.Url));
+                new Image { BackgroundColor = ColorConstants.PageBackgroundColor }.Center().Margin(0, 5)
+                    .Column(Column.Image)
+                    .Bind(Image.SourceProperty, nameof(PhotoModel.Url)),
 
-            var title = new Label { VerticalTextAlignment = TextAlignment.Center };
-            title.SetBinding(Label.TextProperty, nameof(PhotoModel.Title));
+                new Label().TextCenterVertical()
+                    .Column(Column.Title)
+                    .Bind(Label.TextProperty, nameof(PhotoModel.Title))
+            }
+        }.Padding(10, 0);
 
-            var grid = new Grid
-            {
-                Padding = new Thickness(10, 0),
-                ColumnSpacing = 10,
-                RowDefinitions = {
-                    new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) },},
-                ColumnDefinitions = {
-                    new ColumnDefinition { Width = new GridLength(50, GridUnitType.Absolute) },
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },}
-            };
-            grid.Children.Add(photo, 0, 0);
-            grid.Children.Add(title, 1, 0);
-
-            return grid;
-        }
+        enum Column { Image, Title }
     }
 }

@@ -5,52 +5,25 @@ using AzureBlobStorageSampleApp.Shared;
 
 namespace AzureBlobStorageSampleApp
 {
-	public abstract class PhotoDatabase : BaseDatabase
-	{
-		public static async Task SavePhoto(PhotoModel photo)
-		{
-			var databaseConnection = await GetDatabaseConnection<PhotoModel>().ConfigureAwait(false);
+    public abstract class PhotoDatabase : BaseDatabase
+    {
+        public static Task SavePhoto(PhotoModel photo) => ExecuteDatabaseFunction<PhotoModel, int>(databaseConnection => databaseConnection.InsertOrReplaceAsync(photo));
 
-			await AttemptAndRetry(() => databaseConnection.InsertOrReplaceAsync(photo)).ConfigureAwait(false);
-		}
+        public static Task<int> GetPhotoCount() => ExecuteDatabaseFunction<PhotoModel, int>(databaseConnection => databaseConnection.Table<PhotoModel>().CountAsync());
 
-		public static async Task<int> GetPhotoCount()
-		{
-			var databaseConnection = await GetDatabaseConnection<PhotoModel>().ConfigureAwait(false);
+        public static Task<List<PhotoModel>> GetAllPhotos() => ExecuteDatabaseFunction<PhotoModel, List<PhotoModel>>(databaseConnection => databaseConnection.Table<PhotoModel>().ToListAsync());
 
-			return await AttemptAndRetry(() => databaseConnection.Table<PhotoModel>().CountAsync()).ConfigureAwait(false);
-		}
+        public static Task<PhotoModel> GetPhoto(string id) => ExecuteDatabaseFunction<PhotoModel, PhotoModel>(databaseConnection => databaseConnection.Table<PhotoModel>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync());
 
-		public static async Task<List<PhotoModel>> GetAllPhotos()
-		{
-			var databaseConnection = await GetDatabaseConnection<PhotoModel>().ConfigureAwait(false);
+        public static Task DeletePhoto(PhotoModel photo)
+        {
+            photo.IsDeleted = true;
 
-			return await AttemptAndRetry(() => databaseConnection.Table<PhotoModel>().ToListAsync()).ConfigureAwait(false);
-		}
-
-		public static async Task<PhotoModel> GetPhoto(string id)
-		{
-			var databaseConnection = await GetDatabaseConnection<PhotoModel>().ConfigureAwait(false);
-
-			return await AttemptAndRetry(() => databaseConnection.Table<PhotoModel>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync()).ConfigureAwait(false);
-		}
-
-		public static async Task DeletePhoto(PhotoModel photo)
-		{
-			var databaseConnection = await GetDatabaseConnection<PhotoModel>().ConfigureAwait(false);
-
-			photo.IsDeleted = true;
-
-			await AttemptAndRetry(() => databaseConnection.UpdateAsync(photo)).ConfigureAwait(false);
-		}
+            return ExecuteDatabaseFunction<PhotoModel, int>(databaseConnection => databaseConnection.UpdateAsync(photo));
+        }
 
 #if DEBUG
-        public static async Task RemovePhoto(PhotoModel photo)
-        {
-            var databaseConnection = await GetDatabaseConnection<PhotoModel>().ConfigureAwait(false);
-
-            await AttemptAndRetry(() => databaseConnection.DeleteAsync(photo)).ConfigureAwait(false);
-        }
+        public static Task RemovePhoto(PhotoModel photo) => ExecuteDatabaseFunction<PhotoModel, int>(databaseConnection => databaseConnection.DeleteAsync(photo));
 #endif
-	}
+    }
 }
