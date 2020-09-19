@@ -3,8 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -16,7 +14,7 @@ namespace AzureBlobStorageSampleApp
         readonly WeakEventManager _savePhotoCompletedEventManager = new WeakEventManager();
         readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
 
-        MediaFile? _photoMediaFile;
+        FileResult? _photoMediaFile;
         ImageSource? _photoImageSource;
         AsyncCommand? _savePhotoCommand, _takePhotoCommand;
 
@@ -64,7 +62,7 @@ namespace AzureBlobStorageSampleApp
             set => SetProperty(ref _photoImageSource, value, async () => await UpdateCanExecute().ConfigureAwait(false));
         }
 
-        async Task ExecuteSavePhotoCommand(MediaFile? photoMediaFile, string photoTitle)
+        async Task ExecuteSavePhotoCommand(FileResult? photoMediaFile, string photoTitle)
         {
             if (IsPhotoSaving)
                 return;
@@ -105,31 +103,26 @@ namespace AzureBlobStorageSampleApp
         {
             var mediaFile = await GetMediaFileFromCamera().ConfigureAwait(false);
 
-            if (mediaFile is null)
-                return;
+            if (mediaFile != null)
+            {
+                _photoMediaFile = mediaFile;
 
-            _photoMediaFile = mediaFile;
-            UpdatePhotoImageSource(mediaFile.GetStream());
+                var fileStream = await mediaFile.OpenReadAsync().ConfigureAwait(false);
+                UpdatePhotoImageSource(fileStream);
+            }
         }
 
-        async Task<MediaFile?> GetMediaFileFromCamera()
+        async Task<FileResult?> GetMediaFileFromCamera()
         {
-            await CrossMedia.Current.Initialize().ConfigureAwait(false);
+            var arePermissionsGranted = await ArePermissionsGranted().ConfigureAwait(false);
 
-            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            if (!arePermissionsGranted)
             {
                 OnNoCameraFound();
                 return null;
             }
 
-            return await MainThread.InvokeOnMainThreadAsync(() =>
-            {
-                return CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
-                {
-                    PhotoSize = PhotoSize.Small,
-                    DefaultCamera = CameraDevice.Rear
-                });
-            }).ConfigureAwait(false);
+            return await MainThread.InvokeOnMainThreadAsync(() => MediaPicker.CapturePhotoAsync()).ConfigureAwait(false);
         }
 
         Task UpdateCanExecute() => MainThread.InvokeOnMainThreadAsync(() =>
@@ -138,8 +131,27 @@ namespace AzureBlobStorageSampleApp
             TakePhotoCommand.RaiseCanExecuteChanged();
         });
 
-        void UpdatePhotoImageSource(Stream photoStream) =>
-            PhotoImageSource = ImageSource.FromStream(() => photoStream);
+        Task<bool> ArePermissionsGranted() => MainThread.InvokeOnMainThreadAsync(async () =>
+        {
+            var cameraStatusRequestTask = Permissions.RequestAsync<Permissions.Camera>();
+            var storageWriteStatusRequestTask = Permissions.RequestAsync<Permissions.StorageWrite>();
+            var storageReadStatusRequestTask = Permissions.RequestAsync<Permissions.StorageRead>();
+            var photosPermissionRequestTask = Permissions.RequestAsync<Permissions.StorageRead>();
+
+            await Task.WhenAll(cameraStatusRequestTask, storageWriteStatusRequestTask, storageReadStatusRequestTask, photosPermissionRequestTask).ConfigureAwait(false);
+
+            var cameraStatus = await cameraStatusRequestTask.ConfigureAwait(false);
+            var storageWriteStatus = await storageWriteStatusRequestTask.ConfigureAwait(false);
+            var storageReadStatus = await storageReadStatusRequestTask.ConfigureAwait(false);
+            var photosPermission = await photosPermissionRequestTask.ConfigureAwait(false);
+
+            return cameraStatus is PermissionStatus.Granted
+                    && storageWriteStatus is PermissionStatus.Granted
+                    && storageReadStatus is PermissionStatus.Granted
+                    && photosPermission is PermissionStatus.Granted;
+        });
+
+        void UpdatePhotoImageSource(Stream fileStream) => PhotoImageSource = ImageSource.FromStream(() => fileStream);
 
         void OnNoCameraFound() => _noCameraFoundEventManager.RaiseEvent(this, EventArgs.Empty, nameof(NoCameraFound));
         void OnSavePhotoCompleted() => _savePhotoCompletedEventManager.RaiseEvent(this, EventArgs.Empty, nameof(SavePhotoCompleted));

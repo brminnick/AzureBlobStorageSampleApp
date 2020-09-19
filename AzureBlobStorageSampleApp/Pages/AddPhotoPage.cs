@@ -53,6 +53,7 @@ namespace AzureBlobStorageSampleApp
                 stackLayout.Children.Insert(0, new Label { Text = PageTitles.AddPhotoPage }.Font(24, true).Margins(0, 24, 5, 0));
 
                 stackLayout.Children.Add(new AddPhotoPageButton("Save")
+                                            .Bind<Button, bool, bool>(IsVisibleProperty, nameof(AddPhotoViewModel.IsPhotoSaving), convert: isSaving => !isSaving)
                                             .Bind(Button.CommandProperty, nameof(AddPhotoViewModel.SavePhotoCommand)));
             }
             else

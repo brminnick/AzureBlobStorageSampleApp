@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AzureBlobStorageSampleApp.Mobile.Shared;
 using AzureBlobStorageSampleApp.Shared;
-using Plugin.Media.Abstractions;
 using Polly;
 using Refit;
+using Xamarin.Essentials;
 
 namespace AzureBlobStorageSampleApp
 {
@@ -17,13 +17,18 @@ namespace AzureBlobStorageSampleApp
         static IPhotosAPI PhotosApiClient => _photosApiClientHolder.Value;
 
         public static Task<List<PhotoModel>> GetAllPhotoModels() => ExecutePollyFunction(PhotosApiClient.GetAllPhotoModels);
-        public static Task<PhotoModel> PostPhotoBlob(string photoTitle, MediaFile photoMediaFile) => ExecutePollyFunction(() => PhotosApiClient.PostPhotoBlob(photoTitle, new StreamPart(photoMediaFile.GetStream(), $"{photoTitle}")));
+
+        public static async Task<PhotoModel> PostPhotoBlob(string photoTitle, FileResult photoMediaFile)
+        {
+            var fileStream = await photoMediaFile.OpenReadAsync().ConfigureAwait(false);
+            return await ExecutePollyFunction(() => PhotosApiClient.PostPhotoBlob(photoTitle, new StreamPart(fileStream, $"{photoTitle}"))).ConfigureAwait(false);
+        }
 
         static Task<T> ExecutePollyFunction<T>(Func<Task<T>> action, int numRetries = 3)
         {
             return Policy.Handle<Exception>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
 
-            TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
+            static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
         }
     }
 }
