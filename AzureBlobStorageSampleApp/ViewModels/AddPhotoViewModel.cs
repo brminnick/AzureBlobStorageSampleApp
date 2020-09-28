@@ -4,18 +4,17 @@ using System.Threading.Tasks;
 using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace AzureBlobStorageSampleApp
 {
     public class AddPhotoViewModel : BaseViewModel
     {
-        readonly AsyncAwaitBestPractices.WeakEventManager _noCameraFoundEventManager = new AsyncAwaitBestPractices.WeakEventManager();
-        readonly AsyncAwaitBestPractices.WeakEventManager _savePhotoCompletedEventManager = new AsyncAwaitBestPractices.WeakEventManager();
+        readonly WeakEventManager _noCameraFoundEventManager = new WeakEventManager();
+        readonly WeakEventManager _savePhotoCompletedEventManager = new WeakEventManager();
         readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
 
         FileResult? _photoMediaFile;
-        ImageSource? _photoImageSource;
+        Xamarin.Forms.ImageSource? _photoImageSource;
         AsyncCommand? _savePhotoCommand, _takePhotoCommand;
 
         string _photoTitle = string.Empty;
@@ -56,7 +55,7 @@ namespace AzureBlobStorageSampleApp
             set => SetProperty(ref _photoTitle, value, async () => await UpdateCanExecute().ConfigureAwait(false));
         }
 
-        public ImageSource? PhotoImageSource
+        public Xamarin.Forms.ImageSource? PhotoImageSource
         {
             get => _photoImageSource;
             set => SetProperty(ref _photoImageSource, value, async () => await UpdateCanExecute().ConfigureAwait(false));
@@ -151,7 +150,7 @@ namespace AzureBlobStorageSampleApp
                     && photosPermission is PermissionStatus.Granted;
         });
 
-        void UpdatePhotoImageSource(Stream fileStream) => PhotoImageSource = ImageSource.FromStream(() => fileStream);
+        void UpdatePhotoImageSource(Stream fileStream) => PhotoImageSource = Xamarin.Forms.ImageSource.FromStream(() => fileStream);
 
         void OnNoCameraFound() => _noCameraFoundEventManager.RaiseEvent(this, EventArgs.Empty, nameof(NoCameraFound));
         void OnSavePhotoCompleted() => _savePhotoCompletedEventManager.RaiseEvent(this, EventArgs.Empty, nameof(SavePhotoCompleted));
