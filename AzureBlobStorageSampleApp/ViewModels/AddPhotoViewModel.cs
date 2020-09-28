@@ -10,8 +10,8 @@ namespace AzureBlobStorageSampleApp
 {
     public class AddPhotoViewModel : BaseViewModel
     {
-        readonly WeakEventManager _noCameraFoundEventManager = new WeakEventManager();
-        readonly WeakEventManager _savePhotoCompletedEventManager = new WeakEventManager();
+        readonly AsyncAwaitBestPractices.WeakEventManager _noCameraFoundEventManager = new AsyncAwaitBestPractices.WeakEventManager();
+        readonly AsyncAwaitBestPractices.WeakEventManager _savePhotoCompletedEventManager = new AsyncAwaitBestPractices.WeakEventManager();
         readonly WeakEventManager<string> _savePhotoFailedEventManager = new WeakEventManager<string>();
 
         FileResult? _photoMediaFile;
