@@ -17,12 +17,13 @@
     <ItemGroup>
         <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-        <PackageReference Include="Xamarin.Forms" Version="5.0.0.1487-pre1" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.1709-pre4" />
         <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
         <PackageReference Include="Polly" Version="7.2.1" />
-        <PackageReference Include="Refit" Version="5.2.1" />
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.0.0-pre2" />
-        <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre2" />
+        <PackageReference Include="Refit" Version="5.2.4" />
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.0.2" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre4" />
+        <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.0.0-pre5" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Pages\" />
@@ -34,6 +35,6 @@
         <Folder Include="Views\" />
         <Folder Include="Views\PhotoList\" />
     </ItemGroup>
-    <Import Project="..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems')" />
     <Import Project="..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Mobile.Shared\AzureBlobStorageSampleApp.Mobile.Shared.projitems')" />
+    <Import Project="..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems" Label="Shared" Condition="Exists('..\AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems')" />
 </Project>

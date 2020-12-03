@@ -1,8 +1,8 @@
 ﻿using AzureBlobStorageSampleApp.Shared;
 using Xamarin.Forms;
-using Xamarin.Forms.Markup;
+using Xamarin.CommunityToolkit.Markup;
 using static AzureBlobStorageSampleApp.MarkupExtensions;
-using static Xamarin.Forms.Markup.GridRowsColumns;
+using static Xamarin.CommunityToolkit.Markup.GridRowsColumns;
 
 namespace AzureBlobStorageSampleApp
 {

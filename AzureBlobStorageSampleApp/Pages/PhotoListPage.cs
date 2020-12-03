@@ -3,7 +3,7 @@ using System.Linq;
 using AzureBlobStorageSampleApp.Mobile.Shared;
 using AzureBlobStorageSampleApp.Shared;
 using Xamarin.Forms;
-using Xamarin.Forms.Markup;
+using Xamarin.CommunityToolkit.Markup;
 
 namespace AzureBlobStorageSampleApp
 {

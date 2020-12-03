@@ -2,7 +2,7 @@ using AzureBlobStorageSampleApp.Mobile.Shared;
 using AzureBlobStorageSampleApp.Shared;
 using FFImageLoading.Forms;
 using Xamarin.Forms;
-using Xamarin.Forms.Markup;
+using Xamarin.CommunityToolkit.Markup;
 
 namespace AzureBlobStorageSampleApp
 {

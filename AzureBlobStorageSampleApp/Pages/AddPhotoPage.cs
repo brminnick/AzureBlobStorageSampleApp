@@ -5,7 +5,7 @@ using AzureBlobStorageSampleApp.Mobile.Shared;
 using FFImageLoading.Forms;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Markup;
+using Xamarin.CommunityToolkit.Markup;
 
 namespace AzureBlobStorageSampleApp
 {
@@ -50,7 +50,7 @@ namespace AzureBlobStorageSampleApp
             if (Device.RuntimePlatform is Device.iOS)
             {
                 //Add title to UIModalPresentationStyle.FormSheet on iOS
-                stackLayout.Children.Insert(0, new Label { Text = PageTitles.AddPhotoPage }.Font(24, true).Margins(0, 24, 5, 0));
+                stackLayout.Children.Insert(0, new Label { Text = PageTitles.AddPhotoPage }.Font(size: 24, bold: true).Margins(0, 24, 5, 0));
 
                 stackLayout.Children.Add(new AddPhotoPageButton("Save")
                                             .Bind<Button, bool, bool>(IsVisibleProperty, nameof(AddPhotoViewModel.IsPhotoSaving), convert: isSaving => !isSaving)
