@@ -7,8 +7,7 @@ using Refit;
 
 namespace AzureBlobStorageSampleApp
 {
-    [Headers("Accept-Encoding: gzip",
-                "Accept: application/json")]
+    [Headers("Accept-Encoding: gzip", "Accept: application/json")]
     public interface IPhotosAPI
     {
         [Get("/GetPhotos")]

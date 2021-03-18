@@ -95,13 +95,13 @@
     <ItemGroup>
         <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-        <PackageReference Include="Xamarin.Forms" Version="5.0.0.1709-pre4" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
         <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
         <PackageReference Include="Polly" Version="7.2.1" />
-        <PackageReference Include="Refit" Version="5.2.4" />
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.0.2" />
-        <PackageReference Include="Xamarin.TestCloud.Agent" Version="0.22.1" />
-        <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre4" />
+        <PackageReference Include="Refit.Newtonsoft.Json" Version="6.0.24" />
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.1.0" />
+        <PackageReference Include="Xamarin.TestCloud.Agent" Version="0.22.2" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
     </ItemGroup>
     <ItemGroup>
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -129,7 +129,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\AzureBlobStorageSampleApp\AzureBlobStorageSampleApp.csproj">
-            <Project>{D4EC6C82-3118-44A3-B54D-5AD63BA2E9BC}</Project>
+            <Project>{389B6A9C-09CD-470A-B8DA-36FFAF39F52B}</Project>
             <Name>AzureBlobStorageSampleApp</Name>
         </ProjectReference>
     </ItemGroup>

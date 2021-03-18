@@ -12,7 +12,7 @@ namespace AzureBlobStorageSampleApp
 {
     static class APIService
     {
-        readonly static Lazy<IPhotosAPI> _photosApiClientHolder = new Lazy<IPhotosAPI>(() => RestService.For<IPhotosAPI>(new HttpClient { BaseAddress = new Uri(BackendConstants.FunctionsAPIBaseUrl) }));
+        readonly static Lazy<IPhotosAPI> _photosApiClientHolder = new Lazy<IPhotosAPI>(() => RefitExtensions.For<IPhotosAPI>(new HttpClient { BaseAddress = new Uri(BackendConstants.FunctionsAPIBaseUrl) }));
 
         static IPhotosAPI PhotosApiClient => _photosApiClientHolder.Value;
 
