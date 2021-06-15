@@ -22,6 +22,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureBlobStorageSampleApp.UITests", "AzureBlobStorageSampleApp.UITests\AzureBlobStorageSampleApp.UITests.csproj", "{FD2382A9-2F14-4719-AFE7-1A3EFAC905B6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6B91C6CE-E49F-4E26-9C29-1769AA48B401}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		AzureBlobStorageSampleApp.Shared\AzureBlobStorageSampleApp.Shared.projitems*{5c56af55-408c-4fee-8311-641762f75fe0}*SharedItemsImports = 13

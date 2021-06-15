@@ -3,8 +3,6 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>

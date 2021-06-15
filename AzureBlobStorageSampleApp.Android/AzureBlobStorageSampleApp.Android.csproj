@@ -17,9 +17,6 @@
         <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
         <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
         <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
-        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-        <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
         <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>

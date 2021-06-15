@@ -69,7 +69,7 @@ namespace AzureBlobStorageSampleApp
 
                 if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default) > 0)
                     modelsToPatchToRemoteDatabase.Add(modelFromLocalDatabase);
-                else if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default) < 0)
+                else if (modelFromRemoteDatabase is not null && modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase.UpdatedAt) < 0)
                     modelsToPatchToLocalDatabase.Add(modelFromRemoteDatabase);
             }
 

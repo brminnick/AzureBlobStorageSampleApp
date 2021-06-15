@@ -9,9 +9,6 @@
         <RootNamespace>AzureBlobStorageSampleApp.iOS</RootNamespace>
         <AssemblyName>AzureBlobStorageSampleApp.iOS</AssemblyName>
         <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-        <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
     </PropertyGroup>
