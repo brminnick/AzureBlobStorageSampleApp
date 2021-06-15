@@ -26,7 +26,7 @@ jobs:
           
       - name: Build
         run: |                    
-          mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./AzureBlobStorageSampleApp.Android/AzureBlobStorageSampleApp.Android.csproj /verbosity:normal /p:Configuration=Release     
+          mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./AzureBlobStorageSampleApp.Android/AzureBlobStora geSampleApp.Android.csproj /verbosity:normal /p:Configuration=Release
   
     Functions:
       runs-on: macos-latest
@@ -64,4 +64,4 @@ jobs:
           
       - name: Build
         run: |                    
-          dotnet build ./AzureBlobStorageSampleApp.UITests/AzureBlobStorageSampleApp.UITests.csproj -c Release
+          msbuild ./AzureBlobStorageSampleApp.UITests/AzureBlobStorageSampleApp.UITests.csproj /verbosity:normal /p:Configuration=Release
