@@ -11,7 +11,7 @@ namespace AzureBlobStorageSampleApp
 
         public static Task<int> GetPhotoCount() => ExecuteDatabaseFunction<PhotoModel, int>(databaseConnection => databaseConnection.Table<PhotoModel>().CountAsync());
 
-        public static Task<List<PhotoModel>> GetAllPhotos() => ExecuteDatabaseFunction<PhotoModel, List<PhotoModel>>(databaseConnection => databaseConnection.Table<PhotoModel>().ToListAsync());
+        public static Task<IReadOnlyList<PhotoModel>> GetAllPhotos() => ExecuteDatabaseFunction<PhotoModel, IReadOnlyList<PhotoModel>>(async databaseConnection => await databaseConnection.Table<PhotoModel>().ToListAsync().ConfigureAwait(false));
 
         public static Task<PhotoModel> GetPhoto(string id) => ExecuteDatabaseFunction<PhotoModel, PhotoModel>(databaseConnection => databaseConnection.Table<PhotoModel>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync());
 

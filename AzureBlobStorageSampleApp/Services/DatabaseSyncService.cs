@@ -19,21 +19,21 @@ namespace AzureBlobStorageSampleApp
             await SavePhotos(photosInRemoteDatabaseButNotStoredLocally.Concat(photosToPatchToLocalDatabase).ToList(), photosInLocalDatabaseButNotStoredRemotely.Concat(photosToPatchToRemoteDatabase).ToList()).ConfigureAwait(false);
         }
 
-        static async Task<(IEnumerable<PhotoModel> photoListFromLocalDatabase,
-            IEnumerable<PhotoModel> photoListFromRemoteDatabase)> GetAllSavedPhotos()
+        static async Task<(IReadOnlyList<PhotoModel> photoListFromLocalDatabase,
+            IReadOnlyList<PhotoModel> photoListFromRemoteDatabase)> GetAllSavedPhotos()
         {
             var photoListFromLocalDatabaseTask = PhotoDatabase.GetAllPhotos();
             var photoListFromRemoteDatabaseTask = APIService.GetAllPhotoModels();
 
             await Task.WhenAll(photoListFromLocalDatabaseTask, photoListFromRemoteDatabaseTask).ConfigureAwait(false);
 
-            return (await photoListFromLocalDatabaseTask.ConfigureAwait(false) ?? Enumerable.Empty<PhotoModel>(),
-                    await photoListFromRemoteDatabaseTask.ConfigureAwait(false) ?? Enumerable.Empty<PhotoModel>());
+            return (await photoListFromLocalDatabaseTask.ConfigureAwait(false),
+                    await photoListFromRemoteDatabaseTask.ConfigureAwait(false));
         }
 
-        static (IEnumerable<T> contactsInLocalDatabaseButNotStoredRemotely,
-            IEnumerable<T> contactsInRemoteDatabaseButNotStoredLocally,
-            IEnumerable<T> contactsInBothDatabases) GetMatchingModels<T>(IEnumerable<T> modelListFromLocalDatabase,
+        static (IReadOnlyList<T> contactsInLocalDatabaseButNotStoredRemotely,
+            IReadOnlyList<T> contactsInRemoteDatabaseButNotStoredLocally,
+            IReadOnlyList<T> contactsInBothDatabases) GetMatchingModels<T>(IEnumerable<T> modelListFromLocalDatabase,
                                                                       IEnumerable<T> modelListFromRemoteDatabase) where T : IBaseModel
         {
             var modelIdFromRemoteDatabaseList = modelListFromRemoteDatabase?.Select(x => x.Id).ToList() ?? Enumerable.Empty<string>();
@@ -49,14 +49,14 @@ namespace AzureBlobStorageSampleApp
             var modelsInBothDatabases = modelListFromLocalDatabase?.Where(x => modelIdsInBothDatabases?.Contains(x?.Id) ?? false)
                                             .ToList() ?? Enumerable.Empty<T>();
 
-            return (modelsInLocalDatabaseButNotStoredRemotely ?? Enumerable.Empty<T>(),
-                    modelsInRemoteDatabaseButNotStoredLocally ?? Enumerable.Empty<T>(),
-                    modelsInBothDatabases ?? Enumerable.Empty<T>());
+            return ((modelsInLocalDatabaseButNotStoredRemotely ?? Enumerable.Empty<T>()).ToList(),
+                    (modelsInRemoteDatabaseButNotStoredLocally ?? Enumerable.Empty<T>()).ToList(),
+                    (modelsInBothDatabases ?? Enumerable.Empty<T>()).ToList());
 
         }
 
-        static (IEnumerable<T> contactsToPatchToLocalDatabase,
-            IEnumerable<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(IEnumerable<T> modelListFromLocalDatabase,
+        static (IReadOnlyList<T> contactsToPatchToLocalDatabase,
+            IReadOnlyList<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(IEnumerable<T> modelListFromLocalDatabase,
                                                                               IEnumerable<T> modelListFromRemoteDatabase,
                                                                               IEnumerable<T> modelsFoundInBothDatabases) where T : IBaseModel
         {
@@ -73,8 +73,8 @@ namespace AzureBlobStorageSampleApp
                     modelsToPatchToLocalDatabase.Add(modelFromRemoteDatabase);
             }
 
-            return (modelsToPatchToLocalDatabase ?? Enumerable.Empty<T>(),
-                    modelsToPatchToRemoteDatabase ?? Enumerable.Empty<T>());
+            return (modelsToPatchToLocalDatabase ?? Enumerable.Empty<T>().ToList(),
+                    modelsToPatchToRemoteDatabase ?? Enumerable.Empty<T>().ToList());
         }
 
         static Task SavePhotos(IEnumerable<PhotoModel> photosToSaveToLocalDatabase,
