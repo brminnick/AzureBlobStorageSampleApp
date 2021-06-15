@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public class PostBlob
+    class PostBlob
     {
         readonly PhotosBlobStorageService _photosBlobStorageService;
         readonly PhotoDatabaseService _photoDatabaseService;

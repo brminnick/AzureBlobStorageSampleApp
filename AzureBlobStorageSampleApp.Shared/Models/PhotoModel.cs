@@ -11,7 +11,7 @@ namespace AzureBlobStorageSampleApp.Shared
 #if BACKEND
     [Table("PhotoModels")]
 #endif
-    public class PhotoModel : IBaseModel
+    public record PhotoModel : IBaseModel
     {
         public PhotoModel() => Id = Guid.NewGuid().ToString();
 
@@ -20,11 +20,17 @@ namespace AzureBlobStorageSampleApp.Shared
 #else
         [Key]
 #endif
-        public string Id { get; set; }
-        public DateTimeOffset CreatedAt { get; set; }
-        public DateTimeOffset UpdatedAt { get; set; }
-        public bool IsDeleted { get; set; }
-        public string Url { get; set; } = string.Empty;
-        public string Title { get; set; } = string.Empty;
+        public string Id { get; init; }
+        public DateTimeOffset CreatedAt { get; init; }
+        public DateTimeOffset UpdatedAt { get; init; }
+        public bool IsDeleted { get; init; }
+        public string Url { get; init; } = string.Empty;
+        public string Title { get; init; } = string.Empty;
     }
+}
+
+namespace System.Runtime.CompilerServices
+{
+    [ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)]
+    public record IsExternalInit;
 }

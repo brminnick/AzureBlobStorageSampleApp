@@ -17,7 +17,7 @@ namespace AzureBlobStorageSampleApp
 
         public static Task DeletePhoto(PhotoModel photo)
         {
-            photo.IsDeleted = true;
+            photo = photo with { IsDeleted = true };
 
             return ExecuteDatabaseFunction<PhotoModel, int>(databaseConnection => databaseConnection.UpdateAsync(photo));
         }

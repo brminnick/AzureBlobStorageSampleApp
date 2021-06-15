@@ -3,75 +3,67 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureBlobStorageSampleApp.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public class PhotoDatabaseService : BaseDatabaseService
+    class PhotoDatabaseService
     {
-        public Task<List<PhotoModel>> GetAllPhotos() => GetAllPhotos(x => true);
+        readonly PhotosDbContext _photosDbContext;
 
-        public Task<List<PhotoModel>> GetAllPhotos(Func<PhotoModel, bool> wherePredicate)
+        public PhotoDatabaseService(PhotosDbContext photosDbContext) => _photosDbContext = photosDbContext;
+
+        public async Task<IReadOnlyList<PhotoModel>> GetAllPhotos() =>
+            await _photosDbContext.Photos.ToListAsync().ConfigureAwait(false);
+
+        public IReadOnlyList<PhotoModel> GetAllPhotos(Func<PhotoModel, bool> wherePredicate) =>
+            _photosDbContext.Photos.Where(wherePredicate).ToList();
+
+        public async Task<PhotoModel> InsertPhoto(PhotoModel photo)
         {
-            return PerformDatabaseFunction(getAllPhotos);
+            if (string.IsNullOrWhiteSpace(photo.Id))
+                photo = photo with { Id = Guid.NewGuid().ToString() };
 
-            List<PhotoModel> getAllPhotos(PhotosContext dataContext)
+            var currentTime = DateTimeOffset.UtcNow;
+
+            photo = photo with
             {
-                var photoList = dataContext.Photos.Where(wherePredicate).ToList();
-                return photoList;
-            }
+                CreatedAt = currentTime,
+                UpdatedAt = currentTime
+            };
+
+            await _photosDbContext.AddAsync(photo).ConfigureAwait(false);
+            await _photosDbContext.SaveChangesAsync().ConfigureAwait(false);
+
+            return photo;
         }
 
-        public Task<PhotoModel> InsertPhoto(PhotoModel photo)
+        public async Task<PhotoModel> UpdatePhoto(PhotoModel photo)
         {
-            return PerformDatabaseFunction(insertPhoto);
+            var photoFromDatabase = _photosDbContext.Photos.Single(y => y.Id.Equals(photo.Id));
 
-            async Task<PhotoModel> insertPhoto(PhotosContext dataContext)
+            var updatedPhoto = photoFromDatabase with
             {
-                if (string.IsNullOrWhiteSpace(photo.Id))
-                    photo.Id = Guid.NewGuid().ToString();
+                IsDeleted = photo.IsDeleted,
+                Title = photo.Title,
+                Url = photo.Url,
+                UpdatedAt = DateTimeOffset.UtcNow
+            };
 
-                var currentTime = DateTimeOffset.UtcNow;
+            _photosDbContext.Update(updatedPhoto);
+            await _photosDbContext.SaveChangesAsync().ConfigureAwait(false);
 
-                photo.CreatedAt = currentTime;
-                photo.UpdatedAt = currentTime;
-
-                await dataContext.AddAsync(photo).ConfigureAwait(false);
-
-                return photo;
-            }
+            return photoFromDatabase;
         }
 
-        public Task<PhotoModel> UpdatePhoto(PhotoModel photo)
+        public async Task<PhotoModel> DeletePhoto(string id)
         {
-            return PerformDatabaseFunction(updatePhoto);
+            var photoFromDatabase = _photosDbContext.Photos.Single(x => x.Id.Equals(id));
 
-            PhotoModel updatePhoto(PhotosContext dataContext)
-            {
-                var photoFromDatabase = dataContext.Photos.Single(y => y.Id.Equals(photo.Id));
+            _photosDbContext.Remove(photoFromDatabase);
+            await _photosDbContext.SaveChangesAsync().ConfigureAwait(false);
 
-                photoFromDatabase.IsDeleted = photo.IsDeleted;
-                photoFromDatabase.Title = photo.Title;
-                photoFromDatabase.Url = photo.Url;
-                photoFromDatabase.UpdatedAt = DateTimeOffset.UtcNow;
-
-                dataContext.Update(photoFromDatabase);
-
-                return photoFromDatabase;
-            }
-        }
-
-        public Task<PhotoModel> DeletePhoto(string id)
-        {
-            return PerformDatabaseFunction(removePunModelDatabaseFunction);
-
-            PhotoModel removePunModelDatabaseFunction(PhotosContext dataContext)
-            {
-                var photoFromDatabase = dataContext.Photos.Single(x => x.Id.Equals(id));
-
-                dataContext.Remove(photoFromDatabase);
-
-                return photoFromDatabase;
-            }
+            return photoFromDatabase;
         }
     }
 }

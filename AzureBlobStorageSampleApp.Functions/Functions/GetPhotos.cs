@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public class GetPhotos
+    class GetPhotos
     {
         readonly PhotoDatabaseService _photoDatabaseService;
 
