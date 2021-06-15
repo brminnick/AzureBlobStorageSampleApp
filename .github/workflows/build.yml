@@ -64,4 +64,4 @@ jobs:
           
       - name: Build
         run: |                    
-          msbuild ./AzureBlobStorageSampleApp.UITests/AzureBlobStorageSampleApp.UITests.csproj /verbosity:normal /p:Configuration=Release
+          mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./AzureBlobStorageSampleApp.UITests/AzureBlobStorageSampleApp.UITests.csproj /verbosity:normal /p:Configuration=Release
