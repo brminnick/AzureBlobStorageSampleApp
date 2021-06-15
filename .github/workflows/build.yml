@@ -24,7 +24,7 @@ jobs:
         run: |
           nuget restore
           
-      - name: Build Android App
+      - name: Build
         run: |                    
           mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./AzureBlobStorageSampleApp.Android/AzureBlobStorageSampleApp.Android.csproj /verbosity:normal /p:Configuration=Release     
   
@@ -43,7 +43,7 @@ jobs:
         run: |
           nuget restore
           
-      - name: Build Android App
+      - name: Build
         run: |                    
           dotnet build ./AzureBlobStorageSampleApp.Functions/AzureBlobStorageSampleApp.Functions.csproj -c Release
 
@@ -62,6 +62,6 @@ jobs:
         run: |
           nuget restore
           
-      - name: Build Android App
+      - name: Build
         run: |                    
           dotnet build ./AzureBlobStorageSampleApp.UITests/AzureBlobStorageSampleApp.UITests.csproj -c Release
