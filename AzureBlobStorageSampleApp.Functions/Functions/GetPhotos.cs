@@ -2,10 +2,10 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
@@ -15,23 +15,26 @@ namespace AzureBlobStorageSampleApp.Functions
 
         public GetPhotos(PhotoDatabaseService photoDatabaseService) => _photoDatabaseService = photoDatabaseService;
 
-        [FunctionName(nameof(GetPhotos))]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]HttpRequestMessage req, ILogger log)
+        [Function(nameof(GetPhotos))]
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "GET")]HttpRequestData req, FunctionContext context)
         {
+            var log = context.GetLogger<GetPhotos>();
+
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
                 var photoList = await _photoDatabaseService.GetAllPhotos().ConfigureAwait(false);
-                return new OkObjectResult(photoList);
+
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteStringAsync(JsonConvert.SerializeObject(response)).ConfigureAwait(false);
+
+                return response;
             }
             catch (Exception e)
             {
                 log.LogError(e, e.Message);
-                return new ObjectResult(e)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                return req.CreateResponse(HttpStatusCode.InternalServerError);
             }
         }
     }

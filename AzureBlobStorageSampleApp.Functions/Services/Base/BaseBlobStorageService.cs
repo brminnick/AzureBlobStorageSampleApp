@@ -1,22 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.Azure.Storage.Blob;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public abstract class BaseBlobStorageService
+    abstract class BaseBlobStorageService
     {
-        readonly static Lazy<string> _connectionStringHolder = new Lazy<string>(() => Environment.GetEnvironmentVariable("BlobStorageConnectionString") ?? string.Empty);
-        readonly static Lazy<CloudStorageAccount> _storageAccountHolder = new Lazy<CloudStorageAccount>(() => CloudStorageAccount.Parse(_connectionStringHolder.Value));
-        readonly static Lazy<CloudBlobClient> _blobClientHolder = new Lazy<CloudBlobClient>(_storageAccountHolder.Value.CreateCloudBlobClient);
+        readonly CloudBlobClient _blobClient;
 
-        static CloudBlobClient BlobClient => _blobClientHolder.Value;
+        protected BaseBlobStorageService(CloudBlobClient cloudBlobClient) => _blobClient = cloudBlobClient;
 
-        protected static async Task<CloudBlockBlob> SaveBlockBlob(string containerName, Stream photoStream, string blobTitle)
+        protected async Task<CloudBlockBlob> SaveBlockBlob(string containerName, Stream photoStream, string blobTitle)
         {
             var blobContainer = GetBlobContainer(containerName);
 
@@ -26,7 +22,7 @@ namespace AzureBlobStorageSampleApp.Functions
             return blockBlob;
         }
 
-        protected static async IAsyncEnumerable<T> GetBlobs<T>(string containerName, string prefix = "", int? maxresultsPerQuery = null, BlobListingDetails blobListingDetails = BlobListingDetails.None) where T : ICloudBlob
+        protected async IAsyncEnumerable<T> GetBlobs<T>(string containerName, string prefix = "", int? maxresultsPerQuery = null, BlobListingDetails blobListingDetails = BlobListingDetails.None) where T : ICloudBlob
         {
             var blobContainer = GetBlobContainer(containerName);
 
@@ -45,6 +41,6 @@ namespace AzureBlobStorageSampleApp.Functions
             } while (continuationToken != null);
         }
 
-        static CloudBlobContainer GetBlobContainer(string containerName) => BlobClient.GetContainerReference(containerName);
+        CloudBlobContainer GetBlobContainer(string containerName) => _blobClient.GetContainerReference(containerName);
     }
 }

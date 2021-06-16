@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AzureBlobStorageSampleApp.Shared;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.Azure.Storage.Blob;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public class PhotosBlobStorageService : BaseBlobStorageService
+    class PhotosBlobStorageService : BaseBlobStorageService
     {
         readonly string _photosContainerName = Environment.GetEnvironmentVariable("PhotoContainerName") ?? string.Empty;
+
+        public PhotosBlobStorageService(CloudBlobClient cloudBlobClient) : base(cloudBlobClient)
+        {
+
+        }
 
         public async Task<PhotoModel> SavePhoto(Stream photoStream, string photoTitle)
         {
