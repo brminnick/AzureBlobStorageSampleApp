@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
@@ -24,30 +25,22 @@ namespace AzureBlobStorageSampleApp.Functions
 
             try
             {
-                req.bo
-
-                var content = (HttpContent)new StreamContent(req.Body);
-                content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(req.Headers.GetValues("Content-Type").Single();
-
-                var multipartMemoryStreamProvider = await req.Body.ReadAsMultipartAsync().ConfigureAwait(false);
-                var photoStream = await multipartMemoryStreamProvider.Contents[0].ReadAsStreamAsync().ConfigureAwait(false);
-
-                var photo = await _photosBlobStorageService.SavePhoto(photoStream, title).ConfigureAwait(false);
+                var photo = await _photosBlobStorageService.SavePhoto(req.Body, title).ConfigureAwait(false);
                 log.LogInformation("Saved Photo to Blob Storage");
 
                 await _photoDatabaseService.InsertPhoto(photo).ConfigureAwait(false);
                 log.LogInformation("Saved Photo to Database");
 
-                return new CreatedResult(photo.Url, photo);
+                var response = req.CreateResponse();
+                await response.WriteAsJsonAsync(JsonConvert.SerializeObject(photo.Url)).ConfigureAwait(false);
+
+                return response;
             }
             catch (Exception e)
             {
                 log.LogError(e, e.Message);
 
-                return new ObjectResult(e)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                return req.CreateResponse(HttpStatusCode.InternalServerError);
             }
         }
     }

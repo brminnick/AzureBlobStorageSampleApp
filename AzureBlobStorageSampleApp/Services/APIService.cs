@@ -18,7 +18,7 @@ namespace AzureBlobStorageSampleApp
 
         public static Task<List<PhotoModel>> GetAllPhotoModels() => ExecutePollyFunction(PhotosApiClient.GetAllPhotoModels);
 
-        public static async Task<PhotoModel> PostPhotoBlob(string photoTitle, FileResult photoMediaFile)
+        public static async Task<string> PostPhotoBlob(string photoTitle, FileResult photoMediaFile)
         {
             var fileStream = await photoMediaFile.OpenReadAsync().ConfigureAwait(false);
             return await ExecutePollyFunction(() => PhotosApiClient.PostPhotoBlob(photoTitle, new StreamPart(fileStream, $"{photoTitle}"))).ConfigureAwait(false);
