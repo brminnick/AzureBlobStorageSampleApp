@@ -3,48 +3,57 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Newtonsoft.Json;
 
 namespace AzureBlobStorageSampleApp.Functions
 {
-    public abstract class BaseBlobStorageService
-    {
-        readonly static Lazy<string> _connectionStringHolder = new Lazy<string>(() => Environment.GetEnvironmentVariable("BlobStorageConnectionString") ?? string.Empty);
-        readonly static Lazy<CloudStorageAccount> _storageAccountHolder = new Lazy<CloudStorageAccount>(() => CloudStorageAccount.Parse(_connectionStringHolder.Value));
-        readonly static Lazy<CloudBlobClient> _blobClientHolder = new Lazy<CloudBlobClient>(_storageAccountHolder.Value.CreateCloudBlobClient);
+	abstract class BaseBlobStorageService
+	{
+		readonly BlobServiceClient _blobServiceClient;
 
-        static CloudBlobClient BlobClient => _blobClientHolder.Value;
+		protected BaseBlobStorageService(BlobServiceClient cloudBlobClient) => _blobServiceClient = cloudBlobClient;
 
-        protected static async Task<CloudBlockBlob> SaveBlockBlob(string containerName, Stream photoStream, string blobTitle)
-        {
-            var blobContainer = GetBlobContainer(containerName);
+		protected async Task<Azure.Response<BlobContentInfo>> UploadStream(Stream data, string blobName, string containerName)
+		{
+			var containerClient = GetBlobContainerClient(containerName);
+			await containerClient.CreateIfNotExistsAsync().ConfigureAwait(false);
 
-            var blockBlob = blobContainer.GetBlockBlobReference(blobTitle);
-            await blockBlob.UploadFromStreamAsync(photoStream).ConfigureAwait(false);
+			var blobClient = containerClient.GetBlobClient(blobName);
 
-            return blockBlob;
-        }
+			return await blobClient.UploadAsync(data).ConfigureAwait(false);
+		}
 
-        protected static async IAsyncEnumerable<T> GetBlobs<T>(string containerName, string prefix = "", int? maxresultsPerQuery = null, BlobListingDetails blobListingDetails = BlobListingDetails.None) where T : ICloudBlob
-        {
-            var blobContainer = GetBlobContainer(containerName);
+		protected async Task<T> GetLatestValue<T>(string containerName)
+		{
+			var blobList = new List<BlobItem>();
+			await foreach (var blob in GetBlobs(containerName).ConfigureAwait(false))
+			{
+				blobList.Add(blob);
+			}
 
-            BlobContinuationToken? continuationToken = null;
+			var newestBlob = blobList.OrderByDescending(x => x.Properties.CreatedOn).First();
 
-            do
-            {
-                var response = await blobContainer.ListBlobsSegmentedAsync(prefix, true, blobListingDetails, maxresultsPerQuery, continuationToken, null, null).ConfigureAwait(false);
-                continuationToken = response?.ContinuationToken;
+			var blobClient = GetBlobContainerClient(containerName).GetBlobClient(newestBlob.Name);
+			var blobContentResponse = await blobClient.DownloadContentAsync().ConfigureAwait(false);
 
-                foreach (var blob in response?.Results?.OfType<T>() ?? Enumerable.Empty<T>())
-                {
-                    yield return blob;
-                }
+			var serializedBlobContents = blobContentResponse.Value.Content;
 
-            } while (continuationToken != null);
-        }
+			return JsonConvert.DeserializeObject<T>(serializedBlobContents.ToString()) ?? throw new NullReferenceException();
+		}
 
-        static CloudBlobContainer GetBlobContainer(string containerName) => BlobClient.GetContainerReference(containerName);
-    }
+		protected async IAsyncEnumerable<BlobItem> GetBlobs(string containerName)
+		{
+			var blobContainerClient = GetBlobContainerClient(containerName);
+
+			await foreach (var blob in blobContainerClient.GetBlobsAsync().ConfigureAwait(false))
+			{
+				if (blob is not null)
+					yield return blob;
+			}
+		}
+
+		protected BlobContainerClient GetBlobContainerClient(string containerName) => _blobServiceClient.GetBlobContainerClient(containerName);
+	}
 }
