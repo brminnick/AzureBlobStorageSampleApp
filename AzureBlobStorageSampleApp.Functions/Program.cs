@@ -27,9 +27,9 @@ namespace AzureBlobStorageSampleApp.Functions
 
                     services.AddDbContext<PhotosDbContext>(options => options.UseSqlServer(_connectionString));
 
-                    services.AddSingleton<PhotoDatabaseService>();
-                    services.AddSingleton<PhotosBlobStorageService>();
-                    services.AddSingleton<BlobServiceClient>(new BlobServiceClient(_storageConnectionString));
+                    services.AddTransient<PhotoDatabaseService>();
+                    services.AddTransient<PhotosBlobStorageService>();
+                    services.AddTransient<BlobServiceClient>(serviceProvider => new BlobServiceClient(_storageConnectionString));
                 }).Build();
 
             return host.RunAsync();
