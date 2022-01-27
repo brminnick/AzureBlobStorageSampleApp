@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +26,7 @@ namespace AzureBlobStorageSampleApp.Functions
 
                     services.AddTransient<PhotoDatabaseService>();
                     services.AddTransient<PhotosBlobStorageService>();
-                    services.AddTransient<BlobServiceClient>(serviceProvider => new BlobServiceClient(_storageConnectionString));
+                    services.AddTransient<BlobServiceClient>(_ => new BlobServiceClient(_storageConnectionString));
                 }).Build();
 
             return host.RunAsync();

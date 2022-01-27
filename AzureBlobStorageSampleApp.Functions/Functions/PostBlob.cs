@@ -1,11 +1,9 @@
 using System;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using HttpMultipartParser;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
 namespace AzureBlobStorageSampleApp.Functions
