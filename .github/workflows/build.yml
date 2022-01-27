@@ -15,10 +15,10 @@ jobs:
       steps:
       - uses: actions/checkout@v1
 
-      - name: Setup .NET v5.0
+      - name: Setup .NET v6.0
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: Restore NuGet 
         run: |
@@ -34,10 +34,10 @@ jobs:
       steps:
       - uses: actions/checkout@v1
 
-      - name: Setup .NET v5.0
+      - name: Setup .NET v6.0
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: Restore NuGet 
         run: |
@@ -53,10 +53,10 @@ jobs:
       steps:
       - uses: actions/checkout@v1
 
-      - name: Setup .NET v5.0
+      - name: Setup .NET v6.0
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: Restore NuGet 
         run: |
