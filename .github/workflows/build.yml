@@ -30,14 +30,10 @@ jobs:
           dotnet tool install --global boots --prerelease
           boots --alpha Mono
           boots --alpha Xamarin.Android
-
-      - name: Restore NuGet 
-        run: |
-          nuget restore
           
       - name: Build
         run: |                    
-          mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./AzureBlobStorageSampleApp.Android/AzureBlobStorageSampleApp.Android.csproj /verbosity:normal /p:Configuration=Release
+          mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./AzureBlobStorageSampleApp.Android/AzureBlobStorageSampleApp.Android.csproj /verbosity:normal /p:Configuration=Release /restore
   
     Functions:
       runs-on: macos-latest
@@ -49,10 +45,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
-
-      - name: Restore NuGet 
-        run: |
-          nuget restore
           
       - name: Build
         run: |                    
@@ -68,11 +60,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
-
-      - name: Restore NuGet 
-        run: |
-          nuget restore
           
       - name: Build
         run: |                    
-          mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./AzureBlobStorageSampleApp.UITests/AzureBlobStorageSampleApp.UITests.csproj /verbosity:normal /p:Configuration=Release
+          mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./AzureBlobStorageSampleApp.UITests/AzureBlobStorageSampleApp.UITests.csproj /verbosity:normal /p:Configuration=Release /restore
